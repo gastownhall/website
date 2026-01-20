@@ -81,6 +81,100 @@ All code must be written by agents dispatched via `gt` commands. This is a learn
 
 ## Phase 0: Setup
 
+### Step 0.1: Create Agent Guidance Files
+
+Create these files in the project root to guide AI agents:
+
+**AGENTS.md** - Describes the folder hierarchy:
+```markdown
+# Gas Town Hall Website - Agent Guide
+
+## Project Structure
+
+```
+.
+├── AGENTS.md              # This file - agent guidance
+├── CLAUDE.md              # Claude-specific instructions
+├── GEMINI.md              # Gemini-specific instructions
+├── plan.md                # Implementation plan
+├── learnings.md           # Document learnings here (to be created)
+├── docs-fodder/           # Source content (DO NOT MODIFY)
+│   ├── gastown-docs/      # Gas Town documentation (25 markdown files)
+│   │   ├── overview.md
+│   │   ├── concepts/      # 6 concept docs
+│   │   ├── design/        # 11 design docs
+│   │   └── examples/      # 1 example doc
+│   └── steve-blog-posts/  # Steve's blog posts (5 files)
+├── src/                   # Website source (TO BE CREATED)
+│   └── (Astro project)
+├── deploy/                # Build output (TO BE CREATED)
+└── tmp/                   # Scratch files
+```
+
+## Key Information
+
+- **Rig Name**: Derived from project folder (e.g., `website-eli`)
+- **Beads Prefix**: Same as rig name
+- **Technology**: Astro static site generator
+- **Analytics**: Plausible (privacy-respecting)
+
+## Content Sources
+
+### Blog Posts to Link (from `docs-fodder/steve-blog-posts/`)
+1. Welcome to Gas Town.md
+2. The Future of Coding Agents.md
+3. BAGS and the Creator Economy.md
+4. Gas Town Emergency User Manual.md
+5. Stevey's Birthday Blog.md
+
+### Docs to Shred (from `docs-fodder/gastown-docs/`)
+- 25 markdown files organized into concepts/, design/, examples/
+- Need a shredder script to sync these into the website
+
+## Social Links
+- Discord: https://discord.gg/pKsyZJ3S
+- X: x.com/gastownhall
+
+## Landing Page Headline
+"Gas Town is powerful but chaotic. We help you wrangle the chimps."
+```
+
+**CLAUDE.md** - Claude agent instructions:
+```markdown
+# Claude Agent Instructions
+
+Read AGENTS.md for project structure and key information.
+Read plan.md for the implementation plan and success criteria.
+
+## Critical Constraint
+All code must be written by agents via `gt` commands. Do not write code directly.
+
+## Your Role
+You are working on a Gas Town rig. Use `gt` commands to:
+- Create beads via Mayor (`gt mayor attach`)
+- Dispatch work (`gt sling <bead> $RIG_NAME`)
+- Monitor progress (`gt ready --rig $RIG_NAME`)
+```
+
+**GEMINI.md** - Gemini agent instructions:
+```markdown
+# Gemini Agent Instructions
+
+Read AGENTS.md for project structure and key information.
+Read plan.md for the implementation plan and success criteria.
+
+## Critical Constraint
+All code must be written by agents via `gt` commands. Do not write code directly.
+
+## Your Role
+You are working on a Gas Town rig. Use `gt` commands to:
+- Create beads via Mayor (`gt mayor attach`)
+- Dispatch work (`gt sling <bead> $RIG_NAME`)
+- Monitor progress (`gt ready --rig $RIG_NAME`)
+```
+
+### Step 0.2: Add Rig to Gas Town
+
 **Existing HQ**: `~/gt/` is already initialized (daemon, deacon, mayor, dartantic rig exist)
 
 **Project**: Use the origin of the current working directory (supports multiple forks)
