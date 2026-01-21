@@ -10,8 +10,13 @@ import { site, social, blogPosts } from '../site.config';
 <BaseLayout title={site.name}>
   <Hero />
 
+  <!-- Industrial divider -->
+  <div class="industrial-bar"></div>
+
   <section class="section blog-section">
-    <h2>From the Blog</h2>
+    <div class="section-header">
+      <h2 class="section-banner">From the Blog</h2>
+    </div>
     <div class="blog-list">
       {blogPosts.map(post => (
         <a href={post.url} target="_blank" rel="noopener" class="blog-item">
@@ -20,33 +25,116 @@ import { site, social, blogPosts } from '../site.config';
             <p class="blog-excerpt">{post.description}</p>
             <span class="blog-date">{post.date}</span>
           </div>
-          <img src={post.image} alt="" class="blog-image" loading="lazy" />
+          <div class="blog-image-frame">
+            <img src={post.image} alt="" class="blog-image" loading="lazy" />
+          </div>
         </a>
       ))}
     </div>
   </section>
 
+  <!-- Industrial divider -->
+  <div class="industrial-bar"></div>
+
   <section class="section community-section">
-    <h2>Join the Community</h2>
-    <p class="section-intro">Connect with other Gas Town users and contributors.</p>
-    <div class="community-actions">
-      <a href={social.discord} target="_blank" rel="noopener" class="btn btn-discord btn-large">
-        <DiscordIcon />
-        Join Discord
-      </a>
-      <a href={social.x} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
-        <XIcon />
-        Follow on X
-      </a>
-      <a href={social.github} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
-        <GitHubIcon />
-        View on GitHub
-      </a>
+    <div class="community-plate">
+      <h2 class="community-title">Join the Community</h2>
+      <p class="section-intro">Connect with other Gas Town users and contributors.</p>
+      <div class="community-actions">
+        <a href={social.discord} target="_blank" rel="noopener" class="btn btn-discord btn-large">
+          <DiscordIcon />
+          Join Discord
+        </a>
+        <a href={social.x} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
+          <XIcon />
+          Follow on X
+        </a>
+        <a href={social.github} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
+          <GitHubIcon />
+          View on GitHub
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  /* Industrial Bar Divider */
+  .industrial-bar {
+    height: 16px;
+    background: linear-gradient(180deg, #5D4037 0%, #3E2723 50%, #5D4037 100%);
+    border-top: 3px solid var(--color-brass);
+    border-bottom: 3px solid var(--color-brass);
+    position: relative;
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .industrial-bar::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle,
+      var(--color-brass) 0%,
+      var(--color-bronze) 40%,
+      #3E2723 60%);
+    border-radius: 50%;
+    border: 3px solid var(--color-brass);
+    box-shadow:
+      inset 0 2px 6px rgba(0, 0, 0, 0.4),
+      0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Section Header */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-banner {
+    display: inline-block;
+    background: linear-gradient(180deg, #5D4037 0%, #3E2723 100%);
+    color: var(--color-surface);
+    padding: 0.625rem 2.5rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--color-brass);
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    position: relative;
+  }
+
+  .section-banner::before,
+  .section-banner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, var(--color-brass) 30%, var(--color-bronze) 70%);
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+  }
+
+  .section-banner::before {
+    left: 8px;
+  }
+
+  .section-banner::after {
+    right: 8px;
+  }
+
   .section-intro {
     color: var(--color-text-muted);
     font-size: 1.125rem;
@@ -54,13 +142,12 @@ import { site, social, blogPosts } from '../site.config';
     max-width: 600px;
   }
 
-  .section h2 {
-    margin-bottom: var(--space-lg);
-  }
-
+  /* Blog Section */
   .blog-section {
-    max-width: 728px;
+    max-width: 800px;
     margin: 0 auto;
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
   }
 
   .blog-list {
@@ -72,23 +159,35 @@ import { site, social, blogPosts } from '../site.config';
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: 2rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--color-border);
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
     text-decoration: none;
     color: inherit;
-  }
-
-  a.blog-item:first-child {
-    padding-top: 0;
+    transition: all 0.2s ease;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   a.blog-item:last-child {
-    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  a.blog-item:hover {
+    border-color: var(--color-brass);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    text-decoration: none;
   }
 
   a.blog-item:hover h3 {
-    color: var(--color-text-muted);
+    color: var(--color-accent);
   }
 
   .blog-content {
@@ -97,17 +196,19 @@ import { site, social, blogPosts } from '../site.config';
   }
 
   .blog-content h3 {
+    font-family: var(--font-display);
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
     margin: 0 0 0.5rem 0;
     line-height: 1.3;
     transition: color 0.15s ease;
+    color: var(--color-text);
   }
 
   .blog-excerpt {
     color: var(--color-text-muted);
     font-size: 0.9375rem;
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0 0 0.5rem 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -118,23 +219,83 @@ import { site, social, blogPosts } from '../site.config';
   .blog-date {
     font-size: 0.8125rem;
     color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .blog-image-frame {
+    flex: 0 0 auto;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--color-brass) 0%, var(--color-bronze) 100%);
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   img.blog-image {
     width: 112px;
     height: 112px;
-    min-width: 112px;
-    max-width: 112px;
     object-fit: cover;
-    border-radius: 4px;
-    flex: 0 0 112px;
+    border-radius: 2px;
+    display: block;
   }
 
+  /* Community Section */
   .community-section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  .community-plate {
     text-align: center;
+    background: linear-gradient(180deg, #4A3728 0%, #3E2723 100%);
+    border: 4px solid var(--color-brass);
+    border-radius: 6px;
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 24px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+
+  /* Rivet decorations */
+  .community-plate::before,
+  .community-plate::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 70%);
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .community-plate::before {
+    top: 16px;
+    left: 16px;
+  }
+
+  .community-plate::after {
+    top: 16px;
+    right: 16px;
+  }
+
+  .community-title {
+    font-family: var(--font-display);
+    color: var(--color-surface);
+    font-size: 1.75rem;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
   .community-section .section-intro {
+    color: var(--color-text-light);
+    opacity: 0.9;
     margin-left: auto;
     margin-right: auto;
   }
@@ -148,24 +309,45 @@ import { site, social, blogPosts } from '../site.config';
 
   .btn-large {
     padding: 1rem 2rem;
-    font-size: 1.0625rem;
+    font-size: 1rem;
   }
 
   @media (max-width: 768px) {
     a.blog-item {
       gap: 1rem;
+      padding: 1rem;
+    }
+
+    .blog-image-frame {
+      padding: 3px;
     }
 
     img.blog-image {
       width: 80px;
       height: 80px;
-      min-width: 80px;
-      max-width: 80px;
-      flex: 0 0 80px;
     }
 
     .blog-content h3 {
       font-size: 1.0625rem;
+    }
+
+    .community-plate {
+      padding: 2rem 1.5rem;
+    }
+
+    .community-plate::before,
+    .community-plate::after {
+      width: 12px;
+      height: 12px;
+      top: 12px;
+    }
+
+    .community-plate::before {
+      left: 12px;
+    }
+
+    .community-plate::after {
+      right: 12px;
     }
 
     .community-actions {
@@ -177,6 +359,11 @@ import { site, social, blogPosts } from '../site.config';
       width: 100%;
       max-width: 300px;
       justify-content: center;
+    }
+
+    .industrial-bar::before {
+      width: 30px;
+      height: 30px;
     }
   }
 </style>

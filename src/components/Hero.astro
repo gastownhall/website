@@ -5,17 +5,24 @@ import { social } from '../site.config';
 
 <section class="hero">
   <div class="hero-bg"></div>
+  <div class="hero-border-top"></div>
+  <div class="hero-border-bottom"></div>
   <div class="hero-content">
-    <h1 class="hero-headline">
-      Gas Town is powerful but chaotic.
-      <span class="hero-subline">We help you wrangle the chimps.</span>
+    <h1 class="hero-title">
+      <span class="title-decoration">—</span>
+      Gas Town Hall
+      <span class="title-decoration">—</span>
     </h1>
+    <h2 class="hero-headline">
+      Gas Town is powerful but chaotic.
+    </h2>
+    <p class="hero-subline">We help you wrangle the chimps.</p>
     <p class="hero-description">
       An orchestration layer for AI coding agents. Track accountability, measure quality, and scale your AI-assisted engineering workflows.
     </p>
     <div class="hero-actions">
       <a href="/docs" class="btn btn-primary">Read the Docs</a>
-      <a href={social.discord} target="_blank" rel="noopener" class="btn btn-discord">
+      <a href={social.discord} target="_blank" rel="noopener" class="btn btn-secondary">
         <DiscordIcon size={20} />
         Join Discord
       </a>
@@ -26,7 +33,7 @@ import { social } from '../site.config';
 <style>
   .hero {
     position: relative;
-    min-height: 70vh;
+    min-height: 75vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,58 +45,151 @@ import { social } from '../site.config';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(135deg, #faf8f5 0%, #f0ebe3 50%, #e8dfd3 100%);
+      linear-gradient(180deg, #E8DCC8 0%, #D9C9B0 30%, #D4C4A8 70%, #C9B896 100%);
     z-index: -2;
   }
 
+  /* Parchment texture overlay */
   .hero-bg::before {
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(196, 75, 28, 0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 102, 204, 0.05) 0%, transparent 50%);
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
     z-index: -1;
   }
 
+  /* Industrial vignette edges */
   .hero-bg::after {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c44b1c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% 100%, rgba(62, 39, 35, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 60% at 0% 100%, rgba(62, 39, 35, 0.5) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 60% at 100% 100%, rgba(62, 39, 35, 0.5) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139, 115, 85, 0.2) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Top industrial border */
+  .hero-border-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: linear-gradient(180deg, #5D4037 0%, #3E2723 100%);
+    border-bottom: 3px solid var(--color-brass);
+    z-index: 1;
+  }
+
+  .hero-border-top::before,
+  .hero-border-top::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 60%);
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-border-top::before {
+    left: 15%;
+  }
+
+  .hero-border-top::after {
+    right: 15%;
+  }
+
+  /* Bottom industrial border */
+  .hero-border-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: linear-gradient(0deg, #5D4037 0%, #3E2723 100%);
+    border-top: 3px solid var(--color-brass);
+    z-index: 1;
+  }
+
+  .hero-border-bottom::before,
+  .hero-border-bottom::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 60%);
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-border-bottom::before {
+    left: 15%;
+  }
+
+  .hero-border-bottom::after {
+    right: 15%;
   }
 
   .hero-content {
     max-width: 800px;
     text-align: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 2rem 0;
+    letter-spacing: 0.15em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .title-decoration {
+    color: var(--color-brass);
+    font-weight: 400;
   }
 
   .hero-headline {
     font-family: var(--font-display);
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.15;
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.2;
     color: var(--color-text);
-    margin: 0 0 1.5rem 0;
-    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 0.02em;
   }
 
   .hero-subline {
-    display: block;
-    margin-top: 0.5rem;
-    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
     font-weight: 700;
+    color: var(--color-accent);
+    margin: 0 0 1.5rem 0;
+    letter-spacing: 0.02em;
   }
 
   .hero-description {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     color: var(--color-text-muted);
     max-width: 600px;
     margin: 0 auto 2rem auto;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   .hero-actions {
@@ -101,12 +201,21 @@ import { social } from '../site.config';
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 60vh;
+      min-height: 65vh;
       padding: 3rem 1.5rem;
     }
 
+    .hero-title {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .title-decoration {
+      display: none;
+    }
+
     .hero-description {
-      font-size: 1.125rem;
+      font-size: 1rem;
     }
 
     .hero-actions {
@@ -118,6 +227,13 @@ import { social } from '../site.config';
       width: 100%;
       max-width: 280px;
       justify-content: center;
+    }
+
+    .hero-border-top::before,
+    .hero-border-top::after,
+    .hero-border-bottom::before,
+    .hero-border-bottom::after {
+      display: none;
     }
   }
 </style>
