@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy deploy --project-name=gastownhall",
     "astro": "astro",
     "shred-docs": "node scripts/shred-docs.mjs",
     "llms": "node scripts/generate-llms.mjs",
@@ -16,5 +17,8 @@
     "@astrojs/sitemap": "^3.7.0",
     "astro": "^5.0.0",
     "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.99.0"
   }
 }
