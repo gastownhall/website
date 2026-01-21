@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Generate llms.txt for Gas Town Hall
+ * Generate llms.txt for Gas Town Hall.
  *
  * llms.txt is a standard for providing LLM-friendly site information.
  * See: https://llmstxt.org/
@@ -9,84 +9,45 @@
  * Usage: node scripts/generate-llms.mjs
  */
 
-import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import { join, relative } from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const ROOT = join(__dirname, '..');
-const PAGES_DIR = join(ROOT, 'src', 'pages');
-const OUTPUT_FILE = join(ROOT, 'public', 'llms.txt');
+import { paths, site } from './lib/config.mjs';
+import { findFiles, filePathToUrlPath } from './lib/files.mjs';
+import { titleFromFilename } from './lib/markdown.mjs';
 
-const SITE_URL = 'https://gastownhall.ai';
+const OUTPUT_FILE = join(paths.public, 'llms.txt');
 
 /**
- * Recursively get all .astro files in a directory
+ * Extracts title and description from an Astro file.
  */
-async function getAstroFiles(dir, files = []) {
-  const entries = await readdir(dir, { withFileTypes: true });
+async function extractPageInfo(fullPath, relativePath) {
+  const content = await readFile(fullPath, 'utf-8');
+  const urlPath = filePathToUrlPath(relativePath, '.astro');
 
-  for (const entry of entries) {
-    const fullPath = join(dir, entry.name);
-    if (entry.isDirectory()) {
-      await getAstroFiles(fullPath, files);
-    } else if (entry.name.endsWith('.astro')) {
-      files.push(fullPath);
-    }
-  }
-
-  return files;
-}
-
-/**
- * Extract title and description from an Astro file's frontmatter or component props
- */
-async function extractPageInfo(filePath) {
-  const content = await readFile(filePath, 'utf-8');
-
-  // Convert file path to URL path
-  const relativePath = relative(PAGES_DIR, filePath);
-  let urlPath = '/' + relativePath.replace(/\.astro$/, '').replace(/index$/, '').replace(/\/$/, '');
-  if (urlPath === '') urlPath = '/';
-
-  // Try to extract title from various patterns
-  let title = null;
-  let description = null;
-
-  // Pattern: title="..." or title='...'
   const titleMatch = content.match(/title\s*[=:]\s*["']([^"']+)["']/);
-  if (titleMatch) {
-    title = titleMatch[1];
-  }
-
-  // Pattern: description="..." or description='...'
   const descMatch = content.match(/description\s*[=:]\s*["']([^"']+)["']/);
-  if (descMatch) {
-    description = descMatch[1];
-  }
 
-  // Fallback: generate title from URL path
-  if (!title) {
-    const pathParts = urlPath.split('/').filter(Boolean);
-    if (pathParts.length === 0) {
-      title = 'Home';
-    } else {
-      title = pathParts[pathParts.length - 1]
-        .split('-')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-    }
-  }
+  const title = titleMatch
+    ? titleMatch[1]
+    : urlPath === '/'
+      ? 'Home'
+      : titleFromFilename(urlPath.split('/').pop());
 
-  return { urlPath, title, description };
+  return {
+    urlPath,
+    title,
+    description: descMatch ? descMatch[1] : null,
+  };
 }
 
 /**
- * Group pages by section
+ * Groups pages by their section based on URL path.
  */
 function groupPages(pages) {
   const groups = {
     main: [],
+    blog: [],
     docs: [],
     'docs/concepts': [],
     'docs/design': [],
@@ -102,6 +63,8 @@ function groupPages(pages) {
       groups['docs/examples'].push(page);
     } else if (page.urlPath.startsWith('/docs')) {
       groups.docs.push(page);
+    } else if (page.urlPath.startsWith('/blog')) {
+      groups.blog.push(page);
     } else {
       groups.main.push(page);
     }
@@ -111,96 +74,66 @@ function groupPages(pages) {
 }
 
 /**
- * Generate the llms.txt content
+ * Formats a page entry as a markdown list item.
+ */
+function formatPageEntry(page) {
+  const url = `${site.url}${page.urlPath}`;
+  const suffix = page.description ? `: ${page.description}` : '';
+  return `- [${page.title}](${url})${suffix}`;
+}
+
+/**
+ * Renders a section if it has pages.
+ */
+function renderSection(title, pages) {
+  if (pages.length === 0) return '';
+
+  const sorted = pages.sort((a, b) => a.urlPath.localeCompare(b.urlPath));
+  const entries = sorted.map(formatPageEntry).join('\n');
+
+  return `## ${title}\n\n${entries}\n\n`;
+}
+
+/**
+ * Generates the llms.txt content.
  */
 function generateLlmsTxt(groups) {
-  const lines = [];
+  const header = `# ${site.name}
 
-  // Header
-  lines.push('# Gas Town Hall');
-  lines.push('');
-  lines.push('> Gas Town Hall is the documentation and resource hub for Gas Town, an AI-powered development workflow system. Gas Town uses autonomous agents (polecats) to execute software development tasks through a structured work tracking system (beads and molecules).');
-  lines.push('');
-  lines.push(`Website: ${SITE_URL}`);
-  lines.push('');
+> ${site.name} is the documentation and resource hub for Gas Town, an AI-powered development workflow system. Gas Town uses autonomous agents (polecats) to execute software development tasks through a structured work tracking system (beads and molecules).
 
-  // Main pages
-  if (groups.main.length > 0) {
-    lines.push('## Main Pages');
-    lines.push('');
-    for (const page of groups.main.sort((a, b) => a.urlPath.localeCompare(b.urlPath))) {
-      const url = `${SITE_URL}${page.urlPath}`;
-      lines.push(`- [${page.title}](${url})${page.description ? ': ' + page.description : ''}`);
-    }
-    lines.push('');
-  }
+Website: ${site.url}
 
-  // Docs index
-  if (groups.docs.length > 0) {
-    lines.push('## Documentation');
-    lines.push('');
-    for (const page of groups.docs.sort((a, b) => a.urlPath.localeCompare(b.urlPath))) {
-      const url = `${SITE_URL}${page.urlPath}`;
-      lines.push(`- [${page.title}](${url})${page.description ? ': ' + page.description : ''}`);
-    }
-    lines.push('');
-  }
+`;
 
-  // Concepts
-  if (groups['docs/concepts'].length > 0) {
-    lines.push('## Core Concepts');
-    lines.push('');
-    for (const page of groups['docs/concepts'].sort((a, b) => a.urlPath.localeCompare(b.urlPath))) {
-      const url = `${SITE_URL}${page.urlPath}`;
-      lines.push(`- [${page.title}](${url})${page.description ? ': ' + page.description : ''}`);
-    }
-    lines.push('');
-  }
+  const sections = [
+    renderSection('Main Pages', groups.main),
+    renderSection('Blog', groups.blog),
+    renderSection('Documentation', groups.docs),
+    renderSection('Core Concepts', groups['docs/concepts']),
+    renderSection('Architecture & Design', groups['docs/design']),
+    renderSection('Examples', groups['docs/examples']),
+  ];
 
-  // Design
-  if (groups['docs/design'].length > 0) {
-    lines.push('## Architecture & Design');
-    lines.push('');
-    for (const page of groups['docs/design'].sort((a, b) => a.urlPath.localeCompare(b.urlPath))) {
-      const url = `${SITE_URL}${page.urlPath}`;
-      lines.push(`- [${page.title}](${url})${page.description ? ': ' + page.description : ''}`);
-    }
-    lines.push('');
-  }
-
-  // Examples
-  if (groups['docs/examples'].length > 0) {
-    lines.push('## Examples');
-    lines.push('');
-    for (const page of groups['docs/examples'].sort((a, b) => a.urlPath.localeCompare(b.urlPath))) {
-      const url = `${SITE_URL}${page.urlPath}`;
-      lines.push(`- [${page.title}](${url})${page.description ? ': ' + page.description : ''}`);
-    }
-    lines.push('');
-  }
-
-  return lines.join('\n');
+  return header + sections.join('');
 }
 
 async function main() {
   console.log('Generating llms.txt...');
 
-  // Get all Astro pages
-  const astroFiles = await getAstroFiles(PAGES_DIR);
-  console.log(`Found ${astroFiles.length} pages`);
+  const files = await findFiles(paths.pages, '.astro');
+  console.log(`  Found ${files.length} pages`);
 
-  // Extract info from each page
-  const pages = await Promise.all(astroFiles.map(extractPageInfo));
+  const pages = await Promise.all(
+    files.map(({ fullPath, relativePath }) => extractPageInfo(fullPath, relativePath))
+  );
 
-  // Group pages by section
   const groups = groupPages(pages);
-
-  // Generate content
   const content = generateLlmsTxt(groups);
 
-  // Write to file
   await writeFile(OUTPUT_FILE, content, 'utf-8');
-  console.log(`Written to ${OUTPUT_FILE}`);
+  console.log(`  Written to ${relative(paths.root, OUTPUT_FILE)}`);
+  console.log('Done!');
 }
 
 main();

@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "shred-docs": "node scripts/shred-docs.mjs",
-    "llms": "node scripts/generate-llms.mjs"
+    "llms": "node scripts/generate-llms.mjs",
+    "test": "node --test scripts/lib/__tests__/*.test.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0",

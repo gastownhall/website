@@ -6,8 +6,16 @@ Website: https://gastownhall.ai
 
 ## Main Pages
 
-- [Gas Town Hall](https://gastownhall.ai/)
+- [Home](https://gastownhall.ai/)
 - [Privacy Policy - Gas Town Hall](https://gastownhall.ai/privacy): Privacy policy for Gas Town Hall. We respect your privacy and collect minimal data.
+
+## Blog
+
+- [BAGS and the Creator Economy](https://gastownhall.ai/blog/bags-creator-economy): A bizarre story about tokens, creators, and the Gas Town economy.
+- [Gas Town Emergency User Manual](https://gastownhall.ai/blog/emergency-user-manual): How to keep up with 100+ PRs using Gas Town and PR Sheriffs.
+- [The Future of Coding Agents](https://gastownhall.ai/blog/future-of-coding-agents): Predictions about IDEs, big companies, and the evolution of coding agents.
+- [Stevey](https://gastownhall.ai/blog/steveys-birthday-blog): Reflections on Money, Time, Power, Control, and Direction in AI.
+- [Welcome to Gas Town](https://gastownhall.ai/blog/welcome-to-gas-town): The launch post introducing Gas Town - an orchestration layer for AI coding agents.
 
 ## Documentation
 
@@ -45,3 +53,4 @@ Website: https://gastownhall.ai
 ## Examples
 
 - [Towers of Hanoi Demo](https://gastownhall.ai/docs/examples/hanoi-demo): A durability proof demonstrating Gas Town
+

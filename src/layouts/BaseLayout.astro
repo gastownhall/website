@@ -1,4 +1,6 @@
 ---
+import { site, social, analytics } from '../site.config';
+
 interface Props {
   title: string;
   description?: string;
@@ -7,12 +9,11 @@ interface Props {
 
 const {
   title,
-  description = 'Gas Town Hall - Documentation and resources for Gas Town',
+  description = site.description,
   image = '/og-image.svg'
 } = Astro.props;
 
-const siteUrl = 'https://gastownhall.ai';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const canonicalUrl = new URL(Astro.url.pathname, site.url).href;
 ---
 
 <!DOCTYPE html>
@@ -22,40 +23,36 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
 
-    <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={`${siteUrl}${image}`} />
-    <meta property="og:site_name" content="Gas Town Hall" />
+    <meta property="og:image" content={`${site.url}${image}`} />
+    <meta property="og:site_name" content={site.name} />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${siteUrl}${image}`} />
-    <meta name="twitter:site" content="@gastownhall" />
+    <meta name="twitter:image" content={`${site.url}${image}`} />
+    <meta name="twitter:site" content={site.twitterHandle} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <link rel="stylesheet" href="/styles/global.css" />
 
-    <!-- Plausible Analytics (privacy-friendly, no cookies) -->
-    <script defer data-domain="gastownhall.ai" src="https://plausible.io/js/script.js"></script>
+    <script is:inline defer data-domain={analytics.plausibleDomain} src={analytics.plausibleScript}></script>
   </head>
   <body>
     <header class="site-header">
       <nav>
-        <a href="/" class="logo">Gas Town Hall</a>
+        <a href="/" class="logo">{site.name}</a>
         <div class="nav-links">
           <a href="/docs">Docs</a>
-          <a href="https://discord.gg/pKsyZJ3S" target="_blank" rel="noopener">Discord</a>
-          <a href="https://x.com/gastownhall" target="_blank" rel="noopener">X</a>
+          <a href={social.discord} target="_blank" rel="noopener">Discord</a>
+          <a href={social.x} target="_blank" rel="noopener">X</a>
         </div>
       </nav>
     </header>
@@ -63,7 +60,7 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       <slot />
     </main>
     <footer class="site-footer">
-      <p>&copy; {new Date().getFullYear()} Gas Town Hall · <a href="/privacy">Privacy Policy</a></p>
+      <p>&copy; {new Date().getFullYear()} {site.name} · <a href="/privacy">Privacy Policy</a></p>
     </footer>
   </body>
 </html>
