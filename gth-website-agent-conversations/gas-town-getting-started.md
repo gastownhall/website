@@ -6,6 +6,8 @@ A complete end-to-end guide to orchestrating AI coding agents with Gas Town.
 
 **Example project**: We'll build `linky`, a CLI tool that extracts and validates URLs from markdown files. This is a small-to-medium project that demonstrates the full workflow. Substitute your own project where indicated with `[YOUR PROJECT]`.
 
+> 📝 **Note on this guide**: This document was synthesized from four AI agent experiments with Gas Town, cross-referenced with official documentation and verified against `gt --help` / `bd --help` output. Expected output examples are illustrative and may differ from actual output. Please report any corrections!
+
 ---
 
 ## Table of Contents
@@ -129,11 +131,18 @@ Understanding where things live is crucial. Gas Town has a specific layout:
 
 | Tool | Version | Check | Install |
 |------|---------|-------|---------|
-| **Go** | 1.24+ | `go version` | See [golang.org](https://go.dev/doc/install) |
+| **Go** | 1.21+ | `go version` | See [golang.org](https://go.dev/doc/install) |
 | **Git** | 2.20+ | `git --version` | `brew install git` (macOS) |
 | **Beads** | latest | `bd version` | `go install github.com/steveyegge/beads/cmd/bd@latest` |
 | **tmux** | 3.0+ | `tmux -V` | `brew install tmux` (macOS) |
-| **Claude Code** | latest | `claude --version` | See [claude.ai/claude-code](https://claude.ai/claude-code) |
+| **AI Coding Agent** | any | see below | Claude Code, Codex CLI, or Gemini CLI |
+
+**AI Agent Setup**: Gas Town orchestrates AI coding agents. You need at least one of these configured and working:
+- **Claude Code** (`claude --version`) - via API key or account auth
+- **Codex CLI** (`codex --version`) - via OpenAI API key or account auth
+- **Gemini CLI** (`gemini --version`) - via Google API key or account auth
+
+The key requirement is that your chosen agent CLI tool runs successfully on its own before using it with Gas Town. Authentication can be via API keys (environment variables) OR account-based login—whatever your agent supports.
 
 ### Install Gas Town
 
@@ -182,7 +191,7 @@ cd ~/gt
 gt doctor
 ```
 
-**Expected output** (healthy):
+**Expected output** (healthy, illustrative):
 ```
 Gas Town Health Check
 =====================
@@ -190,16 +199,12 @@ Gas Town Health Check
 ✓ Config valid
 ✓ Mayor directory exists
 ✓ Deacon directory exists
-✓ ANTHROPIC_API_KEY set
+✓ Agent CLI available
 
 Status: HEALTHY
 ```
 
-> ⚠️ **Warning**: If you see "ANTHROPIC_API_KEY not set", export it:
-> ```bash
-> export ANTHROPIC_API_KEY=sk-ant-...
-> ```
-> Add to your shell profile (`~/.zshrc` or `~/.bashrc`) to persist.
+> ⚠️ **Warning**: If `gt doctor` reports agent issues, ensure your AI coding agent CLI (Claude Code, Codex, or Gemini) is installed and authenticated. Gas Town needs to be able to spawn agent sessions.
 
 ---
 
@@ -310,9 +315,11 @@ gt daemon start
 gt mayor attach
 ```
 
-**Or in one step:**
+**Or start the Mayor directly**:
 ```bash
-gt start   # Starts daemon + Mayor if not running
+gt mayor start   # Start Mayor session
+gt mayor attach  # Attach to running Mayor
+gt mayor stop    # Stop Mayor session
 ```
 
 This opens a tmux session with the Mayor. You're now in a conversation with an AI that understands Gas Town.
@@ -374,8 +381,10 @@ bd create --title "Build markdown URL extractor" --type task
 bd create --title "Create concurrent URL validator" --type task
 bd create --title "Implement report generator" --type task
 
-# Link tasks to epic using dependencies
-bd dep add linky-d3e4f linky-a1b2c  # child depends on parent
+# Link tasks to epic (two equivalent syntaxes)
+bd dep add linky-d3e4f linky-a1b2c  # "blocked-id blocker-id" = child depends on parent
+# Or use the --parent flag:
+bd update linky-d3e4f --parent linky-a1b2c
 ```
 
 **Expected output** (for each create):
@@ -450,7 +459,8 @@ bd ready                     # Work with no blockers (ready to start)
 
 # Update
 bd update linky-abc --status=in_progress    # Claim work
-bd dep add linky-child linky-parent         # Add dependency
+bd dep add linky-child linky-parent         # Add dependency (blocked, blocker)
+bd dep linky-child --blocks linky-parent    # Alternative syntax
 
 # Close
 bd close linky-abc                          # Mark done
@@ -539,10 +549,12 @@ Crew member 'joe' ready.
 
 ```bash
 # From ~/gt
-gt start crew linky/joe
-# Or if already started:
-gt crew attach linky/joe
+gt start crew joe           # Start crew member session
+# Or attach to already running:
+gt crew at joe              # Attach to running crew session
 ```
+
+> 📝 **Note**: The `gt crew at` command is the standard way to attach. The name is just the crew member name (e.g., `joe`), not the full path.
 
 This opens a tmux session with the crew member. You're now talking to an AI that:
 - Has access to the codebase
@@ -598,10 +610,10 @@ Done. linky-d3e4f complete.
 # Hand off to a fresh session (preserves hook, refreshes context)
 gt handoff
 
-# Talk to predecessor sessions (full context)
-gt seance
-gt seance --talk <session-id>
-gt seance --talk <session-id> -p "Where did you leave off?"
+# Talk to predecessor sessions
+gt seance                                    # List past sessions
+gt seance --talk <session-id>                # Interactive conversation
+gt seance --talk <session-id> -p "prompt"    # Single prompt mode
 ```
 
 ### When to Use Crew vs. Polecats
@@ -673,7 +685,7 @@ A **convoy** is how you track batched work. Even single issues should go through
 # From ~/gt
 
 # Create a convoy tracking multiple issues
-gt convoy create "CLI Features" linky-g5h6i linky-j7k8l linky-m9n0p --notify human
+gt convoy create --name "CLI Features" linky-g5h6i linky-j7k8l linky-m9n0p
 
 # Check progress
 gt convoy status hq-cv-xyz
@@ -716,9 +728,11 @@ Polecat Toast is working. Monitor with: gt peek linky/Toast
 ### Override Agent Runtime
 
 ```bash
-# Use a different agent/model for this sling
+# Use a different agent for this sling
 gt sling linky-g5h6i linky --agent codex
-gt sling linky-g5h6i linky --agent claude-haiku
+gt sling linky-g5h6i linky --agent claude
+
+# Available agents depend on your configuration
 ```
 
 ### Monitor Polecats
@@ -968,7 +982,7 @@ gt mayor attach
 ```bash
 cd ~/gt
 gt crew add linky joe
-gt start crew linky/joe
+gt start crew joe
 # "Build the project scaffold: go.mod, directory structure, main.go..."
 # Crew pushes to main when done, runs gt done
 ```
@@ -991,7 +1005,7 @@ cd ~/gt
 gt refinery start linky
 
 # Create convoy and sling
-gt convoy create "Features" linky-j7k8l linky-m9n0p linky-q1r2s --notify human
+gt convoy create --name "Features" linky-j7k8l linky-m9n0p linky-q1r2s
 gt sling linky-j7k8l linky
 gt sling linky-m9n0p linky
 gt sling linky-q1r2s linky
@@ -1139,10 +1153,14 @@ gt polecat nuke Toast
 When something needs human attention:
 
 ```bash
-gt escalate "topic"              # Default: MEDIUM severity
-gt escalate -s CRITICAL "msg"    # Urgent, immediate attention
-gt escalate -s HIGH "msg"        # Important blocker
+gt escalate "topic"              # Default severity
+gt escalate -s critical "msg"    # Urgent, immediate attention
+gt escalate -s high "msg"        # Important blocker
+gt escalate -s medium "msg"      # Normal priority
+gt escalate -s low "msg"         # Low priority
 ```
+
+> 📝 **Note**: Severity levels are lowercase: `critical`, `high`, `medium`, `low`.
 
 ### How to clear all polecats
 
@@ -1151,8 +1169,9 @@ gt escalate -s HIGH "msg"        # Important blocker
 gt mayor attach
 # "Clear all polecats on the linky rig"
 
-# Or emergency stop all
-gt stop --rig linky
+# Or nuke polecats individually
+gt polecat nuke Toast
+gt polecat nuke Rust
 ```
 
 ---
@@ -1162,13 +1181,12 @@ gt stop --rig linky
 ```bash
 # === INSTALLATION ===
 gt install ~/gt              # Create new town
+gt init                      # Initialize existing dir as rig
 gt doctor                    # Health check
-gt doctor --fix              # Auto-repair
 
 # === RIGS ===
 gt rig add NAME URL          # Add project
 gt rig list                  # List rigs
-gt rig remove NAME           # Remove rig
 
 # === SERVICES (Full Stack Mode) ===
 gt daemon start              # Start daemon
@@ -1177,33 +1195,36 @@ gt down                      # Stop all services
 gt shutdown                  # Shutdown with cleanup
 
 # === MAYOR ===
+gt mayor start               # Start Mayor session
 gt mayor attach              # Attach to Mayor
-gt start                     # Start daemon + Mayor
+gt mayor stop                # Stop Mayor session
 
 # === CREW ===
 gt crew add RIG NAME         # Add crew member
-gt start crew RIG/NAME       # Start crew session
-gt crew attach RIG/NAME      # Attach to running crew
+gt start crew NAME           # Start crew session
+gt crew at NAME              # Attach to running crew
 
 # === BEADS ===
 bd list                      # List all
 bd ready                     # Show unblocked work
 gt ready                     # Town-wide ready work
 bd create --title "X" --type task
+bd create --title "X" --parent ID   # Create with parent
 bd show ID
 bd update ID --status=in_progress
+bd update ID --parent ID     # Set parent
 bd close ID
-bd dep add CHILD PARENT      # Add dependency
+bd dep add BLOCKED BLOCKER   # Add dependency
+bd dep ID --blocks ID        # Alternative syntax
 bd sync                      # Sync beads
 
 # === CONVOYS ===
-gt convoy create "Name" BEAD1 BEAD2 --notify human
+gt convoy create --name "Name" BEAD1 BEAD2
 gt convoy list               # Dashboard
 gt convoy status ID          # Progress
-gt convoy list --all         # Include landed
 
 # === POLECATS ===
-gt sling BEAD RIG            # Dispatch work (auto-convoy)
+gt sling BEAD RIG            # Dispatch work
 gt sling BEAD RIG --agent X  # Override agent
 gt sling shiny RIG --args "..." # Ad-hoc work
 
@@ -1220,13 +1241,15 @@ gt broadcast RIG "msg"       # All workers
 
 # === SESSION MANAGEMENT ===
 gt handoff                   # Fresh session (keeps hook)
-gt seance                    # Talk to predecessors
+gt seance                    # List past sessions
+gt seance --talk ID          # Talk to predecessor
+gt seance --talk ID -p "msg" # Single prompt mode
 gt done                      # Signal completion (polecats)
 
-# === EMERGENCY ===
-gt stop --all                # Kill all sessions
-gt stop --rig NAME           # Kill rig sessions
+# === ESCALATION ===
 gt escalate "msg"            # Human attention needed
+gt escalate -s critical "msg" # Urgent
+gt escalate -s high "msg"    # High priority
 ```
 
 ---
@@ -1244,4 +1267,4 @@ Once you're comfortable with this workflow:
 
 ---
 
-*This guide synthesized from four AI agent experiments with Gas Town, cross-referenced with official documentation. Last updated: January 2025.*
+*This guide synthesized from four AI agent experiments with Gas Town, cross-referenced with official documentation and verified against `gt --help` / `bd --help` output. Last updated: January 2026.*
