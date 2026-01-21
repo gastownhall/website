@@ -113,8 +113,23 @@ export function escapeHtml(text) {
 export function convertMarkdownToHtml(md) {
   let html = md;
 
-  html = convertCodeBlocks(html);
-  html = convertInlineCode(html);
+  // Extract code blocks first to protect them from other conversions
+  const codeBlocks = [];
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+    codeBlocks.push(`<pre><code class="language-${lang || 'text'}">${escapeHtml(code.trim())}</code></pre>`);
+    return placeholder;
+  });
+
+  // Extract inline code to protect it
+  const inlineCode = [];
+  html = html.replace(/`([^`]+)`/g, (_, code) => {
+    const placeholder = `__INLINE_CODE_${inlineCode.length}__`;
+    inlineCode.push(`<code>${escapeHtml(code)}</code>`);
+    return placeholder;
+  });
+
+  // Now apply conversions safely
   html = convertHeaders(html);
   html = convertEmphasis(html);
   html = convertLinks(html);
@@ -122,18 +137,19 @@ export function convertMarkdownToHtml(md) {
   html = convertTables(html);
   html = wrapParagraphs(html);
 
+  // Restore inline code
+  inlineCode.forEach((code, i) => {
+    html = html.replace(`__INLINE_CODE_${i}__`, code);
+  });
+
+  // Restore code blocks
+  codeBlocks.forEach((block, i) => {
+    html = html.replace(`__CODE_BLOCK_${i}__`, block);
+  });
+
   return html;
 }
 
-function convertCodeBlocks(html) {
-  return html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
-    return `<pre><code class="language-${lang || 'text'}">${escapeHtml(code.trim())}</code></pre>`;
-  });
-}
-
-function convertInlineCode(html) {
-  return html.replace(/`([^`]+)`/g, '<code>$1</code>');
-}
 
 function convertHeaders(html) {
   return html
