@@ -5,8 +5,6 @@ import { social } from '../site.config';
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-gear hero-gear-left"></div>
-  <div class="hero-gear hero-gear-right"></div>
   <div class="hero-border-top"></div>
   <div class="hero-border-bottom"></div>
   <div class="hero-content">
@@ -48,75 +46,6 @@ import { social } from '../site.config';
     inset: 0;
     background: transparent;
     z-index: -2;
-  }
-
-  /* Rotating gear decorations */
-  .hero-gear {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    opacity: 0.2;
-    z-index: 0;
-    background:
-      conic-gradient(
-        from 0deg,
-        var(--color-brass) 0deg,
-        transparent 20deg,
-        transparent 40deg,
-        var(--color-brass) 40deg,
-        var(--color-brass) 60deg,
-        transparent 60deg,
-        transparent 80deg,
-        var(--color-brass) 80deg,
-        var(--color-brass) 100deg,
-        transparent 100deg,
-        transparent 120deg,
-        var(--color-brass) 120deg,
-        var(--color-brass) 140deg,
-        transparent 140deg,
-        transparent 160deg,
-        var(--color-brass) 160deg,
-        var(--color-brass) 180deg,
-        transparent 180deg,
-        transparent 200deg,
-        var(--color-brass) 200deg,
-        var(--color-brass) 220deg,
-        transparent 220deg,
-        transparent 240deg,
-        var(--color-brass) 240deg,
-        var(--color-brass) 260deg,
-        transparent 260deg,
-        transparent 280deg,
-        var(--color-brass) 280deg,
-        var(--color-brass) 300deg,
-        transparent 300deg,
-        transparent 320deg,
-        var(--color-brass) 320deg,
-        var(--color-brass) 340deg,
-        transparent 340deg,
-        transparent 360deg
-      );
-  }
-
-  .hero-gear::before {
-    content: '';
-    position: absolute;
-    inset: 30%;
-    border-radius: 50%;
-    background: var(--color-brass);
-  }
-
-  .hero-gear-left {
-    top: 10%;
-    left: -50px;
-    animation: rotateClockwise 60s linear infinite;
-  }
-
-  .hero-gear-right {
-    bottom: 10%;
-    right: -50px;
-    animation: rotateCounterClockwise 45s linear infinite;
   }
 
   /* Top industrial border with pulsing rivets */
@@ -272,20 +201,6 @@ import { social } from '../site.config';
     .hero {
       min-height: 65vh;
       padding: 3rem 1.5rem;
-    }
-
-    .hero-gear {
-      width: 120px;
-      height: 120px;
-      opacity: 0.05;
-    }
-
-    .hero-gear-left {
-      left: -40px;
-    }
-
-    .hero-gear-right {
-      right: -40px;
     }
 
     .hero-title {
