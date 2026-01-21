@@ -7,6 +7,10 @@ import { social } from '../site.config';
   <div class="hero-bg"></div>
   <div class="hero-border-top"></div>
   <div class="hero-border-bottom"></div>
+  <picture>
+    <source srcset="/images/mayor-of-gastown-360.webp" type="image/webp" />
+    <img src="/images/mayor-of-gastown-360.png" alt="Mayor of Gas Town" class="mayor-image" />
+  </picture>
   <div class="hero-content">
     <h1 class="hero-title">
       <span class="title-decoration">—</span>
@@ -115,6 +119,22 @@ import { social } from '../site.config';
   .hero-border-bottom::after {
     right: 15%;
     animation-delay: 2.25s;
+  }
+
+  .mayor-image {
+    position: absolute;
+    top: 2rem;
+    left: max(2rem, calc((100% - var(--max-width)) / 2 + 2rem));
+    width: 180px;
+    height: auto;
+    z-index: 3;
+    animation: fadeIn 1s var(--ease-out-expo) 0.2s both;
+  }
+
+  @media (max-width: 1024px) {
+    .mayor-image {
+      display: none;
+    }
   }
 
   .hero-content {

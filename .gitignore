@@ -5,3 +5,6 @@ deploy/
 tmp/
 .beads/
 .runtime/
+
+# Generated tools output
+tools/og-preview.html
