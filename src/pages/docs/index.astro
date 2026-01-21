@@ -1,5 +1,44 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const gettingStartedCards = [
+  { href: "/docs/installing", title: "Installing Gas Town", description: "Get up and running with Gas Town in your environment." },
+  { href: "/docs/reference", title: "CLI Reference", description: "Complete reference for all Gas Town commands." },
+  { href: "/docs/glossary", title: "Glossary", description: "Definitions of Gas Town terminology and concepts." },
+  { href: "/docs/why-these-features", title: "Why These Features", description: "The rationale behind Gas Town's design decisions." },
+];
+
+const conceptCards = [
+  { href: "/docs/concepts/convoy", title: "Convoys", description: "Track batched work across multiple agents and issues." },
+  { href: "/docs/concepts/identity", title: "Identity", description: "How actors are identified and attributed in Gas Town." },
+  { href: "/docs/concepts/molecules", title: "Molecules", description: "The workflow system for orchestrating agent tasks." },
+  { href: "/docs/concepts/polecat-lifecycle", title: "Polecat Lifecycle", description: "How ephemeral workers are managed by Witnesses." },
+  { href: "/docs/concepts/propulsion-principle", title: "Propulsion Principle", description: "The core philosophy: if work is on your hook, YOU RUN IT." },
+];
+
+const architectureCards = [
+  { href: "/docs/design/architecture", title: "Architecture Overview", description: "High-level system design and component interactions." },
+  { href: "/docs/design/convoy-lifecycle", title: "Convoy Lifecycle", description: "How convoys are created, tracked, and completed." },
+  { href: "/docs/design/dog-pool-architecture", title: "Dog Pool Architecture", description: "Infrastructure helpers managed by the Deacon." },
+  { href: "/docs/design/escalation", title: "Escalation", description: "How issues get escalated when agents need help." },
+  { href: "/docs/design/escalation-system", title: "Escalation System", description: "Detailed design of the escalation mechanisms." },
+  { href: "/docs/design/federation", title: "Federation", description: "Cross-rig coordination and distributed work." },
+  { href: "/docs/design/mail-protocol", title: "Mail Protocol", description: "Inter-agent communication system." },
+  { href: "/docs/design/operational-state", title: "Operational State", description: "Managing and tracking system state." },
+  { href: "/docs/design/plugin-system", title: "Plugin System", description: "Extending Gas Town with custom plugins." },
+  { href: "/docs/design/property-layers", title: "Property Layers", description: "Configuration and property inheritance." },
+  { href: "/docs/design/watchdog-chain", title: "Watchdog Chain", description: "Supervision hierarchy and health monitoring." },
+];
+
+const advancedCards = [
+  { href: "/docs/beads-native-messaging", title: "Beads Native Messaging", description: "Native messaging integration with Beads." },
+  { href: "/docs/formula-resolution", title: "Formula Resolution", description: "How formulas are resolved and executed." },
+  { href: "/docs/mol-mall-design", title: "Mol Mall Design", description: "Molecule marketplace and discovery." },
+];
+
+const exampleCards = [
+  { href: "/docs/examples/hanoi-demo", title: "Hanoi Demo", description: "Solving Tower of Hanoi with Gas Town molecules." },
+];
 ---
 
 <DocsLayout title="Documentation" description="Gas Town documentation and guides">
@@ -19,118 +58,52 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
   <h2>Getting Started</h2>
   <div class="doc-grid">
-    <a href="/docs/installing" class="doc-card">
-      <h3>Installing Gas Town</h3>
-      <p>Get up and running with Gas Town in your environment.</p>
-    </a>
-    <a href="/docs/reference" class="doc-card">
-      <h3>CLI Reference</h3>
-      <p>Complete reference for all Gas Town commands.</p>
-    </a>
-    <a href="/docs/glossary" class="doc-card">
-      <h3>Glossary</h3>
-      <p>Definitions of Gas Town terminology and concepts.</p>
-    </a>
-    <a href="/docs/why-these-features" class="doc-card">
-      <h3>Why These Features</h3>
-      <p>The rationale behind Gas Town's design decisions.</p>
-    </a>
+    {gettingStartedCards.map((card, index) => (
+      <a href={card.href} class="doc-card" style={`--card-index: ${index}`}>
+        <h3>{card.title}</h3>
+        <p>{card.description}</p>
+      </a>
+    ))}
   </div>
 
   <h2>Core Concepts</h2>
   <div class="doc-grid">
-    <a href="/docs/concepts/convoy" class="doc-card">
-      <h3>Convoys</h3>
-      <p>Track batched work across multiple agents and issues.</p>
-    </a>
-    <a href="/docs/concepts/identity" class="doc-card">
-      <h3>Identity</h3>
-      <p>How actors are identified and attributed in Gas Town.</p>
-    </a>
-    <a href="/docs/concepts/molecules" class="doc-card">
-      <h3>Molecules</h3>
-      <p>The workflow system for orchestrating agent tasks.</p>
-    </a>
-    <a href="/docs/concepts/polecat-lifecycle" class="doc-card">
-      <h3>Polecat Lifecycle</h3>
-      <p>How ephemeral workers are managed by Witnesses.</p>
-    </a>
-    <a href="/docs/concepts/propulsion-principle" class="doc-card">
-      <h3>Propulsion Principle</h3>
-      <p>The core philosophy: if work is on your hook, YOU RUN IT.</p>
-    </a>
+    {conceptCards.map((card, index) => (
+      <a href={card.href} class="doc-card" style={`--card-index: ${index}`}>
+        <h3>{card.title}</h3>
+        <p>{card.description}</p>
+      </a>
+    ))}
   </div>
 
   <h2>Architecture & Design</h2>
   <div class="doc-grid">
-    <a href="/docs/design/architecture" class="doc-card">
-      <h3>Architecture Overview</h3>
-      <p>High-level system design and component interactions.</p>
-    </a>
-    <a href="/docs/design/convoy-lifecycle" class="doc-card">
-      <h3>Convoy Lifecycle</h3>
-      <p>How convoys are created, tracked, and completed.</p>
-    </a>
-    <a href="/docs/design/dog-pool-architecture" class="doc-card">
-      <h3>Dog Pool Architecture</h3>
-      <p>Infrastructure helpers managed by the Deacon.</p>
-    </a>
-    <a href="/docs/design/escalation" class="doc-card">
-      <h3>Escalation</h3>
-      <p>How issues get escalated when agents need help.</p>
-    </a>
-    <a href="/docs/design/escalation-system" class="doc-card">
-      <h3>Escalation System</h3>
-      <p>Detailed design of the escalation mechanisms.</p>
-    </a>
-    <a href="/docs/design/federation" class="doc-card">
-      <h3>Federation</h3>
-      <p>Cross-rig coordination and distributed work.</p>
-    </a>
-    <a href="/docs/design/mail-protocol" class="doc-card">
-      <h3>Mail Protocol</h3>
-      <p>Inter-agent communication system.</p>
-    </a>
-    <a href="/docs/design/operational-state" class="doc-card">
-      <h3>Operational State</h3>
-      <p>Managing and tracking system state.</p>
-    </a>
-    <a href="/docs/design/plugin-system" class="doc-card">
-      <h3>Plugin System</h3>
-      <p>Extending Gas Town with custom plugins.</p>
-    </a>
-    <a href="/docs/design/property-layers" class="doc-card">
-      <h3>Property Layers</h3>
-      <p>Configuration and property inheritance.</p>
-    </a>
-    <a href="/docs/design/watchdog-chain" class="doc-card">
-      <h3>Watchdog Chain</h3>
-      <p>Supervision hierarchy and health monitoring.</p>
-    </a>
+    {architectureCards.map((card, index) => (
+      <a href={card.href} class="doc-card" style={`--card-index: ${index}`}>
+        <h3>{card.title}</h3>
+        <p>{card.description}</p>
+      </a>
+    ))}
   </div>
 
   <h2>Advanced Topics</h2>
   <div class="doc-grid">
-    <a href="/docs/beads-native-messaging" class="doc-card">
-      <h3>Beads Native Messaging</h3>
-      <p>Native messaging integration with Beads.</p>
-    </a>
-    <a href="/docs/formula-resolution" class="doc-card">
-      <h3>Formula Resolution</h3>
-      <p>How formulas are resolved and executed.</p>
-    </a>
-    <a href="/docs/mol-mall-design" class="doc-card">
-      <h3>Mol Mall Design</h3>
-      <p>Molecule marketplace and discovery.</p>
-    </a>
+    {advancedCards.map((card, index) => (
+      <a href={card.href} class="doc-card" style={`--card-index: ${index}`}>
+        <h3>{card.title}</h3>
+        <p>{card.description}</p>
+      </a>
+    ))}
   </div>
 
   <h2>Examples</h2>
   <div class="doc-grid">
-    <a href="/docs/examples/hanoi-demo" class="doc-card">
-      <h3>Hanoi Demo</h3>
-      <p>Solving Tower of Hanoi with Gas Town molecules.</p>
-    </a>
+    {exampleCards.map((card, index) => (
+      <a href={card.href} class="doc-card" style={`--card-index: ${index}`}>
+        <h3>{card.title}</h3>
+        <p>{card.description}</p>
+      </a>
+    ))}
   </div>
 </DocsLayout>
 
@@ -140,6 +113,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     color: var(--color-text-muted);
     margin-bottom: var(--space-lg);
     line-height: 1.7;
+    animation: fadeIn 0.6s var(--ease-out-expo) both;
   }
 
   .doc-grid {
@@ -157,12 +131,18 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     border-radius: var(--border-radius);
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      border-color var(--duration-normal) var(--ease-in-out-smooth),
+      box-shadow var(--duration-slow) var(--ease-out-expo),
+      transform var(--duration-normal) var(--ease-out-expo);
+    animation: fadeInUp 0.5s var(--ease-out-expo) both;
+    animation-delay: calc(var(--card-index) * 50ms);
   }
 
   .doc-card:hover {
-    border-color: var(--color-accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-color: var(--color-brass);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
     text-decoration: none;
   }
 
@@ -172,7 +152,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     font-weight: 600;
     margin: 0 0 var(--space-xs) 0;
     color: var(--color-text);
-    transition: color 0.2s ease;
+    transition: color var(--duration-fast) var(--ease-in-out-smooth);
   }
 
   .doc-card:hover h3 {

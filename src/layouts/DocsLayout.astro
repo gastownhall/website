@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <BaseLayout title={`${title} | Gas Town Docs`} description={description}>
@@ -15,47 +16,47 @@ const { title, description } = Astro.props;
       <nav>
         <h3>Overview</h3>
         <ul>
-          <li><a href="/docs">Introduction</a></li>
-          <li><a href="/docs/glossary">Glossary</a></li>
-          <li><a href="/docs/reference">Reference</a></li>
-          <li><a href="/docs/installing">Installing</a></li>
+          <li><a href="/docs" class:list={[{ active: currentPath === '/docs' || currentPath === '/docs/' }]}>Introduction</a></li>
+          <li><a href="/docs/glossary" class:list={[{ active: currentPath.includes('/docs/glossary') }]}>Glossary</a></li>
+          <li><a href="/docs/reference" class:list={[{ active: currentPath.includes('/docs/reference') }]}>Reference</a></li>
+          <li><a href="/docs/installing" class:list={[{ active: currentPath.includes('/docs/installing') }]}>Installing</a></li>
         </ul>
 
         <h3>Concepts</h3>
         <ul>
-          <li><a href="/docs/concepts/convoy">Convoy</a></li>
-          <li><a href="/docs/concepts/identity">Identity</a></li>
-          <li><a href="/docs/concepts/molecules">Molecules</a></li>
-          <li><a href="/docs/concepts/polecat-lifecycle">Polecat Lifecycle</a></li>
-          <li><a href="/docs/concepts/propulsion-principle">Propulsion Principle</a></li>
+          <li><a href="/docs/concepts/convoy" class:list={[{ active: currentPath.includes('/docs/concepts/convoy') }]}>Convoy</a></li>
+          <li><a href="/docs/concepts/identity" class:list={[{ active: currentPath.includes('/docs/concepts/identity') }]}>Identity</a></li>
+          <li><a href="/docs/concepts/molecules" class:list={[{ active: currentPath.includes('/docs/concepts/molecules') }]}>Molecules</a></li>
+          <li><a href="/docs/concepts/polecat-lifecycle" class:list={[{ active: currentPath.includes('/docs/concepts/polecat-lifecycle') }]}>Polecat Lifecycle</a></li>
+          <li><a href="/docs/concepts/propulsion-principle" class:list={[{ active: currentPath.includes('/docs/concepts/propulsion-principle') }]}>Propulsion Principle</a></li>
         </ul>
 
         <h3>Design</h3>
         <ul>
-          <li><a href="/docs/design/architecture">Architecture</a></li>
-          <li><a href="/docs/design/convoy-lifecycle">Convoy Lifecycle</a></li>
-          <li><a href="/docs/design/dog-pool-architecture">Dog Pool Architecture</a></li>
-          <li><a href="/docs/design/escalation">Escalation</a></li>
-          <li><a href="/docs/design/escalation-system">Escalation System</a></li>
-          <li><a href="/docs/design/federation">Federation</a></li>
-          <li><a href="/docs/design/mail-protocol">Mail Protocol</a></li>
-          <li><a href="/docs/design/operational-state">Operational State</a></li>
-          <li><a href="/docs/design/plugin-system">Plugin System</a></li>
-          <li><a href="/docs/design/property-layers">Property Layers</a></li>
-          <li><a href="/docs/design/watchdog-chain">Watchdog Chain</a></li>
+          <li><a href="/docs/design/architecture" class:list={[{ active: currentPath.includes('/docs/design/architecture') }]}>Architecture</a></li>
+          <li><a href="/docs/design/convoy-lifecycle" class:list={[{ active: currentPath.includes('/docs/design/convoy-lifecycle') }]}>Convoy Lifecycle</a></li>
+          <li><a href="/docs/design/dog-pool-architecture" class:list={[{ active: currentPath.includes('/docs/design/dog-pool-architecture') }]}>Dog Pool Architecture</a></li>
+          <li><a href="/docs/design/escalation" class:list={[{ active: currentPath === '/docs/design/escalation' || currentPath === '/docs/design/escalation/' }]}>Escalation</a></li>
+          <li><a href="/docs/design/escalation-system" class:list={[{ active: currentPath.includes('/docs/design/escalation-system') }]}>Escalation System</a></li>
+          <li><a href="/docs/design/federation" class:list={[{ active: currentPath.includes('/docs/design/federation') }]}>Federation</a></li>
+          <li><a href="/docs/design/mail-protocol" class:list={[{ active: currentPath.includes('/docs/design/mail-protocol') }]}>Mail Protocol</a></li>
+          <li><a href="/docs/design/operational-state" class:list={[{ active: currentPath.includes('/docs/design/operational-state') }]}>Operational State</a></li>
+          <li><a href="/docs/design/plugin-system" class:list={[{ active: currentPath.includes('/docs/design/plugin-system') }]}>Plugin System</a></li>
+          <li><a href="/docs/design/property-layers" class:list={[{ active: currentPath.includes('/docs/design/property-layers') }]}>Property Layers</a></li>
+          <li><a href="/docs/design/watchdog-chain" class:list={[{ active: currentPath.includes('/docs/design/watchdog-chain') }]}>Watchdog Chain</a></li>
         </ul>
 
         <h3>Examples</h3>
         <ul>
-          <li><a href="/docs/examples/hanoi-demo">Hanoi Demo</a></li>
+          <li><a href="/docs/examples/hanoi-demo" class:list={[{ active: currentPath.includes('/docs/examples/hanoi-demo') }]}>Hanoi Demo</a></li>
         </ul>
 
         <h3>Other</h3>
         <ul>
-          <li><a href="/docs/beads-native-messaging">Beads Native Messaging</a></li>
-          <li><a href="/docs/formula-resolution">Formula Resolution</a></li>
-          <li><a href="/docs/mol-mall-design">Mol Mall Design</a></li>
-          <li><a href="/docs/why-these-features">Why These Features</a></li>
+          <li><a href="/docs/beads-native-messaging" class:list={[{ active: currentPath.includes('/docs/beads-native-messaging') }]}>Beads Native Messaging</a></li>
+          <li><a href="/docs/formula-resolution" class:list={[{ active: currentPath.includes('/docs/formula-resolution') }]}>Formula Resolution</a></li>
+          <li><a href="/docs/mol-mall-design" class:list={[{ active: currentPath.includes('/docs/mol-mall-design') }]}>Mol Mall Design</a></li>
+          <li><a href="/docs/why-these-features" class:list={[{ active: currentPath.includes('/docs/why-these-features') }]}>Why These Features</a></li>
         </ul>
       </nav>
     </aside>
@@ -88,6 +89,7 @@ const { title, description } = Astro.props;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s var(--ease-out-expo) both;
   }
 
   .docs-sidebar nav h3 {
@@ -124,15 +126,27 @@ const { title, description } = Astro.props;
     font-size: 0.9rem;
     padding: 0.375rem 0.75rem;
     border-radius: 3px;
-    transition: all 0.15s ease;
     border-left: 3px solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-in-out-smooth),
+      background var(--duration-fast) var(--ease-in-out-smooth),
+      border-left-color var(--duration-normal) var(--ease-out-expo),
+      padding-left var(--duration-normal) var(--ease-out-expo);
   }
 
   .docs-sidebar a:hover {
     color: var(--color-accent);
     background: var(--color-bg-alt);
     border-left-color: var(--color-brass);
+    padding-left: 1rem;
     text-decoration: none;
+  }
+
+  .docs-sidebar a.active {
+    color: var(--color-accent);
+    background: var(--color-bg-alt);
+    border-left-color: var(--color-brass);
+    font-weight: 600;
   }
 
   .docs-content {
@@ -145,6 +159,7 @@ const { title, description } = Astro.props;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s var(--ease-out-expo) 0.1s both;
   }
 
   @media (max-width: 768px) {

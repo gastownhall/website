@@ -47,6 +47,7 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
     margin-bottom: var(--space-xl);
     padding-bottom: var(--space-lg);
     border-bottom: 2px solid var(--color-border);
+    animation: fadeInDown 0.6s var(--ease-out-expo) both;
   }
 
   .back-link {
@@ -54,10 +55,16 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
     margin-bottom: var(--space-md);
     font-size: 0.9rem;
     color: var(--color-text-muted);
+    padding-left: 0;
+    transition:
+      color var(--duration-fast) var(--ease-in-out-smooth),
+      padding-left var(--duration-normal) var(--ease-out-expo);
   }
 
   .back-link:hover {
     color: var(--color-accent);
+    padding-left: 0.5rem;
+    text-decoration: none;
   }
 
   .blog-header h1 {
@@ -91,6 +98,7 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
   .blog-content {
     font-size: 1.125rem;
     line-height: 1.8;
+    animation: fadeInUp 0.6s var(--ease-out-expo) 0.15s both;
   }
 
   .blog-content h2 {
@@ -110,6 +118,7 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
     margin-top: var(--space-xl);
     padding-top: var(--space-lg);
     border-top: 2px solid var(--color-border);
+    animation: fadeIn 0.6s var(--ease-out-expo) 0.3s both;
   }
 
   @media (max-width: 768px) {
