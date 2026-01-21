@@ -108,9 +108,10 @@ export function escapeHtml(text) {
  * Handles: code blocks, inline code, headers, bold, italic, links, lists, tables.
  *
  * @param {string} md - Markdown content
+ * @param {Map<string, string>} [routeMap] - Optional map of filename → route for .md link conversion
  * @returns {string} HTML content
  */
-export function convertMarkdownToHtml(md) {
+export function convertMarkdownToHtml(md, routeMap) {
   let html = md;
 
   // Extract code blocks first to protect them from other conversions
@@ -132,7 +133,7 @@ export function convertMarkdownToHtml(md) {
   // Now apply conversions safely
   html = convertHeaders(html);
   html = convertEmphasis(html);
-  html = convertLinks(html);
+  html = convertLinks(html, routeMap);
   html = convertLists(html);
   html = convertTables(html);
   html = wrapParagraphs(html);
@@ -165,13 +166,57 @@ function convertEmphasis(html) {
     .replace(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
-function convertLinks(html) {
-  return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+/**
+ * Converts markdown links to HTML, optionally transforming .md links to routes.
+ *
+ * @param {string} html - HTML content with markdown links
+ * @param {Map<string, string>} [routeMap] - Optional map of filename → route
+ * @returns {string} HTML with converted links
+ */
+function convertLinks(html, routeMap) {
+  return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, href) => {
+    let displayText = text;
+
+    // If link text looks like a filename (ends in .md), convert to title
+    if (displayText.endsWith('.md')) {
+      displayText = titleFromFilename(displayText);
+    }
+
+    // Transform .md links to doc routes if we have a route map
+    if (routeMap && href.endsWith('.md')) {
+      // Extract just the filename from paths like "../concepts/molecules.md"
+      const filename = href.split('/').pop();
+      const route = routeMap.get(filename);
+      if (route) {
+        return `<a href="${route}">${displayText}</a>`;
+      }
+      // Link to non-existent file - keep as-is but remove .md extension
+      const slug = filename.replace(/\.md$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return `<a href="/docs/${slug}">${displayText}</a>`;
+    }
+    return `<a href="${href}">${displayText}</a>`;
+  });
 }
 
 function convertLists(html) {
-  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
-  return html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+  // Mark ordered list items with a special marker so we can distinguish them
+  html = html.replace(/^\d+\.\s+(.+)$/gm, '<oli>$1</oli>');
+  // Mark unordered list items
+  html = html.replace(/^- (.+)$/gm, '<uli>$1</uli>');
+
+  // Wrap consecutive ordered list items in <ol>
+  html = html.replace(/(<oli>.*<\/oli>\n?)+/g, match => {
+    const items = match.replace(/<oli>/g, '<li>').replace(/<\/oli>/g, '</li>');
+    return `<ol>${items}</ol>`;
+  });
+
+  // Wrap consecutive unordered list items in <ul>
+  html = html.replace(/(<uli>.*<\/uli>\n?)+/g, match => {
+    const items = match.replace(/<uli>/g, '<li>').replace(/<\/uli>/g, '</li>');
+    return `<ul>${items}</ul>`;
+  });
+
+  return html;
 }
 
 function convertTables(html) {

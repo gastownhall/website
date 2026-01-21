@@ -16,7 +16,12 @@ npm run shred-docs   # Regenerate docs from docs-fodder/gastown-docs/
 npm run llms         # Regenerate public/llms.txt
 npm test             # Run all tests
 node --test scripts/lib/__tests__/markdown.test.mjs  # Run single test
+npm run deploy       # Manual deploy to Cloudflare Pages
 ```
+
+## Deployment
+
+Auto-deploys to Cloudflare Pages on push to `main`. Manual deploy: `npm run deploy`.
 
 ## Architecture
 

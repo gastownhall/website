@@ -23,6 +23,14 @@ Open http://localhost:4321 to view the site.
 | `npm run shred-docs` | Regenerate docs from source markdown |
 | `npm run llms` | Regenerate llms.txt |
 | `npm test` | Run unit tests |
+| `npm run deploy` | Manual deploy to Cloudflare Pages |
+
+## Deployment
+
+The site auto-deploys to Cloudflare Pages on push to `main`. Manual deploys can be run with `npm run deploy`.
+
+- **Production**: https://gastownhall.ai
+- **Redirects**: gastownhall.com → gastownhall.ai
 
 ## Project Structure
 
