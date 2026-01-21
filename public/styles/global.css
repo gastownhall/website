@@ -1,7 +1,7 @@
 /* Gas Town Hall - Steampunk Industrial Theme */
 
-/* Font imports - Victorian/Industrial typography */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Font imports - Steampunk/Victorian typography */
+@import url('https://fonts.googleapis.com/css2?family=Rye&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* CSS Custom Properties */
 :root {
@@ -41,7 +41,7 @@
   --color-discord-hover: #4752C4;
 
   /* Typography */
-  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-display: 'Rye', 'Times New Roman', serif;
   --font-body: 'Crimson Text', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
