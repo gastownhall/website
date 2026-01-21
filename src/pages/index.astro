@@ -10,50 +10,19 @@ import { site, social, blogPosts } from '../site.config';
 <BaseLayout title={site.name}>
   <Hero />
 
-  <section class="section">
+  <section class="section blog-section">
     <h2>From the Blog</h2>
-    <p class="section-intro">Thoughts on AI agents, orchestration, and the future of coding.</p>
-    <div class="grid grid-2">
+    <div class="blog-list">
       {blogPosts.map(post => (
-        <a href={`/blog/${post.slug}`} class="card blog-card">
-          <span class="blog-date">{post.date}</span>
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
+        <a href={post.url} target="_blank" rel="noopener" class="blog-item">
+          <div class="blog-content">
+            <h3>{post.title}</h3>
+            <p class="blog-excerpt">{post.description}</p>
+            <span class="blog-date">{post.date}</span>
+          </div>
+          <img src={post.image} alt="" class="blog-image" loading="lazy" />
         </a>
       ))}
-    </div>
-  </section>
-
-  <section class="section section-alt-wrapper">
-    <div class="section-inner">
-      <h2>Documentation</h2>
-      <p class="section-intro">Everything you need to get started with Gas Town.</p>
-      <div class="grid grid-3">
-        <a href="/docs/installing" class="card">
-          <h3>Getting Started</h3>
-          <p>Install Gas Town and run your first orchestrated workflow.</p>
-        </a>
-        <a href="/docs/concepts/convoy" class="card">
-          <h3>Core Concepts</h3>
-          <p>Learn about convoys, polecats, molecules, and the propulsion principle.</p>
-        </a>
-        <a href="/docs/design/architecture" class="card">
-          <h3>Architecture</h3>
-          <p>Understand the system design and how components interact.</p>
-        </a>
-        <a href="/docs/reference" class="card">
-          <h3>CLI Reference</h3>
-          <p>Complete reference for all Gas Town commands.</p>
-        </a>
-        <a href="/docs/glossary" class="card">
-          <h3>Glossary</h3>
-          <p>Definitions of Gas Town terminology and concepts.</p>
-        </a>
-        <a href="/docs" class="card">
-          <h3>All Docs</h3>
-          <p>Browse the complete documentation.</p>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -86,62 +55,79 @@ import { site, social, blogPosts } from '../site.config';
   }
 
   .section h2 {
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-lg);
   }
 
-  .section-alt-wrapper {
-    background: var(--color-bg-alt);
-    padding: var(--space-xl) 0;
-    margin: var(--space-xl) 0;
-  }
-
-  .section-inner {
-    max-width: var(--max-width);
+  .blog-section {
+    max-width: 728px;
     margin: 0 auto;
-    padding: 0 var(--space-lg);
   }
 
-  .blog-card {
-    display: block;
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  a.blog-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--color-border);
     text-decoration: none;
     color: inherit;
   }
 
-  .blog-card:hover {
-    text-decoration: none;
+  a.blog-item:first-child {
+    padding-top: 0;
   }
 
-  .blog-card:hover h3 {
-    color: var(--color-accent);
+  a.blog-item:last-child {
+    border-bottom: none;
   }
 
-  .blog-card h3 {
-    transition: color 0.2s ease;
-    margin-top: var(--space-sm);
+  a.blog-item:hover h3 {
+    color: var(--color-text-muted);
+  }
+
+  .blog-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .blog-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+    transition: color 0.15s ease;
+  }
+
+  .blog-excerpt {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    margin: 0 0 0.5rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .blog-date {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     color: var(--color-text-muted);
-    font-weight: 500;
   }
 
-  .grid a.card {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .grid a.card:hover {
-    text-decoration: none;
-  }
-
-  .grid a.card:hover h3 {
-    color: var(--color-accent);
-  }
-
-  .grid a.card h3 {
-    transition: color 0.2s ease;
+  img.blog-image {
+    width: 112px;
+    height: 112px;
+    min-width: 112px;
+    max-width: 112px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex: 0 0 112px;
   }
 
   .community-section {
@@ -166,12 +152,20 @@ import { site, social, blogPosts } from '../site.config';
   }
 
   @media (max-width: 768px) {
-    .section-alt-wrapper {
-      margin: var(--space-lg) 0;
+    a.blog-item {
+      gap: 1rem;
     }
 
-    .section-inner {
-      padding: 0 var(--space-md);
+    img.blog-image {
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      max-width: 80px;
+      flex: 0 0 80px;
+    }
+
+    .blog-content h3 {
+      font-size: 1.0625rem;
     }
 
     .community-actions {
