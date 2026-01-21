@@ -1,0 +1,120 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: string;
+  author?: string;
+  originalUrl?: string;
+}
+
+const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.props;
+---
+
+<BaseLayout title={`${title} | Gas Town Blog`} description={description}>
+  <article class="blog-article">
+    <header class="blog-header">
+      <a href="/" class="back-link">&larr; Back to Gas Town Hall</a>
+      <h1>{title}</h1>
+      <div class="blog-meta">
+        {date && <time>{date}</time>}
+        {author && <span class="author">by {author}</span>}
+      </div>
+      {originalUrl && (
+        <p class="original-link">
+          Originally published on <a href={originalUrl} target="_blank" rel="noopener">Medium</a>
+        </p>
+      )}
+    </header>
+    <div class="blog-content docs-content">
+      <slot />
+    </div>
+    <footer class="blog-footer">
+      <a href="/" class="back-link">&larr; Back to Gas Town Hall</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+  }
+
+  .blog-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: var(--space-md);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .blog-header h1 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin-bottom: var(--space-md);
+    line-height: 1.2;
+  }
+
+  .blog-meta {
+    display: flex;
+    gap: var(--space-md);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .blog-meta time {
+    font-weight: 500;
+  }
+
+  .blog-meta .author::before {
+    content: "•";
+    margin-right: var(--space-md);
+  }
+
+  .original-link {
+    margin-top: var(--space-md);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .blog-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .blog-content h2 {
+    margin-top: var(--space-xl);
+  }
+
+  .blog-content p {
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-content img {
+    border-radius: var(--border-radius);
+    margin: var(--space-lg) 0;
+  }
+
+  .blog-footer {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 2px solid var(--color-border);
+  }
+
+  @media (max-width: 768px) {
+    .blog-article {
+      padding: var(--space-md);
+    }
+  }
+</style>

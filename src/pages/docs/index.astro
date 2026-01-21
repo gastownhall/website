@@ -1,0 +1,194 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Documentation" description="Gas Town documentation and guides">
+  <p class="intro">
+    Gas Town is an orchestration layer that treats AI agent work as structured data. Every action is
+    attributed. Every agent has a track record. Every piece of work has provenance.
+  </p>
+
+  <h2>Why Gas Town Exists</h2>
+  <p>As AI agents become central to engineering workflows, teams face new challenges:</p>
+  <ul>
+    <li><strong>Accountability</strong> — Who did what? Which agent introduced this bug?</li>
+    <li><strong>Quality</strong> — Which agents are reliable? Which need tuning?</li>
+    <li><strong>Efficiency</strong> — How do you route work to the right agent?</li>
+    <li><strong>Scale</strong> — How do you coordinate agents across repos and teams?</li>
+  </ul>
+
+  <h2>Getting Started</h2>
+  <div class="doc-grid">
+    <a href="/docs/installing" class="doc-card">
+      <h3>Installing Gas Town</h3>
+      <p>Get up and running with Gas Town in your environment.</p>
+    </a>
+    <a href="/docs/reference" class="doc-card">
+      <h3>CLI Reference</h3>
+      <p>Complete reference for all Gas Town commands.</p>
+    </a>
+    <a href="/docs/glossary" class="doc-card">
+      <h3>Glossary</h3>
+      <p>Definitions of Gas Town terminology and concepts.</p>
+    </a>
+    <a href="/docs/why-these-features" class="doc-card">
+      <h3>Why These Features</h3>
+      <p>The rationale behind Gas Town's design decisions.</p>
+    </a>
+  </div>
+
+  <h2>Core Concepts</h2>
+  <div class="doc-grid">
+    <a href="/docs/concepts/convoy" class="doc-card">
+      <h3>Convoys</h3>
+      <p>Track batched work across multiple agents and issues.</p>
+    </a>
+    <a href="/docs/concepts/identity" class="doc-card">
+      <h3>Identity</h3>
+      <p>How actors are identified and attributed in Gas Town.</p>
+    </a>
+    <a href="/docs/concepts/molecules" class="doc-card">
+      <h3>Molecules</h3>
+      <p>The workflow system for orchestrating agent tasks.</p>
+    </a>
+    <a href="/docs/concepts/polecat-lifecycle" class="doc-card">
+      <h3>Polecat Lifecycle</h3>
+      <p>How ephemeral workers are managed by Witnesses.</p>
+    </a>
+    <a href="/docs/concepts/propulsion-principle" class="doc-card">
+      <h3>Propulsion Principle</h3>
+      <p>The core philosophy: if work is on your hook, YOU RUN IT.</p>
+    </a>
+  </div>
+
+  <h2>Architecture & Design</h2>
+  <div class="doc-grid">
+    <a href="/docs/design/architecture" class="doc-card">
+      <h3>Architecture Overview</h3>
+      <p>High-level system design and component interactions.</p>
+    </a>
+    <a href="/docs/design/convoy-lifecycle" class="doc-card">
+      <h3>Convoy Lifecycle</h3>
+      <p>How convoys are created, tracked, and completed.</p>
+    </a>
+    <a href="/docs/design/dog-pool-architecture" class="doc-card">
+      <h3>Dog Pool Architecture</h3>
+      <p>Infrastructure helpers managed by the Deacon.</p>
+    </a>
+    <a href="/docs/design/escalation" class="doc-card">
+      <h3>Escalation</h3>
+      <p>How issues get escalated when agents need help.</p>
+    </a>
+    <a href="/docs/design/escalation-system" class="doc-card">
+      <h3>Escalation System</h3>
+      <p>Detailed design of the escalation mechanisms.</p>
+    </a>
+    <a href="/docs/design/federation" class="doc-card">
+      <h3>Federation</h3>
+      <p>Cross-rig coordination and distributed work.</p>
+    </a>
+    <a href="/docs/design/mail-protocol" class="doc-card">
+      <h3>Mail Protocol</h3>
+      <p>Inter-agent communication system.</p>
+    </a>
+    <a href="/docs/design/operational-state" class="doc-card">
+      <h3>Operational State</h3>
+      <p>Managing and tracking system state.</p>
+    </a>
+    <a href="/docs/design/plugin-system" class="doc-card">
+      <h3>Plugin System</h3>
+      <p>Extending Gas Town with custom plugins.</p>
+    </a>
+    <a href="/docs/design/property-layers" class="doc-card">
+      <h3>Property Layers</h3>
+      <p>Configuration and property inheritance.</p>
+    </a>
+    <a href="/docs/design/watchdog-chain" class="doc-card">
+      <h3>Watchdog Chain</h3>
+      <p>Supervision hierarchy and health monitoring.</p>
+    </a>
+  </div>
+
+  <h2>Advanced Topics</h2>
+  <div class="doc-grid">
+    <a href="/docs/beads-native-messaging" class="doc-card">
+      <h3>Beads Native Messaging</h3>
+      <p>Native messaging integration with Beads.</p>
+    </a>
+    <a href="/docs/formula-resolution" class="doc-card">
+      <h3>Formula Resolution</h3>
+      <p>How formulas are resolved and executed.</p>
+    </a>
+    <a href="/docs/mol-mall-design" class="doc-card">
+      <h3>Mol Mall Design</h3>
+      <p>Molecule marketplace and discovery.</p>
+    </a>
+  </div>
+
+  <h2>Examples</h2>
+  <div class="doc-grid">
+    <a href="/docs/examples/hanoi-demo" class="doc-card">
+      <h3>Hanoi Demo</h3>
+      <p>Solving Tower of Hanoi with Gas Town molecules.</p>
+    </a>
+  </div>
+</DocsLayout>
+
+<style>
+  .intro {
+    font-size: 1.125rem;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+  }
+
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .doc-card {
+    display: block;
+    padding: var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .doc-card:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+  }
+
+  .doc-card h3 {
+    font-size: 1rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .doc-card:hover h3 {
+    color: var(--color-accent);
+  }
+
+  .doc-card p {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .doc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

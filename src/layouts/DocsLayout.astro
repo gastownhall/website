@@ -1,0 +1,129 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={`${title} | Gas Town Docs`} description={description}>
+  <div class="docs-container">
+    <aside class="docs-sidebar">
+      <nav>
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="/docs">Introduction</a></li>
+          <li><a href="/docs/glossary">Glossary</a></li>
+          <li><a href="/docs/reference">Reference</a></li>
+          <li><a href="/docs/installing">Installing</a></li>
+        </ul>
+
+        <h3>Concepts</h3>
+        <ul>
+          <li><a href="/docs/concepts/convoy">Convoy</a></li>
+          <li><a href="/docs/concepts/identity">Identity</a></li>
+          <li><a href="/docs/concepts/molecules">Molecules</a></li>
+          <li><a href="/docs/concepts/polecat-lifecycle">Polecat Lifecycle</a></li>
+          <li><a href="/docs/concepts/propulsion-principle">Propulsion Principle</a></li>
+        </ul>
+
+        <h3>Design</h3>
+        <ul>
+          <li><a href="/docs/design/architecture">Architecture</a></li>
+          <li><a href="/docs/design/convoy-lifecycle">Convoy Lifecycle</a></li>
+          <li><a href="/docs/design/dog-pool-architecture">Dog Pool Architecture</a></li>
+          <li><a href="/docs/design/escalation">Escalation</a></li>
+          <li><a href="/docs/design/escalation-system">Escalation System</a></li>
+          <li><a href="/docs/design/federation">Federation</a></li>
+          <li><a href="/docs/design/mail-protocol">Mail Protocol</a></li>
+          <li><a href="/docs/design/operational-state">Operational State</a></li>
+          <li><a href="/docs/design/plugin-system">Plugin System</a></li>
+          <li><a href="/docs/design/property-layers">Property Layers</a></li>
+          <li><a href="/docs/design/watchdog-chain">Watchdog Chain</a></li>
+        </ul>
+
+        <h3>Examples</h3>
+        <ul>
+          <li><a href="/docs/examples/hanoi-demo">Hanoi Demo</a></li>
+        </ul>
+
+        <h3>Other</h3>
+        <ul>
+          <li><a href="/docs/beads-native-messaging">Beads Native Messaging</a></li>
+          <li><a href="/docs/formula-resolution">Formula Resolution</a></li>
+          <li><a href="/docs/mol-mall-design">Mol Mall Design</a></li>
+          <li><a href="/docs/why-these-features">Why These Features</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <h1>{title}</h1>
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .docs-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .docs-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+  }
+
+  .docs-sidebar nav h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    color: #666;
+  }
+
+  .docs-sidebar nav h3:first-child {
+    margin-top: 0;
+  }
+
+  .docs-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .docs-sidebar li {
+    margin: 0.25rem 0;
+  }
+
+  .docs-sidebar a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .docs-sidebar a:hover {
+    color: #0066cc;
+  }
+
+  .docs-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @media (max-width: 768px) {
+    .docs-container {
+      flex-direction: column;
+    }
+
+    .docs-sidebar {
+      width: 100%;
+    }
+  }
+</style>
