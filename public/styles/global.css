@@ -189,7 +189,10 @@ body {
   font-size: 1.0625rem;
   line-height: 1.7;
   color: var(--color-text);
+  /* Fallback for older browsers */
   background: url('/images/steampunk-bg.jpg') no-repeat center center fixed;
+  /* WebP for modern browsers (30% smaller) */
+  background: url('/images/steampunk-bg.webp') no-repeat center center fixed;
   background-size: cover;
   position: relative;
 }
@@ -202,6 +205,20 @@ body::before {
   background: rgba(232, 220, 200, 0.75);
   z-index: -1;
   pointer-events: none;
+}
+
+/* Mobile: Use smaller image and disable fixed positioning (causes jank on iOS) */
+@media (max-width: 768px) {
+  body {
+    background: url('/images/steampunk-bg-mobile.webp') no-repeat center center;
+    background-size: cover;
+    background-attachment: scroll;
+  }
+
+  body::before {
+    position: absolute;
+    min-height: 100%;
+  }
 }
 
 /* Typography */

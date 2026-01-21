@@ -65,4 +65,8 @@ Site URLs and social links are centralized in:
 
 ## License
 
-See the main [Gas Town repository](https://github.com/steveyegge/gastown) for license information.
+This website is licensed under the [MIT License](LICENSE).
+
+**Content Attribution:** All documentation content from the Gas Town repository and blog posts by Steve Yegge are copyright Steve Yegge and are reproduced on this website with permission. The MIT license applies only to the website code, design, and infrastructure - not to the Gas Town documentation content.
+
+For the Gas Town software license, see the [Gas Town repository](https://github.com/steveyegge/gastown).
