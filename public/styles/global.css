@@ -216,9 +216,10 @@ body {
 @media (max-width: 768px) {
   body {
     background-image:
-      linear-gradient(rgba(232, 220, 200, 0.75), rgba(232, 220, 200, 0.75)),
+      linear-gradient(rgba(232, 220, 200, 0.6), rgba(232, 220, 200, 0.6)),
       url('/images/steampunk-bg-mobile.webp');
     background-attachment: scroll, scroll;
+    background-position: 30% center, 30% center;
   }
 }
 
