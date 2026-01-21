@@ -44,33 +44,8 @@ import { social } from '../site.config';
   .hero-bg {
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(180deg, #E8DCC8 0%, #D9C9B0 30%, #D4C4A8 70%, #C9B896 100%);
+    background: transparent;
     z-index: -2;
-  }
-
-  /* Parchment texture overlay */
-  .hero-bg::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
-    z-index: -1;
-  }
-
-  /* Industrial vignette edges */
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 120% 80% at 50% 100%, rgba(62, 39, 35, 0.4) 0%, transparent 60%),
-      radial-gradient(ellipse 100% 60% at 0% 100%, rgba(62, 39, 35, 0.5) 0%, transparent 50%),
-      radial-gradient(ellipse 100% 60% at 100% 100%, rgba(62, 39, 35, 0.5) 0%, transparent 50%),
-      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139, 115, 85, 0.2) 0%, transparent 60%);
-    z-index: 0;
-    pointer-events: none;
   }
 
   /* Top industrial border */

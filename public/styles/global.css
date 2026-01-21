@@ -1,7 +1,7 @@
 /* Gas Town Hall - Steampunk Industrial Theme */
 
-/* Font imports - Steampunk/Victorian typography */
-@import url('https://fonts.googleapis.com/css2?family=Rye&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Font imports - Victorian/Industrial typography */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 /* CSS Custom Properties */
 :root {
@@ -41,7 +41,7 @@
   --color-discord-hover: #4752C4;
 
   /* Typography */
-  --font-display: 'Rye', 'Times New Roman', serif;
+  --font-display: 'Cinzel', 'Times New Roman', serif;
   --font-body: 'Crimson Text', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
@@ -73,13 +73,19 @@ body {
   font-size: 1.0625rem;
   line-height: 1.7;
   color: var(--color-text);
-  background: var(--color-bg);
-  /* Parchment texture pattern */
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 20% 50%, rgba(139, 37, 0, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(139, 115, 85, 0.05) 0%, transparent 40%);
-  background-attachment: fixed;
+  background: url('/images/steampunk-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* 75% transparent overlay on fixed background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(232, 220, 200, 0.75);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Typography */
