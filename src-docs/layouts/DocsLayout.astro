@@ -1,0 +1,178 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<BaseLayout title={`${title} | Gas Town Docs`} description={description}>
+  <div class="docs-container">
+    <aside class="docs-sidebar">
+      <nav>
+        <h3>Overview</h3>
+        <ul>
+          <li><a href="/" class:list={[{ active: currentPath === '/' }]}>Overview</a></li>
+          <li><a href="/glossary" class:list={[{ active: currentPath.includes('/glossary') }]}>Glossary</a></li>
+          <li><a href="/reference" class:list={[{ active: currentPath.includes('/reference') }]}>Reference</a></li>
+          <li><a href="/installing" class:list={[{ active: currentPath.includes('/installing') }]}>Installing</a></li>
+        </ul>
+
+        <h3>Concepts</h3>
+        <ul>
+          <li><a href="/concepts/convoy" class:list={[{ active: currentPath.includes('/concepts/convoy') }]}>Convoy</a></li>
+          <li><a href="/concepts/identity" class:list={[{ active: currentPath.includes('/concepts/identity') }]}>Identity</a></li>
+          <li><a href="/concepts/molecules" class:list={[{ active: currentPath.includes('/concepts/molecules') }]}>Molecules</a></li>
+          <li><a href="/concepts/polecat-lifecycle" class:list={[{ active: currentPath.includes('/concepts/polecat-lifecycle') }]}>Polecat Lifecycle</a></li>
+          <li><a href="/concepts/propulsion-principle" class:list={[{ active: currentPath.includes('/concepts/propulsion-principle') }]}>Propulsion Principle</a></li>
+        </ul>
+
+        <h3>Design</h3>
+        <ul>
+          <li><a href="/design/architecture" class:list={[{ active: currentPath.includes('/design/architecture') }]}>Architecture</a></li>
+          <li><a href="/design/convoy-lifecycle" class:list={[{ active: currentPath.includes('/design/convoy-lifecycle') }]}>Convoy Lifecycle</a></li>
+          <li><a href="/design/dog-pool-architecture" class:list={[{ active: currentPath.includes('/design/dog-pool-architecture') }]}>Dog Pool Architecture</a></li>
+          <li><a href="/design/escalation" class:list={[{ active: currentPath === '/design/escalation' || currentPath === '/design/escalation/' }]}>Escalation</a></li>
+          <li><a href="/design/escalation-system" class:list={[{ active: currentPath.includes('/design/escalation-system') }]}>Escalation System</a></li>
+          <li><a href="/design/federation" class:list={[{ active: currentPath.includes('/design/federation') }]}>Federation</a></li>
+          <li><a href="/design/mail-protocol" class:list={[{ active: currentPath.includes('/design/mail-protocol') }]}>Mail Protocol</a></li>
+          <li><a href="/design/operational-state" class:list={[{ active: currentPath.includes('/design/operational-state') }]}>Operational State</a></li>
+          <li><a href="/design/plugin-system" class:list={[{ active: currentPath.includes('/design/plugin-system') }]}>Plugin System</a></li>
+          <li><a href="/design/property-layers" class:list={[{ active: currentPath.includes('/design/property-layers') }]}>Property Layers</a></li>
+          <li><a href="/design/watchdog-chain" class:list={[{ active: currentPath.includes('/design/watchdog-chain') }]}>Watchdog Chain</a></li>
+        </ul>
+
+        <h3>Examples</h3>
+        <ul>
+          <li><a href="/examples/hanoi-demo" class:list={[{ active: currentPath.includes('/examples/hanoi-demo') }]}>Hanoi Demo</a></li>
+        </ul>
+
+        <h3>Other</h3>
+        <ul>
+          <li><a href="/beads-native-messaging" class:list={[{ active: currentPath.includes('/beads-native-messaging') }]}>Beads Native Messaging</a></li>
+          <li><a href="/formula-resolution" class:list={[{ active: currentPath.includes('/formula-resolution') }]}>Formula Resolution</a></li>
+          <li><a href="/mol-mall-design" class:list={[{ active: currentPath.includes('/mol-mall-design') }]}>Mol Mall Design</a></li>
+          <li><a href="/why-these-features" class:list={[{ active: currentPath.includes('/why-these-features') }]}>Why These Features</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <h1>{title}</h1>
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .docs-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .docs-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    height: fit-content;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s var(--ease-out-expo) both;
+  }
+
+  .docs-sidebar nav h3 {
+    font-family: var(--font-display);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid var(--color-brass);
+  }
+
+  .docs-sidebar nav h3:first-child {
+    margin-top: 0;
+  }
+
+  .docs-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .docs-sidebar li {
+    margin: 0.25rem 0;
+  }
+
+  .docs-sidebar a {
+    display: block;
+    color: var(--color-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 3px;
+    border-left: 3px solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-in-out-smooth),
+      background var(--duration-fast) var(--ease-in-out-smooth),
+      border-left-color var(--duration-normal) var(--ease-out-expo),
+      padding-left var(--duration-normal) var(--ease-out-expo);
+  }
+
+  .docs-sidebar a:hover {
+    color: var(--color-accent);
+    background: var(--color-bg-alt);
+    border-left-color: var(--color-brass);
+    padding-left: 1rem;
+    text-decoration: none;
+  }
+
+  .docs-sidebar a.active {
+    color: var(--color-accent);
+    background: var(--color-bg-alt);
+    border-left-color: var(--color-brass);
+    font-weight: 600;
+  }
+
+  .docs-content {
+    flex: 1;
+    min-width: 0;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2rem;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s var(--ease-out-expo) 0.1s both;
+  }
+
+  @media (max-width: 768px) {
+    .docs-container {
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .docs-sidebar {
+      width: 100%;
+      position: static;
+    }
+
+    .docs-content {
+      padding: 1.5rem;
+    }
+  }
+</style>

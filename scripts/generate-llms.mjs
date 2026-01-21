@@ -75,9 +75,17 @@ function groupPages(pages) {
 
 /**
  * Formats a page entry as a markdown list item.
+ * Docs pages use the docs subdomain URL.
  */
 function formatPageEntry(page) {
-  const url = `${site.url}${page.urlPath}`;
+  let url;
+  if (page.urlPath.startsWith('/docs')) {
+    // Transform /docs/... to docs.gastownhall.ai/...
+    const docsPath = page.urlPath.replace(/^\/docs\/?/, '/');
+    url = `${site.docsUrl}${docsPath === '/' ? '' : docsPath}`;
+  } else {
+    url = `${site.url}${page.urlPath}`;
+  }
   const suffix = page.description ? `: ${page.description}` : '';
   return `- [${page.title}](${url})${suffix}`;
 }

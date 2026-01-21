@@ -109,9 +109,10 @@ export function escapeHtml(text) {
  *
  * @param {string} md - Markdown content
  * @param {Map<string, string>} [routeMap] - Optional map of filename → route for .md link conversion
+ * @param {boolean} [subdomain=false] - If true, use subdomain-style routes (no /docs/ prefix)
  * @returns {string} HTML content
  */
-export function convertMarkdownToHtml(md, routeMap) {
+export function convertMarkdownToHtml(md, routeMap, subdomain = false) {
   let html = md;
 
   // Extract code blocks first to protect them from other conversions
@@ -133,7 +134,7 @@ export function convertMarkdownToHtml(md, routeMap) {
   // Now apply conversions safely
   html = convertHeaders(html);
   html = convertEmphasis(html);
-  html = convertLinks(html, routeMap);
+  html = convertLinks(html, routeMap, subdomain);
   html = convertLists(html);
   html = convertTables(html);
   html = wrapParagraphs(html);
@@ -171,9 +172,10 @@ function convertEmphasis(html) {
  *
  * @param {string} html - HTML content with markdown links
  * @param {Map<string, string>} [routeMap] - Optional map of filename → route
+ * @param {boolean} [subdomain=false] - If true, use subdomain-style routes (no /docs/ prefix)
  * @returns {string} HTML with converted links
  */
-function convertLinks(html, routeMap) {
+function convertLinks(html, routeMap, subdomain = false) {
   return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, href) => {
     let displayText = text;
 
@@ -192,7 +194,9 @@ function convertLinks(html, routeMap) {
       }
       // Link to non-existent file - keep as-is but remove .md extension
       const slug = filename.replace(/\.md$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      return `<a href="/docs/${slug}">${displayText}</a>`;
+      // In subdomain mode, links are at root level
+      const fallbackRoute = subdomain ? `/${slug}` : `/docs/${slug}`;
+      return `<a href="${fallbackRoute}">${displayText}</a>`;
     }
     return `<a href="${href}">${displayText}</a>`;
   });
