@@ -1,0 +1,136 @@
+{
+  "name": "Gas Town Hall Design Concept",
+  "version": "1.0.0",
+  "theme": "Steampunk Industrial",
+
+  "overview": {
+    "description": "A Victorian-era industrial aesthetic that evokes the atmosphere of a 19th-century factory or workshop. The design combines the warmth of aged parchment and leather with the cold precision of brass machinery, creating a unique blend of organic and mechanical elements.",
+    "mood": "Authoritative yet approachable, technical yet warm, industrial yet refined",
+    "inspirations": [
+      "Victorian-era industrial factories",
+      "Brass clockwork and machinery",
+      "Aged parchment and leather-bound books",
+      "Steam-powered technology",
+      "Industrial revolution craftsmanship"
+    ]
+  },
+
+  "designPrinciples": {
+    "materialHonesty": {
+      "description": "Every surface should feel like a real material - metal plates, parchment, leather, or polished brass. Use gradients and shadows to simulate depth and physical presence.",
+      "application": "Buttons look like pressed metal plates, cards feel like paper on a desk, dividers appear as industrial metal bars"
+    },
+    "functionalOrnamentation": {
+      "description": "Decorative elements should reinforce the industrial theme while serving a purpose. Rivets mark boundaries, brass borders indicate interactive areas, metal bars separate content sections.",
+      "application": "Rivets appear at corners of important containers, brass borders highlight interactive cards on hover, industrial dividers create visual rhythm"
+    },
+    "hierarchicalClarity": {
+      "description": "Use the contrast between dark metal (header/footer) and light parchment (content) to create clear visual hierarchy. Important actions use bright brass, secondary elements use muted tones.",
+      "application": "Dark header anchors the page, light content areas invite reading, brass CTAs draw attention"
+    },
+    "craftedMotion": {
+      "description": "Animations should feel mechanical and precise, like well-oiled machinery. Movements ease out smoothly (like a steam valve releasing) rather than bouncing or springing.",
+      "application": "Use ease-out-expo for most transitions, stagger animations like gears engaging, subtle pulsing for ambient elements"
+    },
+    "accessibleByDefault": {
+      "description": "The design must work for everyone. Respect user preferences for reduced motion, maintain sufficient color contrast, and ensure all interactive elements are keyboard accessible.",
+      "application": "Reduced motion media query disables animations, focus states use visible brass outlines, text maintains WCAG AA contrast"
+    }
+  },
+
+  "visualLanguage": {
+    "surfaces": {
+      "parchment": "Light, warm backgrounds (#E8DCC8, #F5E6D3) that feel like aged paper",
+      "metalDark": "Deep brown-black gradients (#3E2723 to #5D4037) for header/footer bars",
+      "metalLight": "Cream-to-tan gradients for secondary buttons and neutral surfaces",
+      "brass": "Golden metallic gradients (#D4A574 to #8B6914) for primary actions"
+    },
+    "textures": {
+      "insetShadow": "Subtle inner shadows create the feeling of recessed surfaces (pressed buttons, code blocks)",
+      "dropShadow": "Soft outer shadows lift elements off the page (cards, modals)",
+      "metalSheen": "Top-edge highlights (rgba white) simulate light catching polished metal"
+    },
+    "borders": {
+      "brassAccent": "3-4px solid brass borders mark important boundaries and interactive states",
+      "subtleBorder": "2px borders in muted brown (#8B7355) define card and input edges",
+      "gradientBar": "Horizontal brass-to-copper gradients create elegant section dividers"
+    },
+    "decorativeElements": {
+      "rivets": "Circular brass/bronze radial gradients with inset shadows, 10-16px diameter",
+      "industrialBars": "Horizontal dark metal bars with brass top/bottom borders",
+      "emDashes": "Brass-colored em dashes (—) flank important titles"
+    }
+  },
+
+  "typography": {
+    "philosophy": "Blend Victorian elegance with modern readability. Display text uses ornate serifs for gravitas, body text uses traditional serifs for comfort, code uses modern monospace for clarity.",
+    "displayFont": {
+      "family": "Cinzel",
+      "fallback": "Times New Roman, serif",
+      "usage": "Headings, navigation, buttons, banners",
+      "characteristics": "Wide letter-spacing (0.05-0.15em), uppercase for nav/buttons, all-caps sparingly"
+    },
+    "bodyFont": {
+      "family": "Crimson Text",
+      "fallback": "Georgia, serif",
+      "usage": "Paragraphs, descriptions, general content",
+      "characteristics": "Comfortable 1.7 line-height, slightly larger base size (17px)"
+    },
+    "monoFont": {
+      "family": "JetBrains Mono",
+      "fallback": "Courier New, monospace",
+      "usage": "Code blocks, inline code, technical identifiers",
+      "characteristics": "0.9em relative size, distinct background treatment"
+    },
+    "scale": {
+      "principle": "Use clamp() for fluid sizing that respects viewport width",
+      "h1": "clamp(2rem, 4vw, 3rem)",
+      "h2": "clamp(1.5rem, 3vw, 2rem)",
+      "h3": "clamp(1.25rem, 2.5vw, 1.5rem)",
+      "body": "1.0625rem (17px)",
+      "small": "0.875rem (14px)"
+    }
+  },
+
+  "colorPhilosophy": {
+    "warmFoundation": "The palette is built on warm browns and tans that evoke aged paper and leather, creating a comfortable reading environment.",
+    "metallicAccents": "Brass, bronze, and copper provide the industrial character. These should feel like actual metals - warm gold tones with subtle color variation.",
+    "functionalColor": "Accent colors (deep rust red) draw attention to links and important actions. The neon green subline provides a modern tech contrast that makes the brand memorable.",
+    "darkAnchors": "Deep brown-black tones ground the design at header and footer, creating a frame that contains the lighter content."
+  },
+
+  "spacingPhilosophy": {
+    "generousWhitespace": "Content needs room to breathe. The industrial elements are dense, so surrounding whitespace is essential for balance.",
+    "consistentRhythm": "Use a 4px base unit (0.25rem) scaled by powers of 2: 4, 8, 16, 32, 64px",
+    "sectionSeparation": "Major sections separated by industrial bar dividers with 4rem (64px) vertical padding",
+    "componentPadding": "Cards and containers use 2rem (32px) padding; buttons use proportional internal padding"
+  },
+
+  "interactionPhilosophy": {
+    "hoverFeedback": "Interactive elements lift slightly (translateY -2 to -4px) and gain brass accents on hover, like metal catching light.",
+    "pressFeedback": "Buttons compress slightly on press (scale 0.98, translateY 1px) simulating mechanical button depression.",
+    "focusVisibility": "Focus states use brass outlines with soft glow halos - visible without being jarring.",
+    "transitionTiming": "Fast for color/opacity changes (150ms), medium for transforms (250ms), slow for complex shadow transitions (400ms)"
+  },
+
+  "responsivePhilosophy": {
+    "mobileFirst": "Core experience works on small screens; decorative elements (rivets, em-dashes) hide on mobile.",
+    "contentPriority": "Navigation collapses to vertical stack, sidebars move above content, images scale down.",
+    "touchTargets": "Buttons and links sized for comfortable touch (min 44px tap target).",
+    "breakpoint": "768px is the primary breakpoint between mobile and desktop layouts."
+  },
+
+  "brandElements": {
+    "logo": "Site name flanked by brass em-dashes: — Gas Town Hall —",
+    "heroSubline": "Neon green (#39FF14) monospace text with dark outline stroke - the memorable brand accent",
+    "industrialDivider": "Dark metal bar with brass borders and central rotating rivet"
+  },
+
+  "aiImplementationGuidelines": {
+    "newComponents": "When creating new components, start with the surface (parchment or metal), add appropriate borders (brass for interactive, subtle for static), include material-honest shadows, and ensure hover/focus states use brass accents.",
+    "colorSelection": "Pull from the defined palette. When in doubt, use brass for emphasis, muted brown for secondary, rust red for links/actions.",
+    "animationApproach": "Use the defined easing curves. Entrance animations should fade + slide (fadeInUp/Down). Hover animations should lift + brighten. Keep durations short (150-400ms).",
+    "typographyRules": "Cinzel for anything that needs authority (headings, buttons, navigation). Crimson Text for comfortable reading. JetBrains Mono only for code.",
+    "accessibilityChecklist": "Include focus-visible states, respect prefers-reduced-motion, maintain 4.5:1 contrast for text, provide skip links."
+  }
+}

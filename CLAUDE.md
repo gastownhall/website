@@ -78,6 +78,10 @@ Tests use Node.js built-in test runner. Run with `npm test`.
 
 Test files are in `scripts/lib/__tests__/` and cover the shared utility modules.
 
+## Git Workflow
+
+- Do NOT commit or push changes until explicitly asked by the user.
+
 ## Architecture Best Practices
 
 - **TDD (Test-Driven Development)** - write the tests first; the implementation code isn't done until the tests pass.
