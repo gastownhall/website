@@ -13,9 +13,9 @@ import { site, social, blogPosts } from '../site.config';
   <!-- Industrial divider -->
   <div class="industrial-bar"></div>
 
-  <section class="section blog-section">
+  <section id="blog-links" class="section blog-section">
     <div class="section-header">
-      <h2 class="section-banner">From the Blog</h2>
+      <a href="#blog-links" class="section-banner-link"><h2 class="section-banner">From the Blog</h2></a>
     </div>
     <div class="blog-list">
       {blogPosts.map((post, index) => (
@@ -96,6 +96,15 @@ import { site, social, blogPosts } from '../site.config';
     text-align: center;
     margin-bottom: var(--space-lg);
     animation: fadeInDown 0.6s var(--ease-out-expo) both;
+  }
+
+  .section-banner-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .section-banner-link:hover .section-banner {
+    border-color: var(--color-accent);
   }
 
   .section-banner {
