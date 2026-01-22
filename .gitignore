@@ -2,9 +2,13 @@
 node_modules/
 .astro/
 deploy/
+deploy-docs/
 tmp/
 .beads/
 .runtime/
 
 # Generated tools output
 tools/og-preview.html
+
+# Generated docs pages for subdomain build
+src-docs/pages/

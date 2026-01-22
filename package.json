@@ -9,6 +9,9 @@
     "deploy": "npm run build && wrangler pages deploy deploy --project-name=gastownhall-website",
     "astro": "astro",
     "shred-docs": "node scripts/shred-docs.mjs",
+    "shred-docs:subdomain": "node scripts/shred-docs.mjs --subdomain",
+    "build:docs": "npm run shred-docs:subdomain && npm run astro -- build --config astro.config.docs.mjs",
+    "deploy:docs": "npm run build:docs && wrangler pages deploy deploy-docs --project-name=gastown-docs",
     "llms": "node scripts/generate-llms.mjs",
     "test": "node --test scripts/lib/__tests__/*.test.mjs"
   },

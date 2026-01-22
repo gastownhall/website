@@ -21,6 +21,7 @@ export const paths = {
 export const site = {
   name: 'Gas Town Hall',
   url: 'https://gastownhall.ai',
+  docsUrl: 'https://docs.gastownhall.ai',
   description: 'Gas Town Hall - Documentation and resources for Gas Town',
   twitterHandle: '@gastownhall',
 };
