@@ -539,8 +539,12 @@
         "50%": { "transform": "translateY(-6px)" }
       },
       "pulseGlow": {
-        "0%, 100%": { "boxShadow": "inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 8px rgba(205, 127, 50, 0.4)" },
-        "50%": { "boxShadow": "inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 16px rgba(205, 127, 50, 0.7)" }
+        "0%, 100%": {
+          "boxShadow": "inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 8px rgba(205, 127, 50, 0.4)"
+        },
+        "50%": {
+          "boxShadow": "inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 16px rgba(205, 127, 50, 0.7)"
+        }
       },
       "shimmer": {
         "0%": { "backgroundPosition": "-200% center" },

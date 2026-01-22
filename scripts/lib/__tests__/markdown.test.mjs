@@ -60,7 +60,10 @@ This is the first paragraph that should become the description.
 
 This is the second paragraph.`;
     const result = extractDescription(content);
-    assert.strictEqual(result, 'This is the first paragraph that should become the description.');
+    assert.strictEqual(
+      result,
+      'This is the first paragraph that should become the description.'
+    );
   });
 
   it('truncates long descriptions', () => {
@@ -131,7 +134,10 @@ describe('escapeHtml', () => {
 
   it('escapes angle brackets', () => {
     const result = escapeHtml('<script>alert("xss")</script>');
-    assert.strictEqual(result, '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
+    assert.strictEqual(
+      result,
+      '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;'
+    );
   });
 
   it('escapes quotes', () => {

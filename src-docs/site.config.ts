@@ -7,7 +7,8 @@ export const site = {
   name: 'Gas Town Docs',
   url: 'https://docs.gastownhall.ai',
   mainSiteUrl: 'https://gastownhall.ai',
-  description: 'Documentation for Gas Town, an open source orchestration layer for AI coding agents.',
+  description:
+    'Documentation for Gas Town, an open source orchestration layer for AI coding agents.',
   twitterHandle: '@gastownhall',
 } as const;
 

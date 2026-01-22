@@ -19,7 +19,10 @@ function readHtmlFile(relativePath) {
 }
 
 function extractMetaContent(html, property) {
-  const regex = new RegExp(`<meta property="${property}" content="([^"]*)"`, 'i');
+  const regex = new RegExp(
+    `<meta property="${property}" content="([^"]*)"`,
+    'i'
+  );
   const match = html.match(regex);
   return match ? match[1] : null;
 }
@@ -60,7 +63,10 @@ describe('Open Graph Tags - Homepage', () => {
   it('should have og:image meta tag with absolute URL', () => {
     const ogImage = extractMetaContent(html, 'og:image');
     assert.ok(ogImage, 'og:image should be present');
-    assert.ok(ogImage.startsWith('https://'), 'og:image should be an absolute URL');
+    assert.ok(
+      ogImage.startsWith('https://'),
+      'og:image should be an absolute URL'
+    );
     assert.strictEqual(ogImage, `${siteUrl}/og-image.jpg`);
   });
 
@@ -117,15 +123,24 @@ describe('Twitter Card Tags - Homepage', () => {
   });
 
   it('should have twitter:description meta tag', () => {
-    const twitterDescription = extractTwitterMetaContent(html, 'twitter:description');
+    const twitterDescription = extractTwitterMetaContent(
+      html,
+      'twitter:description'
+    );
     assert.ok(twitterDescription, 'twitter:description should be present');
-    assert.ok(twitterDescription.length > 0, 'twitter:description should not be empty');
+    assert.ok(
+      twitterDescription.length > 0,
+      'twitter:description should not be empty'
+    );
   });
 
   it('should have twitter:image meta tag', () => {
     const twitterImage = extractTwitterMetaContent(html, 'twitter:image');
     assert.ok(twitterImage, 'twitter:image should be present');
-    assert.ok(twitterImage.startsWith('https://'), 'twitter:image should be an absolute URL');
+    assert.ok(
+      twitterImage.startsWith('https://'),
+      'twitter:image should be an absolute URL'
+    );
   });
 
   it('should have twitter:site meta tag', () => {
@@ -171,7 +186,10 @@ describe('Open Graph Tags - About Page', () => {
   it('should have og:image meta tag', () => {
     const ogImage = extractMetaContent(html, 'og:image');
     assert.ok(ogImage, 'og:image should be present');
-    assert.ok(ogImage.startsWith('https://'), 'og:image should be an absolute URL');
+    assert.ok(
+      ogImage.startsWith('https://'),
+      'og:image should be an absolute URL'
+    );
   });
 });
 
@@ -193,7 +211,10 @@ describe('Open Graph Tags - Docs Page', () => {
   it('should have og:title meta tag', () => {
     const ogTitle = extractMetaContent(html, 'og:title');
     assert.ok(ogTitle, 'og:title should be present');
-    assert.ok(ogTitle.includes('Docs') || ogTitle.includes('Gas Town'), 'og:title should be docs-related');
+    assert.ok(
+      ogTitle.includes('Docs') || ogTitle.includes('Gas Town'),
+      'og:title should be docs-related'
+    );
   });
 
   it('should have og:description meta tag', () => {
@@ -205,42 +226,49 @@ describe('Open Graph Tags - Docs Page', () => {
   it('should have og:image meta tag', () => {
     const ogImage = extractMetaContent(html, 'og:image');
     assert.ok(ogImage, 'og:image should be present');
-    assert.ok(ogImage.startsWith('https://'), 'og:image should be an absolute URL');
+    assert.ok(
+      ogImage.startsWith('https://'),
+      'og:image should be an absolute URL'
+    );
   });
 });
 
 describe('URL Construction', () => {
   it('should use absolute URLs for all pages', () => {
-    const pages = [
-      'index.html',
-      'about/index.html',
-      'docs/index.html'
-    ];
+    const pages = ['index.html', 'about/index.html', 'docs/index.html'];
 
-    pages.forEach(page => {
+    pages.forEach((page) => {
       const html = readHtmlFile(page);
       const ogUrl = extractMetaContent(html, 'og:url');
       const ogImage = extractMetaContent(html, 'og:image');
 
-      assert.ok(ogUrl.startsWith('https://'), `${page}: og:url should be absolute`);
-      assert.ok(ogImage.startsWith('https://'), `${page}: og:image should be absolute`);
+      assert.ok(
+        ogUrl.startsWith('https://'),
+        `${page}: og:url should be absolute`
+      );
+      assert.ok(
+        ogImage.startsWith('https://'),
+        `${page}: og:image should be absolute`
+      );
     });
   });
 
   it('should use consistent site URL', () => {
-    const pages = [
-      'index.html',
-      'about/index.html',
-      'docs/index.html'
-    ];
+    const pages = ['index.html', 'about/index.html', 'docs/index.html'];
 
-    pages.forEach(page => {
+    pages.forEach((page) => {
       const html = readHtmlFile(page);
       const ogUrl = extractMetaContent(html, 'og:url');
       const ogImage = extractMetaContent(html, 'og:image');
 
-      assert.ok(ogUrl.startsWith(siteUrl), `${page}: og:url should use ${siteUrl}`);
-      assert.ok(ogImage.startsWith(siteUrl), `${page}: og:image should use ${siteUrl}`);
+      assert.ok(
+        ogUrl.startsWith(siteUrl),
+        `${page}: og:url should use ${siteUrl}`
+      );
+      assert.ok(
+        ogImage.startsWith(siteUrl),
+        `${page}: og:image should use ${siteUrl}`
+      );
     });
   });
 });

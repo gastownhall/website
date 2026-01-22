@@ -30,13 +30,13 @@ import { join, dirname, basename, relative } from 'path';
 
 import { paths } from './lib/config.mjs';
 import { findFiles } from './lib/files.mjs';
+import { extractTitle, extractDescription } from './lib/markdown.mjs';
 import {
-  extractTitle,
-  extractDescription,
-  toSlug,
-  removeFrontmatter,
-  convertMarkdownToHtml,
-} from './lib/markdown.mjs';
+  buildRouteMap,
+  generateAstroPage,
+  getOutputSlug,
+  getDirectoryDepth,
+} from './lib/docs.mjs';
 
 // Check for --subdomain flag
 const SUBDOMAIN_MODE = process.argv.includes('--subdomain');
@@ -50,81 +50,6 @@ const DOCS_OUTPUT = SUBDOMAIN_MODE
 const SKIP_FILES = new Set();
 
 /**
- * Builds a map of filename → route for all markdown files.
- * Used to resolve .md links to proper routes.
- *
- * Convention: overview.md maps to its directory root (e.g., / not /overview in subdomain mode)
- *
- * @param {Array} files - List of files with relativePath
- * @param {boolean} subdomain - If true, routes are at root level (no /docs/ prefix)
- */
-function buildRouteMap(files, subdomain = false) {
-  const routeMap = new Map();
-  const prefix = subdomain ? '' : '/docs';
-
-  for (const { relativePath } of files) {
-    const filename = basename(relativePath);
-    const dirPath = dirname(relativePath);
-    let slug = toSlug(filename);
-
-    // Convention: overview.md becomes the index page for its directory
-    if (slug === 'overview') {
-      slug = '';
-    }
-
-    let route;
-    if (subdomain) {
-      route = dirPath === '.'
-        ? (slug ? `/${slug}` : '/')
-        : (slug ? `/${dirPath}/${slug}` : `/${dirPath}`);
-    } else {
-      route = dirPath === '.'
-        ? (slug ? `/docs/${slug}` : '/docs')
-        : (slug ? `/docs/${dirPath}/${slug}` : `/docs/${dirPath}`);
-    }
-    routeMap.set(filename, route);
-  }
-  return routeMap;
-}
-
-/**
- * Generates an Astro page component from markdown content.
- *
- * @param {string} content - Markdown content
- * @param {string} title - Page title
- * @param {string} description - Page description
- * @param {number} depth - Directory depth for relative imports
- * @param {Map} routeMap - Map of filename → route
- * @param {boolean} subdomain - If true, use subdomain layout path
- */
-function generateAstroPage(content, title, description, depth, routeMap, subdomain = false) {
-  // In subdomain mode, layouts are at ../layouts/ from pages/
-  // In normal mode, layouts are at ../../layouts/ from pages/docs/
-  const layoutPath = subdomain
-    ? '../'.repeat(depth + 1) + 'layouts/DocsLayout.astro'
-    : '../'.repeat(depth + 2) + 'layouts/DocsLayout.astro';
-
-  let cleanContent = removeFrontmatter(content);
-  cleanContent = cleanContent.replace(/^#\s+.+\n?/, '').trim();
-  cleanContent = convertMarkdownToHtml(cleanContent, routeMap, subdomain);
-
-  const escapedContent = JSON.stringify(cleanContent);
-  const escapedTitle = title.replace(/"/g, '\\"');
-  const escapedDesc = description.replace(/"/g, '\\"');
-
-  return `---
-import DocsLayout from '${layoutPath}';
-
-const content = ${escapedContent};
----
-
-<DocsLayout title="${escapedTitle}" description="${escapedDesc}">
-  <div class="markdown-content" set:html={content} />
-</DocsLayout>
-`;
-}
-
-/**
  * Processes a single markdown file into an Astro page.
  *
  * Convention: overview.md becomes index.astro (serves as directory landing page)
@@ -134,7 +59,12 @@ const content = ${escapedContent};
  * @param {Map} routeMap - Map of filename → route
  * @param {boolean} subdomain - If true, generate for subdomain
  */
-async function processFile(fullPath, relativePath, routeMap, subdomain = false) {
+async function processFile(
+  fullPath,
+  relativePath,
+  routeMap,
+  subdomain = false
+) {
   const filename = basename(relativePath);
 
   if (SKIP_FILES.has(filename)) {
@@ -143,20 +73,22 @@ async function processFile(fullPath, relativePath, routeMap, subdomain = false) 
 
   const content = await readFile(fullPath, 'utf-8');
   const dirPath = dirname(relativePath);
-  let slug = toSlug(filename);
-
-  // Convention: overview.md becomes the index page for its directory
-  if (slug === 'overview') {
-    slug = 'index';
-  }
+  const slug = getOutputSlug(filename);
 
   const outputDir = dirPath === '.' ? DOCS_OUTPUT : join(DOCS_OUTPUT, dirPath);
   const outputPath = join(outputDir, `${slug}.astro`);
-  const depth = dirPath === '.' ? 0 : dirPath.split('/').length;
+  const depth = getDirectoryDepth(dirPath);
 
   const title = extractTitle(content, filename);
   const description = extractDescription(content);
-  const astroContent = generateAstroPage(content, title, description, depth, routeMap, subdomain);
+  const astroContent = generateAstroPage(
+    content,
+    title,
+    description,
+    depth,
+    routeMap,
+    subdomain
+  );
 
   await mkdir(outputDir, { recursive: true });
   await writeFile(outputPath, astroContent, 'utf-8');
@@ -166,7 +98,9 @@ async function processFile(fullPath, relativePath, routeMap, subdomain = false) 
 
 async function shredDocs() {
   console.log('Docs Shredder starting...');
-  console.log(`  Mode: ${SUBDOMAIN_MODE ? 'subdomain (docs.gastownhall.ai)' : 'main site (/docs/)'}`);
+  console.log(
+    `  Mode: ${SUBDOMAIN_MODE ? 'subdomain (docs.gastownhall.ai)' : 'main site (/docs/)'}`
+  );
   console.log(`  Source: ${relative(paths.root, DOCS_SOURCE)}`);
   console.log(`  Output: ${relative(paths.root, DOCS_OUTPUT)}`);
 
@@ -180,7 +114,12 @@ async function shredDocs() {
   let skipped = 0;
 
   for (const { fullPath, relativePath } of files) {
-    const result = await processFile(fullPath, relativePath, routeMap, SUBDOMAIN_MODE);
+    const result = await processFile(
+      fullPath,
+      relativePath,
+      routeMap,
+      SUBDOMAIN_MODE
+    );
 
     if (result.status === 'skipped') {
       console.log(`  Skipping ${result.relativePath} (handled separately)`);

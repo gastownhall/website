@@ -1,0 +1,10 @@
+deploy/
+deploy-docs/
+.astro/
+node_modules/
+tmp/
+src/pages/docs/
+src-docs/pages/
+v2/
+package-lock.json
+*.md

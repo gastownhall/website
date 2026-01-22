@@ -13,7 +13,11 @@
     "build:docs": "npm run shred-docs:subdomain && npm run astro -- build --config astro.config.docs.mjs",
     "deploy:docs": "npm run build:docs && wrangler pages deploy deploy-docs --project-name=gastown-docs",
     "llms": "node scripts/generate-llms.mjs",
-    "test": "node --test scripts/lib/__tests__/*.test.mjs"
+    "test": "node --test scripts/lib/__tests__/*.test.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",
@@ -22,6 +26,13 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.5.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript-eslint": "^8.53.1",
     "wrangler": "^3.99.0"
   }
 }

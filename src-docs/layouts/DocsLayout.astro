@@ -16,47 +16,226 @@ const currentPath = Astro.url.pathname;
       <nav>
         <h3>Overview</h3>
         <ul>
-          <li><a href="/" class:list={[{ active: currentPath === '/' }]}>Overview</a></li>
-          <li><a href="/glossary" class:list={[{ active: currentPath.includes('/glossary') }]}>Glossary</a></li>
-          <li><a href="/reference" class:list={[{ active: currentPath.includes('/reference') }]}>Reference</a></li>
-          <li><a href="/installing" class:list={[{ active: currentPath.includes('/installing') }]}>Installing</a></li>
+          <li>
+            <a href="/" class:list={[{ active: currentPath === '/' }]}
+              >Overview</a
+            >
+          </li>
+          <li>
+            <a
+              href="/glossary"
+              class:list={[{ active: currentPath.includes('/glossary') }]}
+              >Glossary</a
+            >
+          </li>
+          <li>
+            <a
+              href="/reference"
+              class:list={[{ active: currentPath.includes('/reference') }]}
+              >Reference</a
+            >
+          </li>
+          <li>
+            <a
+              href="/installing"
+              class:list={[{ active: currentPath.includes('/installing') }]}
+              >Installing</a
+            >
+          </li>
         </ul>
 
         <h3>Concepts</h3>
         <ul>
-          <li><a href="/concepts/convoy" class:list={[{ active: currentPath.includes('/concepts/convoy') }]}>Convoy</a></li>
-          <li><a href="/concepts/identity" class:list={[{ active: currentPath.includes('/concepts/identity') }]}>Identity</a></li>
-          <li><a href="/concepts/molecules" class:list={[{ active: currentPath.includes('/concepts/molecules') }]}>Molecules</a></li>
-          <li><a href="/concepts/polecat-lifecycle" class:list={[{ active: currentPath.includes('/concepts/polecat-lifecycle') }]}>Polecat Lifecycle</a></li>
-          <li><a href="/concepts/propulsion-principle" class:list={[{ active: currentPath.includes('/concepts/propulsion-principle') }]}>Propulsion Principle</a></li>
+          <li>
+            <a
+              href="/concepts/convoy"
+              class:list={[
+                { active: currentPath.includes('/concepts/convoy') },
+              ]}>Convoy</a
+            >
+          </li>
+          <li>
+            <a
+              href="/concepts/identity"
+              class:list={[
+                { active: currentPath.includes('/concepts/identity') },
+              ]}>Identity</a
+            >
+          </li>
+          <li>
+            <a
+              href="/concepts/molecules"
+              class:list={[
+                { active: currentPath.includes('/concepts/molecules') },
+              ]}>Molecules</a
+            >
+          </li>
+          <li>
+            <a
+              href="/concepts/polecat-lifecycle"
+              class:list={[
+                { active: currentPath.includes('/concepts/polecat-lifecycle') },
+              ]}>Polecat Lifecycle</a
+            >
+          </li>
+          <li>
+            <a
+              href="/concepts/propulsion-principle"
+              class:list={[
+                {
+                  active: currentPath.includes(
+                    '/concepts/propulsion-principle'
+                  ),
+                },
+              ]}>Propulsion Principle</a
+            >
+          </li>
         </ul>
 
         <h3>Design</h3>
         <ul>
-          <li><a href="/design/architecture" class:list={[{ active: currentPath.includes('/design/architecture') }]}>Architecture</a></li>
-          <li><a href="/design/convoy-lifecycle" class:list={[{ active: currentPath.includes('/design/convoy-lifecycle') }]}>Convoy Lifecycle</a></li>
-          <li><a href="/design/dog-pool-architecture" class:list={[{ active: currentPath.includes('/design/dog-pool-architecture') }]}>Dog Pool Architecture</a></li>
-          <li><a href="/design/escalation" class:list={[{ active: currentPath === '/design/escalation' || currentPath === '/design/escalation/' }]}>Escalation</a></li>
-          <li><a href="/design/escalation-system" class:list={[{ active: currentPath.includes('/design/escalation-system') }]}>Escalation System</a></li>
-          <li><a href="/design/federation" class:list={[{ active: currentPath.includes('/design/federation') }]}>Federation</a></li>
-          <li><a href="/design/mail-protocol" class:list={[{ active: currentPath.includes('/design/mail-protocol') }]}>Mail Protocol</a></li>
-          <li><a href="/design/operational-state" class:list={[{ active: currentPath.includes('/design/operational-state') }]}>Operational State</a></li>
-          <li><a href="/design/plugin-system" class:list={[{ active: currentPath.includes('/design/plugin-system') }]}>Plugin System</a></li>
-          <li><a href="/design/property-layers" class:list={[{ active: currentPath.includes('/design/property-layers') }]}>Property Layers</a></li>
-          <li><a href="/design/watchdog-chain" class:list={[{ active: currentPath.includes('/design/watchdog-chain') }]}>Watchdog Chain</a></li>
+          <li>
+            <a
+              href="/design/architecture"
+              class:list={[
+                { active: currentPath.includes('/design/architecture') },
+              ]}>Architecture</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/convoy-lifecycle"
+              class:list={[
+                { active: currentPath.includes('/design/convoy-lifecycle') },
+              ]}>Convoy Lifecycle</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/dog-pool-architecture"
+              class:list={[
+                {
+                  active: currentPath.includes('/design/dog-pool-architecture'),
+                },
+              ]}>Dog Pool Architecture</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/escalation"
+              class:list={[
+                {
+                  active:
+                    currentPath === '/design/escalation' ||
+                    currentPath === '/design/escalation/',
+                },
+              ]}>Escalation</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/escalation-system"
+              class:list={[
+                { active: currentPath.includes('/design/escalation-system') },
+              ]}>Escalation System</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/federation"
+              class:list={[
+                { active: currentPath.includes('/design/federation') },
+              ]}>Federation</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/mail-protocol"
+              class:list={[
+                { active: currentPath.includes('/design/mail-protocol') },
+              ]}>Mail Protocol</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/operational-state"
+              class:list={[
+                { active: currentPath.includes('/design/operational-state') },
+              ]}>Operational State</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/plugin-system"
+              class:list={[
+                { active: currentPath.includes('/design/plugin-system') },
+              ]}>Plugin System</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/property-layers"
+              class:list={[
+                { active: currentPath.includes('/design/property-layers') },
+              ]}>Property Layers</a
+            >
+          </li>
+          <li>
+            <a
+              href="/design/watchdog-chain"
+              class:list={[
+                { active: currentPath.includes('/design/watchdog-chain') },
+              ]}>Watchdog Chain</a
+            >
+          </li>
         </ul>
 
         <h3>Examples</h3>
         <ul>
-          <li><a href="/examples/hanoi-demo" class:list={[{ active: currentPath.includes('/examples/hanoi-demo') }]}>Hanoi Demo</a></li>
+          <li>
+            <a
+              href="/examples/hanoi-demo"
+              class:list={[
+                { active: currentPath.includes('/examples/hanoi-demo') },
+              ]}>Hanoi Demo</a
+            >
+          </li>
         </ul>
 
         <h3>Other</h3>
         <ul>
-          <li><a href="/beads-native-messaging" class:list={[{ active: currentPath.includes('/beads-native-messaging') }]}>Beads Native Messaging</a></li>
-          <li><a href="/formula-resolution" class:list={[{ active: currentPath.includes('/formula-resolution') }]}>Formula Resolution</a></li>
-          <li><a href="/mol-mall-design" class:list={[{ active: currentPath.includes('/mol-mall-design') }]}>Mol Mall Design</a></li>
-          <li><a href="/why-these-features" class:list={[{ active: currentPath.includes('/why-these-features') }]}>Why These Features</a></li>
+          <li>
+            <a
+              href="/beads-native-messaging"
+              class:list={[
+                { active: currentPath.includes('/beads-native-messaging') },
+              ]}>Beads Native Messaging</a
+            >
+          </li>
+          <li>
+            <a
+              href="/formula-resolution"
+              class:list={[
+                { active: currentPath.includes('/formula-resolution') },
+              ]}>Formula Resolution</a
+            >
+          </li>
+          <li>
+            <a
+              href="/mol-mall-design"
+              class:list={[
+                { active: currentPath.includes('/mol-mall-design') },
+              ]}>Mol Mall Design</a
+            >
+          </li>
+          <li>
+            <a
+              href="/why-these-features"
+              class:list={[
+                { active: currentPath.includes('/why-these-features') },
+              ]}>Why These Features</a
+            >
+          </li>
         </ul>
       </nav>
     </aside>

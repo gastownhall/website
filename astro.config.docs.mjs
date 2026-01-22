@@ -14,13 +14,13 @@ export default defineConfig({
   outDir: './deploy-docs',
   srcDir: './src-docs',
   build: {
-    assets: '_assets'
+    assets: '_assets',
   },
   integrations: [
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,
       lastmod: new Date(),
-    })
-  ]
+    }),
+  ],
 });

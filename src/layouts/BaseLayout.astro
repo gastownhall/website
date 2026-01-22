@@ -16,7 +16,7 @@ const {
   image = '/og-image.jpg',
   type = 'website',
   publishedDate,
-  modifiedDate
+  modifiedDate,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, site.url).href;
@@ -24,48 +24,44 @@ const isHomePage = Astro.url.pathname === '/' || Astro.url.pathname === '';
 
 // JSON-LD Structured Data
 const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": site.name,
-  "url": site.url,
-  "logo": `${site.url}/favicon.svg`,
-  "sameAs": [
-    social.github,
-    social.x,
-    social.discord
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "gastownhall@gmail.com",
-    "contactType": "support"
-  }
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  url: site.url,
+  logo: `${site.url}/favicon.svg`,
+  sameAs: [social.github, social.x, social.discord],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'gastownhall@gmail.com',
+    contactType: 'support',
+  },
 };
 
 const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": site.name,
-  "url": site.url,
-  "description": site.description,
-  "publisher": {
-    "@type": "Organization",
-    "name": site.name
-  }
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: site.url,
+  description: site.description,
+  publisher: {
+    '@type': 'Organization',
+    name: site.name,
+  },
 };
 
 const webPageSchema = {
-  "@context": "https://schema.org",
-  "@type": type === 'article' ? "Article" : "WebPage",
-  "name": title,
-  "description": description,
-  "url": canonicalUrl,
-  ...(publishedDate && { "datePublished": publishedDate }),
-  ...(modifiedDate && { "dateModified": modifiedDate }),
-  "publisher": {
-    "@type": "Organization",
-    "name": site.name,
-    "url": site.url
-  }
+  '@context': 'https://schema.org',
+  '@type': type === 'article' ? 'Article' : 'WebPage',
+  name: title,
+  description: description,
+  url: canonicalUrl,
+  ...(publishedDate && { datePublished: publishedDate }),
+  ...(modifiedDate && { dateModified: modifiedDate }),
+  publisher: {
+    '@type': 'Organization',
+    name: site.name,
+    url: site.url,
+  },
 };
 
 // Combine schemas for homepage, or just use webPageSchema for other pages
@@ -74,7 +70,7 @@ const schemas = isHomePage
   : [webPageSchema];
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -83,25 +79,45 @@ const schemas = isHomePage
 
     <!-- SEO Meta Tags -->
     <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta
+      name="googlebot"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
     <meta name="author" content="Chris Sells" />
-    <meta name="keywords" content="Gas Town, AI coding agents, orchestration, developer tools, AI workflow, coding automation" />
+    <meta
+      name="keywords"
+      content="Gas Town, AI coding agents, orchestration, developer tools, AI workflow, coding automation"
+    />
 
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content={type === 'article' ? 'article' : 'website'} />
+    <meta
+      property="og:type"
+      content={type === 'article' ? 'article' : 'website'}
+    />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={`${site.url}${image}`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Mayor of Gas Town - AI-powered development workflows" />
+    <meta
+      property="og:image:alt"
+      content="Mayor of Gas Town - AI-powered development workflows"
+    />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content="en_US" />
-    {publishedDate && <meta property="article:published_time" content={publishedDate} />}
-    {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
+    {
+      publishedDate && (
+        <meta property="article:published_time" content={publishedDate} />
+      )
+    }
+    {
+      modifiedDate && (
+        <meta property="article:modified_time" content={modifiedDate} />
+      )
+    }
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -125,12 +141,18 @@ const schemas = isHomePage
     <link rel="stylesheet" href="/styles/global.css" />
 
     <!-- JSON-LD Structured Data -->
-    {schemas.map(schema => (
-      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
-    ))}
+    {
+      schemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
 
     <!-- Plausible Analytics -->
-    <script is:inline defer data-domain={analytics.plausibleDomain} src={analytics.plausibleScript}></script>
+    <script
+      is:inline
+      defer
+      data-domain={analytics.plausibleDomain}
+      src={analytics.plausibleScript}></script>
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -149,8 +171,15 @@ const schemas = isHomePage
       <slot />
     </main>
     <footer class="site-footer">
-      <p>&copy; 2025-{new Date().getFullYear()} Chris Sells · Gas Town content &copy; Steve Yegge, used with permission</p>
-      <p><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/about">About</a></p>
+      <p>
+        &copy; 2025-{new Date().getFullYear()} Chris Sells · Gas Town content &copy;
+        Steve Yegge, used with permission
+      </p>
+      <p>
+        <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a
+          href="/about">About</a
+        >
+      </p>
     </footer>
   </body>
 </html>

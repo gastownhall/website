@@ -15,21 +15,31 @@ import { site, social, blogPosts } from '../site.config';
 
   <section id="blog-links" class="section blog-section">
     <div class="section-header">
-      <a href="#blog-links" class="section-banner-link"><h2 class="section-banner">From the Blog</h2></a>
+      <a href="#blog-links" class="section-banner-link"
+        ><h2 class="section-banner">From the Blog</h2></a
+      >
     </div>
     <div class="blog-list">
-      {blogPosts.map((post, index) => (
-        <a href={post.url} target="_blank" rel="noopener" class="blog-item" style={`--item-index: ${index}`}>
-          <div class="blog-content">
-            <h3>{post.title}</h3>
-            <p class="blog-excerpt">{post.description}</p>
-            <span class="blog-date">{post.date}</span>
-          </div>
-          <div class="blog-image-frame">
-            <img src={post.image} alt="" class="blog-image" loading="lazy" />
-          </div>
-        </a>
-      ))}
+      {
+        blogPosts.map((post, index) => (
+          <a
+            href={post.url}
+            target="_blank"
+            rel="noopener"
+            class="blog-item"
+            style={`--item-index: ${index}`}
+          >
+            <div class="blog-content">
+              <h3>{post.title}</h3>
+              <p class="blog-excerpt">{post.description}</p>
+              <span class="blog-date">{post.date}</span>
+            </div>
+            <div class="blog-image-frame">
+              <img src={post.image} alt="" class="blog-image" loading="lazy" />
+            </div>
+          </a>
+        ))
+      }
     </div>
   </section>
 
@@ -39,17 +49,34 @@ import { site, social, blogPosts } from '../site.config';
   <section class="section community-section">
     <div class="community-plate">
       <h2 class="community-title">Join the Community</h2>
-      <p class="section-intro">Connect with other Gas Town users and contributors.</p>
+      <p class="section-intro">
+        Connect with other Gas Town users and contributors.
+      </p>
       <div class="community-actions">
-        <a href={social.discord} target="_blank" rel="noopener" class="btn btn-discord btn-large">
+        <a
+          href={social.discord}
+          target="_blank"
+          rel="noopener"
+          class="btn btn-discord btn-large"
+        >
           <DiscordIcon />
           Join Discord
         </a>
-        <a href={social.x} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
+        <a
+          href={social.x}
+          target="_blank"
+          rel="noopener"
+          class="btn btn-secondary btn-large"
+        >
           <XIcon />
           Follow on X
         </a>
-        <a href={social.github} target="_blank" rel="noopener" class="btn btn-secondary btn-large">
+        <a
+          href={social.github}
+          target="_blank"
+          rel="noopener"
+          class="btn btn-secondary btn-large"
+        >
           <GitHubIcon />
           View on GitHub
         </a>
@@ -62,7 +89,7 @@ import { site, social, blogPosts } from '../site.config';
   /* Industrial Bar Divider with rotating rivet */
   .industrial-bar {
     height: 16px;
-    background: linear-gradient(180deg, #5D4037 0%, #3E2723 50%, #5D4037 100%);
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 50%, #5d4037 100%);
     border-top: 3px solid var(--color-brass);
     border-bottom: 3px solid var(--color-brass);
     position: relative;
@@ -79,10 +106,12 @@ import { site, social, blogPosts } from '../site.config';
     transform: translate(-50%, -50%);
     width: 40px;
     height: 40px;
-    background: radial-gradient(circle,
+    background: radial-gradient(
+      circle,
       var(--color-brass) 0%,
       var(--color-bronze) 40%,
-      #3E2723 60%);
+      #3e2723 60%
+    );
     border-radius: 50%;
     border: 3px solid var(--color-brass);
     box-shadow:
@@ -109,7 +138,7 @@ import { site, social, blogPosts } from '../site.config';
 
   .section-banner {
     display: inline-block;
-    background: linear-gradient(180deg, #5D4037 0%, #3E2723 100%);
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
     color: var(--color-surface);
     padding: 0.625rem 2.5rem;
     font-family: var(--font-display);
@@ -133,7 +162,11 @@ import { site, social, blogPosts } from '../site.config';
     transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    background: radial-gradient(circle, var(--color-brass) 30%, var(--color-bronze) 70%);
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 30%,
+      var(--color-bronze) 70%
+    );
     border-radius: 50%;
     border: 2px solid var(--color-bronze);
   }
@@ -242,7 +275,11 @@ import { site, social, blogPosts } from '../site.config';
   .blog-image-frame {
     flex: 0 0 auto;
     padding: 4px;
-    background: linear-gradient(135deg, var(--color-brass) 0%, var(--color-bronze) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-brass) 0%,
+      var(--color-bronze) 100%
+    );
     border-radius: 4px;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.3),
@@ -266,7 +303,7 @@ import { site, social, blogPosts } from '../site.config';
 
   .community-plate {
     text-align: center;
-    background: linear-gradient(180deg, #4A3728 0%, #3E2723 100%);
+    background: linear-gradient(180deg, #4a3728 0%, #3e2723 100%);
     border: 4px solid var(--color-brass);
     border-radius: 6px;
     padding: 3rem 2rem;
@@ -286,7 +323,11 @@ import { site, social, blogPosts } from '../site.config';
     position: absolute;
     width: 16px;
     height: 16px;
-    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 70%);
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 40%,
+      var(--color-bronze) 70%
+    );
     border-radius: 50%;
     border: 2px solid var(--color-bronze);
     animation: pulseGlow 3s ease-in-out infinite;

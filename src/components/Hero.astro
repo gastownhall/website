@@ -9,7 +9,11 @@ import { social } from '../site.config';
   <div class="hero-border-bottom"></div>
   <picture>
     <source srcset="/images/mayor-of-gastown-360.webp" type="image/webp" />
-    <img src="/images/mayor-of-gastown-360.png" alt="Mayor of Gas Town" class="mayor-image" />
+    <img
+      src="/images/mayor-of-gastown-360.png"
+      alt="Mayor of Gas Town"
+      class="mayor-image"
+    />
   </picture>
   <div class="hero-content">
     <h1 class="hero-title">
@@ -17,16 +21,20 @@ import { social } from '../site.config';
       Gas Town Hall
       <span class="title-decoration">—</span>
     </h1>
-    <h2 class="hero-headline">
-      Gas Town is powerful but chaotic.
-    </h2>
+    <h2 class="hero-headline">Gas Town is powerful but chaotic.</h2>
     <p class="hero-subline">We help you wrangle the chimps.</p>
     <p class="hero-description">
-      An orchestration layer for AI coding agents. Track accountability, measure quality, and scale your AI-assisted engineering workflows.
+      An orchestration layer for AI coding agents. Track accountability, measure
+      quality, and scale your AI-assisted engineering workflows.
     </p>
     <div class="hero-actions">
       <a href="/docs" class="btn btn-primary">Read the Docs</a>
-      <a href={social.discord} target="_blank" rel="noopener" class="btn btn-secondary">
+      <a
+        href={social.discord}
+        target="_blank"
+        rel="noopener"
+        class="btn btn-secondary"
+      >
         <DiscordIcon size={20} />
         Join Discord
       </a>
@@ -59,7 +67,7 @@ import { social } from '../site.config';
     left: 0;
     right: 0;
     height: 12px;
-    background: linear-gradient(180deg, #5D4037 0%, #3E2723 100%);
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
     border-bottom: 3px solid var(--color-brass);
     z-index: 1;
   }
@@ -71,7 +79,11 @@ import { social } from '../site.config';
     bottom: -8px;
     width: 16px;
     height: 16px;
-    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 60%);
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 40%,
+      var(--color-bronze) 60%
+    );
     border-radius: 50%;
     border: 2px solid var(--color-bronze);
     animation: pulseGlow 3s ease-in-out infinite;
@@ -93,7 +105,7 @@ import { social } from '../site.config';
     left: 0;
     right: 0;
     height: 12px;
-    background: linear-gradient(0deg, #5D4037 0%, #3E2723 100%);
+    background: linear-gradient(0deg, #5d4037 0%, #3e2723 100%);
     border-top: 3px solid var(--color-brass);
     z-index: 1;
   }
@@ -105,7 +117,11 @@ import { social } from '../site.config';
     top: -8px;
     width: 16px;
     height: 16px;
-    background: radial-gradient(circle, var(--color-brass) 40%, var(--color-bronze) 60%);
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 40%,
+      var(--color-bronze) 60%
+    );
     border-radius: 50%;
     border: 2px solid var(--color-bronze);
     animation: pulseGlow 3s ease-in-out infinite;
@@ -189,14 +205,14 @@ import { social } from '../site.config';
     font-family: var(--font-mono);
     font-size: clamp(1.625rem, 3.75vw, 2.5rem);
     font-weight: 700;
-    color: #39FF14;
+    color: #39ff14;
     margin: 0 0 1.5rem 0;
     letter-spacing: -0.02em;
     text-shadow:
-      1px 1px 0 #2C1810,
-      -1px -1px 0 #2C1810,
-      1px -1px 0 #2C1810,
-      -1px 1px 0 #2C1810;
+      1px 1px 0 #2c1810,
+      -1px -1px 0 #2c1810,
+      1px -1px 0 #2c1810,
+      -1px 1px 0 #2c1810;
     animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
   }
 

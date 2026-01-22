@@ -7,8 +7,21 @@ tmp/
 .beads/
 .runtime/
 
-# Generated tools output
-tools/og-preview.html
+# Linting and build caches
+.eslintcache
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
 
 # Generated docs pages for subdomain build
 src-docs/pages/
+
+# Scratch/experimental
+v2/

@@ -41,7 +41,7 @@ export function titleFromFilename(filename) {
   return filename
     .replace(/\.md$/i, '')
     .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, c => c.toUpperCase());
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 /**
@@ -52,7 +52,11 @@ export function titleFromFilename(filename) {
  * @param {string} [fallback='Gas Town documentation'] - Default if no paragraph found
  * @returns {string} Description text
  */
-export function extractDescription(content, maxLength = 160, fallback = 'Gas Town documentation') {
+export function extractDescription(
+  content,
+  maxLength = 160,
+  fallback = 'Gas Town documentation'
+) {
   let text = removeFrontmatter(content);
   text = text.replace(H1_REGEX, '');
 
@@ -65,7 +69,11 @@ export function extractDescription(content, maxLength = 160, fallback = 'Gas Tow
       if (paragraphLines.length > 0) break;
       continue;
     }
-    if (trimmed.startsWith('#') || trimmed.startsWith('```') || trimmed.startsWith('|')) {
+    if (
+      trimmed.startsWith('#') ||
+      trimmed.startsWith('```') ||
+      trimmed.startsWith('|')
+    ) {
       break;
     }
     paragraphLines.push(trimmed);
@@ -119,7 +127,9 @@ export function convertMarkdownToHtml(md, routeMap, subdomain = false) {
   const codeBlocks = [];
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
     const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
-    codeBlocks.push(`<pre><code class="language-${lang || 'text'}">${escapeHtml(code.trim())}</code></pre>`);
+    codeBlocks.push(
+      `<pre><code class="language-${lang || 'text'}">${escapeHtml(code.trim())}</code></pre>`
+    );
     return placeholder;
   });
 
@@ -152,7 +162,6 @@ export function convertMarkdownToHtml(md, routeMap, subdomain = false) {
   return html;
 }
 
-
 function convertHeaders(html) {
   return html
     .replace(/^#### (.+)$/gm, '<h4>$1</h4>')
@@ -176,7 +185,7 @@ function convertEmphasis(html) {
  * @returns {string} HTML with converted links
  */
 function convertLinks(html, routeMap, subdomain = false) {
-  return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, href) => {
+  return html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, href) => {
     let displayText = text;
 
     // If link text looks like a filename (ends in .md), convert to title
@@ -193,7 +202,10 @@ function convertLinks(html, routeMap, subdomain = false) {
         return `<a href="${route}">${displayText}</a>`;
       }
       // Link to non-existent file - keep as-is but remove .md extension
-      const slug = filename.replace(/\.md$/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const slug = filename
+        .replace(/\.md$/i, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-');
       // In subdomain mode, links are at root level
       const fallbackRoute = subdomain ? `/${slug}` : `/docs/${slug}`;
       return `<a href="${fallbackRoute}">${displayText}</a>`;
@@ -209,13 +221,13 @@ function convertLists(html) {
   html = html.replace(/^- (.+)$/gm, '<uli>$1</uli>');
 
   // Wrap consecutive ordered list items in <ol>
-  html = html.replace(/(<oli>.*<\/oli>\n?)+/g, match => {
+  html = html.replace(/(<oli>.*<\/oli>\n?)+/g, (match) => {
     const items = match.replace(/<oli>/g, '<li>').replace(/<\/oli>/g, '</li>');
     return `<ol>${items}</ol>`;
   });
 
   // Wrap consecutive unordered list items in <ul>
-  html = html.replace(/(<uli>.*<\/uli>\n?)+/g, match => {
+  html = html.replace(/(<uli>.*<\/uli>\n?)+/g, (match) => {
     const items = match.replace(/<uli>/g, '<li>').replace(/<\/uli>/g, '</li>');
     return `<ul>${items}</ul>`;
   });
@@ -225,9 +237,9 @@ function convertLists(html) {
 
 function convertTables(html) {
   html = html.replace(/^\|(.+)\|$/gm, (_, content) => {
-    const cells = content.split('|').map(c => c.trim());
-    if (cells.every(c => /^[-:]+$/.test(c))) return '';
-    const cellHtml = cells.map(c => `<td>${c}</td>`).join('');
+    const cells = content.split('|').map((c) => c.trim());
+    if (cells.every((c) => /^[-:]+$/.test(c))) return '';
+    const cellHtml = cells.map((c) => `<td>${c}</td>`).join('');
     return `<tr>${cellHtml}</tr>`;
   });
   return html.replace(/(<tr>.*<\/tr>\n?)+/g, '<table>$&</table>');

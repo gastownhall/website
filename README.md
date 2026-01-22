@@ -22,7 +22,9 @@ Open http://localhost:4321 to view the site.
 | `npm run preview` | Preview production build |
 | `npm run shred-docs` | Regenerate docs from source markdown |
 | `npm run llms` | Regenerate llms.txt |
-| `npm test` | Run unit tests |
+| `npm test` | Run unit tests (66 tests) |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format code with Prettier |
 | `npm run deploy` | Manual deploy to Cloudflare Pages |
 
 ## Deployment
@@ -43,7 +45,8 @@ The site auto-deploys to Cloudflare Pages on push to `main`. Manual deploys can 
 ├── scripts/
 │   ├── shred-docs.mjs       # Docs generation script
 │   ├── generate-llms.mjs    # llms.txt generation script
-│   └── lib/                 # Shared utilities
+│   ├── generate-og-preview.mjs  # OG card preview tool
+│   └── lib/                 # Shared utilities and tests
 ├── public/                  # Static assets
 ├── docs-fodder/             # Source content (don't edit directly)
 │   ├── gastown-docs/        # Documentation markdown
@@ -61,14 +64,18 @@ Documentation pages are auto-generated from `docs-fodder/gastown-docs/`. To upda
 
 ## Configuration
 
-Site URLs and social links are centralized in:
-- `src/site.config.ts` - for Astro components
-- `scripts/lib/config.mjs` - for build scripts
+Single source of truth: `site.config.json` contains all site metadata.
+
+- `src/site.config.ts` - Re-exports JSON for Astro components
+- `scripts/lib/config.mjs` - Imports JSON for build scripts
+
+**Dev/Prod URL Switching:** Docs links automatically point to localhost in dev mode and docs.gastownhall.ai in production.
 
 ## Tech Stack
 
 - [Astro](https://astro.build/) - Static site generator
 - [Plausible](https://plausible.io/) - Privacy-friendly analytics
+- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) - Linting and formatting
 - Node.js test runner - Unit testing
 
 ## License

@@ -9,7 +9,13 @@ interface Props {
   originalUrl?: string;
 }
 
-const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.props;
+const {
+  title,
+  description,
+  date,
+  author = 'Steve Yegge',
+  originalUrl,
+} = Astro.props;
 ---
 
 <BaseLayout title={`${title} | Gas Town Blog`} description={description}>
@@ -21,11 +27,16 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
         {date && <time>{date}</time>}
         {author && <span class="author">by {author}</span>}
       </div>
-      {originalUrl && (
-        <p class="original-link">
-          Originally published on <a href={originalUrl} target="_blank" rel="noopener">Medium</a>
-        </p>
-      )}
+      {
+        originalUrl && (
+          <p class="original-link">
+            Originally published on{' '}
+            <a href={originalUrl} target="_blank" rel="noopener">
+              Medium
+            </a>
+          </p>
+        )
+      }
     </header>
     <div class="blog-content docs-content">
       <slot />
@@ -85,7 +96,7 @@ const { title, description, date, author = "Steve Yegge", originalUrl } = Astro.
   }
 
   .blog-meta .author::before {
-    content: "•";
+    content: '•';
     margin-right: var(--space-md);
   }
 

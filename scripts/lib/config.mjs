@@ -1,12 +1,19 @@
 /**
- * Shared configuration for Gas Town Hall website.
- * Single source of truth for URLs, social links, and site metadata.
+ * Shared configuration for Gas Town Hall website build scripts.
+ *
+ * Site metadata is imported from /site.config.json (shared with Astro components).
+ * Path configuration is defined here for build script use.
  */
 
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { readFileSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Load shared config from JSON
+const configPath = join(__dirname, '..', '..', 'site.config.json');
+const config = JSON.parse(readFileSync(configPath, 'utf-8'));
 
 export const paths = {
   root: join(__dirname, '..', '..'),
@@ -18,21 +25,4 @@ export const paths = {
   blogPosts: join(__dirname, '..', '..', 'docs-fodder', 'steve-blog-posts'),
 };
 
-export const site = {
-  name: 'Gas Town Hall',
-  url: 'https://gastownhall.ai',
-  docsUrl: 'https://docs.gastownhall.ai',
-  description: 'Gas Town Hall - Documentation and resources for Gas Town',
-  twitterHandle: '@gastownhall',
-};
-
-export const social = {
-  discord: 'https://discord.gg/pKsyZJ3S',
-  x: 'https://x.com/gastownhall',
-  github: 'https://github.com/steveyegge/gastown',
-};
-
-export const analytics = {
-  plausibleDomain: 'gastownhall.ai',
-  plausibleScript: 'https://plausible.io/js/script.js',
-};
+export const { site, social, analytics, blogPosts } = config;

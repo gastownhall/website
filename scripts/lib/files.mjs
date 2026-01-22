@@ -21,7 +21,7 @@ export async function findFiles(dir, extension, baseDir = dir) {
   for (const entry of entries) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
-      files.push(...await findFiles(fullPath, extension, baseDir));
+      files.push(...(await findFiles(fullPath, extension, baseDir)));
     } else if (entry.name.endsWith(extension)) {
       const relativePath = relative(baseDir, fullPath);
       files.push({ fullPath, relativePath });
@@ -40,10 +40,12 @@ export async function findFiles(dir, extension, baseDir = dir) {
  * @returns {string} URL path
  */
 export function filePathToUrlPath(relativePath, extension) {
-  let urlPath = '/' + relativePath
-    .replace(new RegExp(`\\${extension}$`), '')
-    .replace(/index$/, '')
-    .replace(/\/$/, '');
+  let urlPath =
+    '/' +
+    relativePath
+      .replace(new RegExp(`\\${extension}$`), '')
+      .replace(/index$/, '')
+      .replace(/\/$/, '');
 
   return urlPath || '/';
 }
