@@ -1,6 +1,7 @@
 ---
 import DiscordIcon from './icons/DiscordIcon.astro';
-import { social } from '../site.config';
+import GitHubIcon from './icons/GitHubIcon.astro';
+import { site, social } from '../site.config';
 ---
 
 <section class="hero">
@@ -21,14 +22,15 @@ import { social } from '../site.config';
       Gas Town Hall
       <span class="title-decoration">—</span>
     </h1>
-    <h2 class="hero-headline">Gas Town is powerful but chaotic.</h2>
-    <p class="hero-subline">We help you wrangle the chimps.</p>
+    <h2 class="hero-headline">
+      Orchestrate unlimited AI coding agents.<br />Scale without limits.
+    </h2>
+    <p class="hero-tagline">We help you wrangle the chimps.</p>
     <p class="hero-description">
-      An orchestration layer for AI coding agents. Track accountability, measure
-      quality, and scale your AI-assisted engineering workflows.
+      Works with Claude Code, Codex, Gemini and more!
     </p>
     <div class="hero-actions">
-      <a href="/docs" class="btn btn-primary">Read the Docs</a>
+      <a href={site.docsUrl} class="btn btn-primary">Get Started</a>
       <a
         href={social.discord}
         target="_blank"
@@ -194,20 +196,20 @@ import { social } from '../site.config';
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 4vw, 2.75rem);
     font-weight: 600;
-    line-height: 1.2;
+    line-height: 1.3;
     color: var(--color-text);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
     letter-spacing: 0.02em;
     animation: fadeInUp 0.8s var(--ease-out-expo) 0.1s both;
   }
 
-  .hero-subline {
+  .hero-tagline {
     font-family: var(--font-mono);
-    font-size: clamp(1.625rem, 3.75vw, 2.5rem);
-    font-weight: 700;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 600;
     color: #39ff14;
-    margin: 0 0 1.5rem 0;
-    letter-spacing: -0.02em;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.01em;
     text-shadow:
       1px 1px 0 #2c1810,
       -1px -1px 0 #2c1810,
@@ -217,11 +219,11 @@ import { social } from '../site.config';
   }
 
   .hero-description {
-    font-size: 1.125rem;
+    font-size: 1rem;
     color: var(--color-text-muted);
     max-width: 600px;
-    margin: 0 auto 2rem auto;
-    line-height: 1.7;
+    margin: 0 auto 1.5rem auto;
+    line-height: 1.6;
     animation: fadeInUp 0.8s var(--ease-out-expo) 0.3s both;
   }
 
@@ -231,6 +233,23 @@ import { social } from '../site.config';
     justify-content: center;
     flex-wrap: wrap;
     animation: fadeInUp 0.8s var(--ease-out-expo) 0.4s both;
+  }
+
+  .open-source-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    margin-top: 1.25rem;
+    animation: fadeInUp 0.8s var(--ease-out-expo) 0.5s both;
+    transition: color var(--duration-fast) var(--ease-in-out-smooth);
+  }
+
+  .open-source-link:hover {
+    color: var(--color-brass);
   }
 
   @media (max-width: 768px) {
