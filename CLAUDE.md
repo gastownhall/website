@@ -16,6 +16,7 @@ npm run build:all    # Build both
 npm run preview      # Preview production build
 npm run copy-assets  # Copy src/static/ to tmp/public/
 npm run shred-docs   # Regenerate docs from docs-fodder/gastown-docs/
+npm run usage        # Regenerate src/pages/docs/usage.astro from gt --help
 npm run llms         # Regenerate tmp/public/llms.txt
 npm run llms-full    # Regenerate tmp/public/llms-full.txt
 npm test             # Run all tests (Node.js test runner)
@@ -27,9 +28,9 @@ npm run format:check # Check formatting without writing
 npm run deploy       # Manual deploy to Cloudflare Pages
 ```
 
-**Main site build (`npm run build`):** copy-assets → shred-docs → llms → llms-full → astro check → astro build → `deploy/`
+**Main site build (`npm run build`):** copy-assets → shred-docs → usage → llms → llms-full → astro check → astro build → `deploy/`
 
-**Docs build (`npm run build:docs`):** copy-assets → shred-docs:subdomain → astro check → astro build → `deploy-docs/`
+**Docs build (`npm run build:docs`):** copy-assets → shred-docs:subdomain → usage → astro check → astro build → `deploy-docs/`
 
 **Fully regeneratable:** Deleting `tmp/public/` and running build regenerates everything.
 
@@ -67,6 +68,7 @@ All scripts are in `scripts/`:
 
 - `copy-assets.mjs` - Copies src/static/ to tmp/public/
 - `shred-docs.mjs` - Generates Astro pages from markdown docs
+- `generate-usage.mjs` - Generates CLI Usage page from gt --help output
 - `generate-llms.mjs` - Generates tmp/public/llms.txt (short LLM reference)
 - `generate-llms-full.mjs` - Generates tmp/public/llms-full.txt (comprehensive LLM reference)
 - `generate-og-preview.mjs` - OG card preview tool (output: tmp/og-preview.html)

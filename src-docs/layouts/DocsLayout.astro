@@ -11,6 +11,14 @@ const currentPath = Astro.url.pathname;
 ---
 
 <BaseLayout title={`${title} | Gas Town Docs`} description={description}>
+  <picture class="docs-mayor">
+    <source srcset="/images/mayor-of-gastown-360.webp" type="image/webp" />
+    <img
+      src="/images/mayor-of-gastown-360.png"
+      alt="Mayor of Gas Town"
+      class="docs-mayor-image"
+    />
+  </picture>
   <div class="docs-container">
     <aside class="docs-sidebar">
       <nav>
@@ -19,6 +27,13 @@ const currentPath = Astro.url.pathname;
           <li>
             <a href="/" class:list={[{ active: currentPath === '/' }]}
               >Overview</a
+            >
+          </li>
+          <li>
+            <a
+              href="/usage"
+              class:list={[{ active: currentPath.includes('/usage') }]}
+              >CLI Usage</a
             >
           </li>
           <li>
@@ -247,6 +262,26 @@ const currentPath = Astro.url.pathname;
 </BaseLayout>
 
 <style>
+  /* Mayor image - desktop only, positioned at top left, behind sidebar */
+  .docs-mayor {
+    position: absolute;
+    top: calc(var(--header-height, 80px) + 2rem);
+    left: max(2rem, calc((100% - 1200px) / 2 + 2rem));
+    z-index: 1;
+    opacity: 0.1;
+  }
+
+  .docs-mayor-image {
+    width: 180px;
+    height: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .docs-mayor {
+      display: none;
+    }
+  }
+
   .docs-container {
     display: flex;
     max-width: 1200px;
@@ -266,7 +301,6 @@ const currentPath = Astro.url.pathname;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s var(--ease-out-expo) both;
   }
 
   .docs-sidebar nav h3 {
@@ -336,7 +370,6 @@ const currentPath = Astro.url.pathname;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.6s var(--ease-out-expo) 0.1s both;
   }
 
   @media (max-width: 768px) {

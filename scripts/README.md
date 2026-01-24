@@ -30,6 +30,18 @@ node scripts/shred-docs.mjs --subdomain
 
 **Source:** `docs-fodder/gastown-docs/` → **Output:** `src/pages/docs/*.astro`
 
+### generate-usage.mjs
+
+Generates the CLI Usage page from `gt --help` output.
+
+```bash
+npm run usage
+```
+
+Captures help text from `gt --help` and all subcommands, then generates an Astro page with formatted documentation. Requires `gt` to be installed and available in PATH.
+
+**Output:** `src/pages/docs/usage.astro`
+
 ### generate-llms.mjs
 
 Generates `tmp/public/llms.txt` - a short LLM reference with page links.

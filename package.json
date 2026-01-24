@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run copy-assets && npm run shred-docs && npm run llms && npm run llms-full && astro check && astro build",
-    "build:docs": "npm run copy-assets && npm run shred-docs:subdomain && astro check && astro build --config astro.config.docs.mjs",
+    "build": "npm run copy-assets && npm run shred-docs && npm run usage && npm run llms && npm run llms-full && astro check && astro build",
+    "build:docs": "npm run copy-assets && npm run shred-docs:subdomain && npm run usage && astro check && astro build --config astro.config.docs.mjs",
+    "usage": "node scripts/generate-usage.mjs",
     "build:all": "npm run build && npm run build:docs",
     "copy-assets": "node scripts/copy-assets.mjs",
     "preview": "astro preview",
