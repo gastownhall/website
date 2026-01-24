@@ -13,6 +13,7 @@ export default defineConfig({
   site: 'https://docs.gastownhall.ai',
   outDir: './deploy-docs',
   srcDir: './src-docs',
+  publicDir: './tmp/public',
   build: {
     assets: '_assets',
   },

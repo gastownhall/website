@@ -1,0 +1,8 @@
+# Redirect docs paths to docs subdomain
+# Cloudflare Pages redirect format: from to [status]
+# See: https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Redirect all /docs/* paths to docs.gastownhall.ai/*
+/docs https://docs.gastownhall.ai/ 301
+/docs/ https://docs.gastownhall.ai/ 301
+/docs/* https://docs.gastownhall.ai/:splat 301

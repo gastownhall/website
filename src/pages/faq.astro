@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site.config';
+
+const faqs = [
+  {
+    question: 'What is Gas Town?',
+    answer:
+      'Gas Town is an orchestration layer for AI coding agents. It helps you manage multiple Claude Code instances simultaneously, tracking accountability, measuring quality, and scaling your AI-assisted engineering workflows.',
+  },
+  {
+    question: 'What problem does Gas Town solve?',
+    answer:
+      'As AI agents become central to engineering workflows, teams face challenges around accountability (who did what?), quality (which agents are reliable?), efficiency (how to route work?), and scale (how to coordinate agents across repos?). Gas Town treats AI agent work as structured data where every action is attributed and every agent has a track record.',
+  },
+  {
+    question: 'What is a Polecat?',
+    answer:
+      'Polecats are ephemeral worker agents that produce Merge Requests. They are spawned for specific tasks, complete their work in isolated git worktrees to avoid conflicts, and are then cleaned up. Polecats are managed by the Witness agent.',
+  },
+  {
+    question: 'What is a Convoy?',
+    answer:
+      'A Convoy is how you track batched work in Gas Town. When you kick off work—even a single issue—you create a convoy to track it. Convoys provide a single view of what is in flight, cross-rig tracking, auto-notification when work lands, and historical records of completed work.',
+  },
+  {
+    question: 'What is the difference between Crew and Polecats?',
+    answer:
+      'Crew members are long-lived, persistent agents for ongoing collaboration—you control their lifecycle. Polecats are ephemeral workers managed by the Witness that are spawned for specific tasks and automatically cleaned up. Use Crew for exploratory work and long-running projects; use Polecats for discrete, well-defined, parallelizable tasks.',
+  },
+  {
+    question: 'What is the Propulsion Principle (GUPP)?',
+    answer:
+      'GUPP stands for Gas Town Universal Propulsion Principle: "If there is work on your Hook, YOU MUST RUN IT." This ensures agents autonomously proceed with available work without waiting for external input. It is the heartbeat of Gas Town\'s autonomous operation.',
+  },
+  {
+    question: 'What is MEOW?',
+    answer:
+      'MEOW stands for Molecular Expression of Work. It is the principle of breaking large goals into detailed instructions for agents, supported by Beads, Epics, Formulas, and Molecules. MEOW ensures work is decomposed into trackable, atomic units that agents can execute autonomously.',
+  },
+  {
+    question: 'What is a Bead?',
+    answer:
+      'A Bead is a git-backed atomic work unit stored in JSONL format. Beads are the fundamental unit of work tracking in Gas Town. They can represent issues, tasks, epics, or any trackable work item.',
+  },
+  {
+    question: 'What are the Mayor, Deacon, and Witness roles?',
+    answer:
+      'The Mayor is the chief-of-staff agent responsible for initiating Convoys and coordinating work distribution. The Deacon is a daemon that runs continuous Patrol cycles to ensure worker activity and system health. The Witness is a per-rig patrol agent that oversees Polecats and the Refinery.',
+  },
+  {
+    question: 'Does Gas Town require API credits?',
+    answer:
+      'No. Gas Town lets you run unlimited AI agents using your existing Max/Pro subscriptions. There are no per-token API costs or usage caps—you leverage the subscriptions you already pay for.',
+  },
+];
+
+// Build FAQPage schema for SEO
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="FAQ | Gas Town Hall"
+  description="Frequently asked questions about Gas Town, the orchestration layer for AI coding agents."
+>
+  <div class="faq-page">
+    <header class="faq-header">
+      <a href="/" class="back-link">&larr; Back to Gas Town Hall</a>
+      <h1>Frequently Asked Questions</h1>
+      <p class="faq-description">
+        Common questions about Gas Town and how it helps you manage AI coding
+        agents.
+      </p>
+    </header>
+
+    <div class="faq-list">
+      {
+        faqs.map((faq, index) => (
+          <details class="faq-item" style={`--item-index: ${index}`}>
+            <summary class="faq-question">{faq.question}</summary>
+            <div class="faq-answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+
+    <div class="faq-cta">
+      <p>Have more questions?</p>
+      <a href={site.docsUrl} class="btn btn-primary">Read the Docs</a>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+</BaseLayout>
+
+<style>
+  .faq-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+  }
+
+  .faq-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+    animation: fadeInDown 0.6s var(--ease-out-expo) both;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: var(--space-md);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    padding-left: 0;
+    transition:
+      color var(--duration-fast) var(--ease-in-out-smooth),
+      padding-left var(--duration-normal) var(--ease-out-expo);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+    padding-left: 0.5rem;
+    text-decoration: none;
+  }
+
+  .faq-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin: 0 0 var(--space-md) 0;
+    line-height: 1.2;
+  }
+
+  .faq-description {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    overflow: hidden;
+    animation: fadeInUp 0.6s var(--ease-out-expo) both;
+    animation-delay: calc(var(--item-index) * 50ms + 0.1s);
+    transition:
+      border-color var(--duration-normal) var(--ease-in-out-smooth),
+      box-shadow var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .faq-item:hover {
+    border-color: var(--color-brass);
+  }
+
+  .faq-item[open] {
+    border-color: var(--color-brass);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .faq-question {
+    padding: 1.25rem 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: color var(--duration-fast) var(--ease-in-out-smooth);
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-brass);
+    flex-shrink: 0;
+    transition: transform var(--duration-normal) var(--ease-out-expo);
+  }
+
+  .faq-item[open] .faq-question::after {
+    transform: rotate(45deg);
+  }
+
+  .faq-question:hover {
+    color: var(--color-accent);
+  }
+
+  .faq-answer {
+    padding: 0 1.5rem 1.25rem;
+    animation: fadeIn 0.3s var(--ease-out-expo);
+  }
+
+  .faq-answer p {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .faq-cta {
+    margin-top: var(--space-xl);
+    padding: var(--space-lg);
+    background: linear-gradient(180deg, #4a3728 0%, #3e2723 100%);
+    border: 3px solid var(--color-brass);
+    border-radius: 6px;
+    text-align: center;
+    animation: fadeIn 0.8s var(--ease-out-expo) 0.5s both;
+  }
+
+  .faq-cta p {
+    color: var(--color-surface);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  @media (max-width: 768px) {
+    .faq-page {
+      padding: var(--space-md);
+    }
+
+    .faq-question {
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    .faq-answer {
+      padding: 0 1.25rem 1rem;
+    }
+  }
+</style>

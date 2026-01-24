@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogPosts } from '../../site.config';
+---
+
+<BaseLayout
+  title="Blog | Gas Town Hall"
+  description="Articles and updates about Gas Town, AI coding agents, and the future of software development."
+>
+  <div class="blog-archive">
+    <header class="archive-header">
+      <a href="/" class="back-link">&larr; Back to Gas Town Hall</a>
+      <h1>Town Crier</h1>
+      <p class="archive-description">
+        Articles and updates about Gas Town, AI coding agents, and the future of
+        software development.
+      </p>
+    </header>
+
+    <div class="blog-list">
+      {
+        blogPosts.map((post, index) => (
+          <a
+            href={post.url}
+            target="_blank"
+            rel="noopener"
+            class="blog-item"
+            style={`--item-index: ${index}`}
+          >
+            <div class="blog-image-frame">
+              <img src={post.image} alt="" class="blog-image" loading="lazy" />
+            </div>
+            <div class="blog-content">
+              <h2>{post.title}</h2>
+              <p class="blog-excerpt">{post.description}</p>
+              <span class="blog-date">{post.date}</span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .blog-archive {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+  }
+
+  .archive-header {
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border);
+    animation: fadeInDown 0.6s var(--ease-out-expo) both;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: var(--space-md);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    padding-left: 0;
+    transition:
+      color var(--duration-fast) var(--ease-in-out-smooth),
+      padding-left var(--duration-normal) var(--ease-out-expo);
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+    padding-left: 0.5rem;
+    text-decoration: none;
+  }
+
+  .archive-header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin: 0 0 var(--space-md) 0;
+    line-height: 1.2;
+  }
+
+  .archive-description {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  a.blog-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color var(--duration-normal) var(--ease-in-out-smooth),
+      box-shadow var(--duration-slow) var(--ease-out-expo),
+      transform var(--duration-normal) var(--ease-out-expo);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.6s var(--ease-out-expo) both;
+    animation-delay: calc(var(--item-index) * 75ms + 0.1s);
+  }
+
+  a.blog-item:last-child {
+    margin-bottom: 0;
+  }
+
+  a.blog-item:hover {
+    border-color: var(--color-brass);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    text-decoration: none;
+  }
+
+  a.blog-item:hover h2 {
+    color: var(--color-accent);
+  }
+
+  .blog-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .blog-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+    transition: color var(--duration-fast) var(--ease-in-out-smooth);
+    color: var(--color-text);
+  }
+
+  .blog-excerpt {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin: 0 0 0.5rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-date {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .blog-image-frame {
+    flex: 0 0 auto;
+    padding: 4px;
+    background: linear-gradient(
+      135deg,
+      var(--color-brass) 0%,
+      var(--color-bronze) 100%
+    );
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  img.blog-image {
+    width: 112px;
+    height: 112px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .blog-archive {
+      padding: var(--space-md);
+    }
+
+    a.blog-item {
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .blog-image-frame {
+      padding: 3px;
+    }
+
+    img.blog-image {
+      width: 80px;
+      height: 80px;
+    }
+
+    .blog-content h2 {
+      font-size: 1.0625rem;
+    }
+  }
+</style>

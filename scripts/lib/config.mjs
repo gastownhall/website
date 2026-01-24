@@ -19,7 +19,7 @@ export const paths = {
   root: join(__dirname, '..', '..'),
   src: join(__dirname, '..', '..', 'src'),
   pages: join(__dirname, '..', '..', 'src', 'pages'),
-  public: join(__dirname, '..', '..', 'public'),
+  public: join(__dirname, '..', '..', 'tmp', 'public'),
   docsFodder: join(__dirname, '..', '..', 'docs-fodder'),
   gastown: join(__dirname, '..', '..', 'docs-fodder', 'gastown-docs'),
   blogPosts: join(__dirname, '..', '..', 'docs-fodder', 'steve-blog-posts'),

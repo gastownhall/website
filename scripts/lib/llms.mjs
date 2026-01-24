@@ -90,11 +90,27 @@ export function renderSection(title, pages) {
  * @returns {string} Complete llms.txt content
  */
 export function generateLlmsTxt(groups) {
+  const lastModified = new Date().toISOString().split('T')[0];
+
   const header = `# ${site.name}
 
-> ${site.name} is the documentation and resource hub for Gas Town, an AI-powered development workflow system. Gas Town uses autonomous agents (polecats) to execute software development tasks through a structured work tracking system (beads and molecules).
+> ${site.name} is the documentation and resource hub for Gas Town, an open source orchestration layer for AI coding agents. Gas Town helps you manage multiple Claude Code instances simultaneously—tracking accountability, measuring quality, and scaling AI-assisted engineering workflows.
 
-Website: ${site.url}
+## Quick Summary
+
+- **What:** Orchestration layer for AI coding agents
+- **Problem Solved:** Accountability, quality measurement, work routing, and agent coordination at scale
+- **Key Concepts:** Convoys (batch work tracking), Polecats (ephemeral workers), Crew (persistent workers), Beads (atomic work units)
+- **Core Principle:** GUPP - "If there is work on your Hook, YOU MUST RUN IT"
+
+## Links
+
+- Website: ${site.url}
+- Documentation: ${site.docsUrl}
+- GitHub: https://github.com/steveyegge/gastown
+- Full LLM content: ${site.url}/llms-full.txt
+
+Last updated: ${lastModified}
 
 `;
 

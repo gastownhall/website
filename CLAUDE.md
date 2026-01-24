@@ -10,11 +10,16 @@ Gas Town Hall website (gastownhall.ai) - documentation hub for Gas Town, an orch
 
 ```bash
 npm run dev          # Start dev server (http://localhost:4321)
-npm run build        # Type check + production build
+npm run build        # Build main site (gastownhall.ai)
+npm run build:docs   # Build docs subdomain (docs.gastownhall.ai)
+npm run build:all    # Build both
 npm run preview      # Preview production build
+npm run copy-assets  # Copy src/static/ to tmp/public/
 npm run shred-docs   # Regenerate docs from docs-fodder/gastown-docs/
-npm run llms         # Regenerate public/llms.txt
-npm test             # Run all tests (66 tests)
+npm run llms         # Regenerate tmp/public/llms.txt
+npm run llms-full    # Regenerate tmp/public/llms-full.txt
+npm test             # Run all tests (Node.js test runner)
+node --test scripts/lib/__tests__/markdown.test.mjs  # Run single test file
 npm run lint         # Run ESLint
 npm run lint:fix     # Run ESLint with auto-fix
 npm run format       # Format code with Prettier
@@ -22,9 +27,22 @@ npm run format:check # Check formatting without writing
 npm run deploy       # Manual deploy to Cloudflare Pages
 ```
 
+**Main site build (`npm run build`):** copy-assets → shred-docs → llms → llms-full → astro check → astro build → `deploy/`
+
+**Docs build (`npm run build:docs`):** copy-assets → shred-docs:subdomain → astro check → astro build → `deploy-docs/`
+
+**Fully regeneratable:** Deleting `tmp/public/` and running build regenerates everything.
+
 ## Deployment
 
-Auto-deploys to Cloudflare Pages on push to `main`. Manual deploy: `npm run deploy`.
+Auto-deploys to Cloudflare Pages on push to `main`.
+
+| Site | URL | Cloudflare Project | Deploy Command |
+|------|-----|-------------------|----------------|
+| Main | gastownhall.ai | `gastownhall-website` | `npm run deploy` |
+| Docs | docs.gastownhall.ai | `gastown-docs` | `npm run deploy:docs` |
+
+The main site's `_redirects` file routes `/docs/*` → `docs.gastownhall.ai/*`.
 
 ## Architecture
 
@@ -47,8 +65,10 @@ Do NOT edit generated docs pages directly. Edit source markdown, then regenerate
 
 All scripts are in `scripts/`:
 
+- `copy-assets.mjs` - Copies src/static/ to tmp/public/
 - `shred-docs.mjs` - Generates Astro pages from markdown docs
-- `generate-llms.mjs` - Generates public/llms.txt
+- `generate-llms.mjs` - Generates tmp/public/llms.txt (short LLM reference)
+- `generate-llms-full.mjs` - Generates tmp/public/llms-full.txt (comprehensive LLM reference)
 - `generate-og-preview.mjs` - OG card preview tool (output: tmp/og-preview.html)
 
 ### Build Script Utilities
@@ -69,9 +89,19 @@ Tests in `scripts/lib/__tests__/`.
 - **DocsLayout** - Wraps BaseLayout, adds sidebar navigation
 - **BlogLayout** - Wraps BaseLayout, adds article formatting
 
+### Static Assets
+
+All static assets live in `src/static/` (source of truth):
+- `favicon.svg`, `og-image.*` - Site icons and social images
+- `robots.txt`, `_redirects` - SEO and Cloudflare config
+- `styles/global.css` - Global CSS with steampunk theme
+- `images/` - Site images and blog post images
+
+These are copied to `tmp/public/` during build. Do NOT edit files in `tmp/public/` directly.
+
 ### Styling
 
-- Global: `public/styles/global.css` (CSS custom properties, steampunk theme)
+- Global: `src/static/styles/global.css` (CSS custom properties, steampunk theme)
 - Component: Astro scoped `<style>` blocks
 - Design system: `docs/design_concept.json`, `docs/design-system.json`
 
@@ -87,44 +117,10 @@ Gas Town documentation and Steve Yegge blog posts are copyright Steve Yegge, use
 
 Do NOT commit or push until explicitly asked by the user.
 
-## Architecture Best Practices
+## Project-Specific Guidelines
 
-- **TDD (Test-Driven Development)** - write the tests first; the implementation
-  code isn't done until the tests pass.
-- **DRY (Don't Repeat Yourself)** – eliminate duplicated logic by extracting
-  shared utilities and modules.
-- **Separation of Concerns** – each module should handle one distinct
-  responsibility.
-- **Single Responsibility Principle (SRP)** – every class/module/function/file
-  should have exactly one reason to change.
-- **Clear Abstractions & Contracts** – expose intent through small, stable
-  interfaces and hide implementation details.
-- **Low Coupling, High Cohesion** – keep modules self-contained, minimize
-  cross-dependencies.
-- **Scalability & Statelessness** – design components to scale horizontally and
-  prefer stateless services when possible.
-- **Observability & Testability** – build in logging, metrics, tracing, and
-  ensure components can be unit/integration tested.
-- **KISS (Keep It Simple, Sir)** - keep solutions as simple as possible.
-- **YAGNI (You're Not Gonna Need It)** – avoid speculative complexity or
-  over-engineering.
-- **Don't Swallow Errors** by catching expections, silently filling in required
-  but missing values or adding timeouts when something hangs unexpectedly. All
-  of those are exceptions that should be thrown so that the errors can be seen,
-  root causes can be found and fixes can be applied.
-- **No Placeholder Code** - we're building production code here, not toys.
-- **No Comments for Removed Functionality** - the source is not the place to
-  keep history of what's changed; it's the place to implement the current
-  requirements only.
-- **Layered Architecture** - organize code into clear tiers where each layer
-  depends only on the one(s) below it, keeping logic cleanly separated.
-- **Prefer Non-Nullable Variables** when possible; use nullability sparingly.
-- **Prefer Async Notifications** when possible over inefficient polling.
-- **Consider First Principles** to assess your current architecture against the
-  one you'd use if you started over from scratch.
-- **Eliminate Race Condtions** that might cause dropped or corrupted data
-- **Write for Maintainability** so that the code is clear and readable and easy
-  to maintain by future developers.
-- **Arrange Project Idiomatically** for the language and framework being used,
-  including recommended lints, static analysis tools, folder structure and
-  gitignore entries.
+- **Don't swallow errors** - no try-catch blocks in sample apps or tests; let exceptions surface to find root causes
+- **No placeholder code** - production code only, not stubs or TODOs
+- **Generated files are read-only** - don't edit `src/pages/docs/*.astro` or `tmp/public/` directly
+- **Test files should be silent** - no console output on success; use `expect()` for assertions
+- **Scratch files go in `tmp/`** - temporary/experimental files belong in the tmp/ folder

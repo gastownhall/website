@@ -549,6 +549,11 @@
       "shimmer": {
         "0%": { "backgroundPosition": "-200% center" },
         "100%": { "backgroundPosition": "200% center" }
+      },
+      "steamRise": {
+        "0%": { "opacity": 0, "transform": "translateY(0) scale(0.8)" },
+        "50%": { "opacity": 0.6 },
+        "100%": { "opacity": 0, "transform": "translateY(-40px) scale(1.2)" }
       }
     },
     "patterns": {

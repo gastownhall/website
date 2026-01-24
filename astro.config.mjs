@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://gastownhall.ai',
   outDir: './deploy',
+  publicDir: './tmp/public',
   build: {
     assets: '_assets',
   },

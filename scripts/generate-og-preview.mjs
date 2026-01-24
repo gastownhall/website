@@ -55,7 +55,7 @@ if (mode === 'prod') {
   imageSource = `http://localhost:4321${ogImagePath}`;
   modeLabel = 'Local Dev Server (localhost:4321)';
 } else {
-  imageSource = `../public${ogImagePath}`;
+  imageSource = `../tmp/public${ogImagePath}`;
   modeLabel = 'Local Build (deploy/)';
 }
 

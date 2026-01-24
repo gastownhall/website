@@ -30,7 +30,7 @@
     },
     "craftedMotion": {
       "description": "Animations should feel mechanical and precise, like well-oiled machinery. Movements ease out smoothly (like a steam valve releasing) rather than bouncing or springing.",
-      "application": "Use ease-out-expo for most transitions, stagger animations like gears engaging, subtle pulsing for ambient elements"
+      "application": "Use ease-out-expo for most transitions, stagger animations like gears engaging, subtle pulsing for ambient elements, steamRise for decorative steam effects"
     },
     "accessibleByDefault": {
       "description": "The design must work for everyone. Respect user preferences for reduced motion, maintain sufficient color contrast, and ensure all interactive elements are keyboard accessible.",

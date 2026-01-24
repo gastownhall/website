@@ -18,21 +18,37 @@ Open http://localhost:4321 to view the site.
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Start development server |
-| `npm run build` | Type check + production build |
+| `npm run build` | Build main site only |
+| `npm run build:docs` | Build docs subdomain only |
+| `npm run build:all` | Build both main site and docs |
 | `npm run preview` | Preview production build |
+| `npm run copy-assets` | Copy static assets to public/ |
 | `npm run shred-docs` | Regenerate docs from source markdown |
 | `npm run llms` | Regenerate llms.txt |
+| `npm run llms-full` | Regenerate llms-full.txt (comprehensive) |
 | `npm test` | Run unit tests (66 tests) |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format code with Prettier |
 | `npm run deploy` | Manual deploy to Cloudflare Pages |
 
+Build pipelines:
+- **Main site:** copy-assets → shred-docs → llms → llms-full → astro build → `deploy/`
+- **Docs subdomain:** copy-assets → shred-docs:subdomain → astro build → `deploy-docs/`
+
 ## Deployment
 
-The site auto-deploys to Cloudflare Pages on push to `main`. Manual deploys can be run with `npm run deploy`.
+Both sites auto-deploy to Cloudflare Pages on push to `main`.
 
-- **Production**: https://gastownhall.ai
-- **Redirects**: gastownhall.com → gastownhall.ai
+| Site | URL | Cloudflare Project | Output Dir |
+|------|-----|-------------------|------------|
+| Main | https://gastownhall.ai | `gastownhall-website` | `deploy/` |
+| Docs | https://docs.gastownhall.ai | `gastown-docs` | `deploy-docs/` |
+
+Manual deploys:
+- `npm run deploy` - Deploy main site
+- `npm run deploy:docs` - Deploy docs subdomain
+
+**Redirects:** gastownhall.com → gastownhall.ai
 
 ## Project Structure
 
@@ -43,11 +59,13 @@ The site auto-deploys to Cloudflare Pages on push to `main`. Manual deploys can 
 │   ├── layouts/             # Page layouts
 │   └── components/          # Reusable components
 ├── scripts/
+│   ├── copy-assets.mjs      # Static asset copying
 │   ├── shred-docs.mjs       # Docs generation script
-│   ├── generate-llms.mjs    # llms.txt generation script
+│   ├── generate-llms.mjs    # llms.txt generation (short)
+│   ├── generate-llms-full.mjs   # llms-full.txt generation (comprehensive)
 │   ├── generate-og-preview.mjs  # OG card preview tool
 │   └── lib/                 # Shared utilities and tests
-├── public/                  # Static assets
+├── src/static/              # Static assets (source of truth)
 ├── docs-fodder/             # Source content (don't edit directly)
 │   ├── gastown-docs/        # Documentation markdown
 │   └── steve-blog-posts/    # Blog post content

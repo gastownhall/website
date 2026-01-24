@@ -4,6 +4,18 @@ Build scripts and utilities for the Gas Town Hall website.
 
 ## Build Scripts
 
+### copy-assets.mjs
+
+Copies static assets from `src/static/` to `tmp/public/`.
+
+```bash
+npm run copy-assets
+```
+
+**Source:** `src/static/` → **Output:** `tmp/public/`
+
+This ensures all static assets are part of the build process, making the entire site regeneratable.
+
 ### shred-docs.mjs
 
 Generates Astro pages from markdown documentation.
@@ -20,13 +32,23 @@ node scripts/shred-docs.mjs --subdomain
 
 ### generate-llms.mjs
 
-Generates `public/llms.txt` for LLM consumption.
+Generates `tmp/public/llms.txt` - a short LLM reference with page links.
 
 ```bash
 npm run llms
 ```
 
 Scans all Astro pages and creates a structured text file listing site content.
+
+### generate-llms-full.mjs
+
+Generates `tmp/public/llms-full.txt` - a comprehensive LLM reference with content excerpts.
+
+```bash
+npm run llms-full
+```
+
+Includes glossary definitions, concept excerpts, CLI reference, and use cases.
 
 ### generate-og-preview.mjs
 

@@ -23,5 +23,5 @@ npm-debug.log*
 # Generated docs pages for subdomain build
 src-docs/pages/
 
-# Scratch/experimental
-v2/
+# Astro's public directory is tmp/public/ (configured in astro.config.mjs)
+# It's already ignored via tmp/ above

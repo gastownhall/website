@@ -133,7 +133,10 @@ describe('generateLlmsTxt', () => {
     const result = generateLlmsTxt(groups);
 
     assert.ok(result.includes('# Gas Town Hall'));
-    assert.ok(result.includes('Website: https://gastownhall.ai'));
+    assert.ok(result.includes('## Quick Summary'));
+    assert.ok(result.includes('## Links'));
+    assert.ok(result.includes('https://gastownhall.ai'));
+    assert.ok(result.includes('Last updated:'));
   });
 
   it('includes all non-empty sections', () => {

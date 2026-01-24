@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import { site } from '../site.config';
 
 interface Props {
   title: string;
@@ -8,9 +9,59 @@ interface Props {
 
 const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname;
+
+// Build breadcrumb items from URL path
+function buildBreadcrumbs(path: string, pageTitle: string) {
+  const items = [
+    { name: 'Home', url: site.url },
+    { name: 'Docs', url: `${site.url}/docs` },
+  ];
+
+  // Parse the path segments after /docs/
+  const segments = path.replace(/^\/docs\/?/, '').replace(/\/$/, '').split('/').filter(Boolean);
+
+  if (segments.length > 0) {
+    // Map segment names to readable titles
+    const segmentTitles: Record<string, string> = {
+      concepts: 'Concepts',
+      design: 'Design',
+      examples: 'Examples',
+    };
+
+    // Add intermediate segments (like "concepts" or "design")
+    if (segments.length > 1 && segmentTitles[segments[0]]) {
+      items.push({
+        name: segmentTitles[segments[0]],
+        url: `${site.url}/docs/${segments[0]}`,
+      });
+    }
+
+    // Add the current page
+    items.push({
+      name: pageTitle,
+      url: `${site.url}${path}`,
+    });
+  }
+
+  return items;
+}
+
+const breadcrumbs = buildBreadcrumbs(currentPath, title);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    item: item.url,
+  })),
+};
 ---
 
 <BaseLayout title={`${title} | Gas Town Docs`} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <div class="docs-container">
     <aside class="docs-sidebar">
       <nav>

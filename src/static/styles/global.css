@@ -1,0 +1,855 @@
+/* Gas Town Hall - Steampunk Industrial Theme */
+
+/* Font imports - Victorian/Industrial typography */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* CSS Custom Properties */
+:root {
+  /* Colors - Steampunk Industrial Palette */
+  --color-bg: #e8dcc8;
+  --color-bg-alt: #d9c9b0;
+  --color-bg-dark: #3e2723;
+  --color-surface: #f5e6d3;
+  --color-surface-dark: #4a3728;
+
+  /* Text colors */
+  --color-text: #2c1810;
+  --color-text-muted: #5d4037;
+  --color-text-light: #f5e6d3;
+
+  /* Accent colors */
+  --color-accent: #8b2500;
+  --color-accent-hover: #a0522d;
+  --color-accent-light: #d4a574;
+
+  /* Metal colors */
+  --color-brass: #cd7f32;
+  --color-bronze: #8b4513;
+  --color-copper: #b87333;
+  --color-steel: #70798c;
+  --color-rust: #8b4513;
+
+  /* Functional colors */
+  --color-link: #8b2500;
+  --color-link-hover: #5d4037;
+  --color-border: #8b7355;
+  --color-border-dark: #5d4037;
+  --color-code-bg: #f0e6d8;
+
+  /* Discord color */
+  --color-discord: #5865f2;
+  --color-discord-hover: #4752c4;
+
+  /* Typography */
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  /* Layout */
+  --max-width: 1200px;
+  --border-radius: 4px;
+
+  /* Animation timing functions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Animation durations */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+}
+
+/* Keyframe Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateCounterClockwise {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes steamRise {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.2);
+  }
+}
+
+@keyframes pulseGlow {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.3),
+      0 0 8px rgba(205, 127, 50, 0.4);
+  }
+  50% {
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.3),
+      0 0 16px rgba(205, 127, 50, 0.7);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  background-image:
+    linear-gradient(rgba(232, 220, 200, 0.75), rgba(232, 220, 200, 0.75)),
+    url('/images/steampunk-bg.webp');
+  background-repeat: no-repeat, no-repeat;
+  background-position:
+    center center,
+    center center;
+  background-size: cover, cover;
+  background-attachment: fixed, fixed;
+  position: relative;
+}
+
+/* Fallback for browsers without WebP support */
+@supports not (background-image: url('/images/steampunk-bg.webp')) {
+  body {
+    background-image:
+      linear-gradient(rgba(232, 220, 200, 0.75), rgba(232, 220, 200, 0.75)),
+      url('/images/steampunk-bg.jpg');
+    background-repeat: no-repeat, no-repeat;
+    background-position:
+      center center,
+      center center;
+    background-size: cover, cover;
+    background-attachment: fixed, fixed;
+  }
+}
+
+/* Mobile: Use smaller image and disable fixed positioning (causes jank on iOS) */
+@media (max-width: 768px) {
+  body {
+    background-image:
+      linear-gradient(rgba(232, 220, 200, 0.6), rgba(232, 220, 200, 0.6)),
+      url('/images/steampunk-bg-mobile.webp');
+    background-attachment: scroll, scroll;
+    background-position:
+      30% center,
+      30% center;
+  }
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text);
+  margin-top: 0;
+  letter-spacing: 0.05em;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+/* Links */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 3px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 4px rgba(205, 127, 50, 0.2);
+}
+
+/* Animated underline for content links */
+.docs-content a:not(.btn),
+.blog-content a:not(.btn) {
+  background: linear-gradient(
+    to right,
+    var(--color-brass),
+    var(--color-copper)
+  );
+  background-size: 0% 2px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  transition: background-size var(--duration-normal) var(--ease-out-expo);
+  text-decoration: none;
+}
+
+.docs-content a:not(.btn):hover,
+.blog-content a:not(.btn):hover {
+  background-size: 100% 2px;
+  text-decoration: none;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Site Header - Industrial Metal Bar */
+.site-header {
+  background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+  border-bottom: 4px solid var(--color-brass);
+  padding: var(--space-md) var(--space-lg);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-brass) 10%,
+    var(--color-copper) 50%,
+    var(--color-brass) 90%,
+    transparent 100%
+  );
+}
+
+.site-header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.site-header .logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--color-surface);
+  letter-spacing: 0.1em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.site-header .logo::before,
+.site-header .logo::after {
+  content: '—';
+  color: var(--color-brass);
+  margin: 0 0.5rem;
+}
+
+.site-header .logo:hover {
+  color: var(--color-brass);
+  text-decoration: none;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(205, 127, 50, 0.4);
+}
+
+.site-header .nav-links {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.site-header .nav-links a {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-surface);
+  text-decoration: none;
+  padding: var(--space-xs) 0;
+  position: relative;
+  transition: color var(--duration-normal) var(--ease-in-out-smooth);
+}
+
+.site-header .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-brass), var(--color-copper));
+  transition:
+    width var(--duration-normal) var(--ease-out-expo),
+    left var(--duration-normal) var(--ease-out-expo);
+}
+
+.site-header .nav-links a:hover {
+  color: var(--color-brass);
+  text-decoration: none;
+}
+
+.site-header .nav-links a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Site Footer - Industrial Base */
+.site-footer {
+  background: linear-gradient(0deg, #2c1810 0%, #3e2723 100%);
+  border-top: 4px solid var(--color-brass);
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  color: var(--color-text-light);
+  margin-top: var(--space-xl);
+  position: relative;
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-brass) 10%,
+    var(--color-copper) 50%,
+    var(--color-brass) 90%,
+    transparent 100%
+  );
+}
+
+.site-footer a {
+  color: var(--color-brass);
+}
+
+.site-footer a:hover {
+  color: var(--color-copper);
+}
+
+/* Main content */
+main {
+  min-height: calc(100vh - 200px);
+}
+
+/* Industrial Metal Plate Button Base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-normal) var(--ease-out-expo),
+    background var(--duration-normal) var(--ease-in-out-smooth),
+    border-color var(--duration-normal) var(--ease-in-out-smooth);
+  position: relative;
+  text-transform: uppercase;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-brass);
+  outline-offset: 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 0 0 5px rgba(205, 127, 50, 0.2);
+}
+
+.btn:active {
+  transform: scale(0.98) translateY(1px);
+}
+
+/* Primary Button - Brass Metal Plate */
+.btn-primary {
+  background: linear-gradient(180deg, #d4a574 0%, #b8860b 50%, #8b6914 100%);
+  color: var(--color-text);
+  border: 2px solid #8b6914;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #e8c49a 0%, #cd9b1d 50%, #a67c00 100%);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 6px 16px rgba(0, 0, 0, 0.35),
+    0 0 20px rgba(205, 127, 50, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.98) translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Secondary Button - Steel Metal Plate */
+.btn-secondary {
+  background: linear-gradient(180deg, #e8dcc8 0%, #d4c4a8 50%, #beb09a 100%);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-brass);
+  background: linear-gradient(180deg, #f5e6d3 0%, #e8dcc8 50%, #d4c4a8 100%);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98) translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.15),
+    0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Discord Button */
+.btn-discord {
+  background: linear-gradient(180deg, #7289da 0%, #5865f2 50%, #4752c4 100%);
+  color: white;
+  border: 2px solid #4752c4;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-discord:hover {
+  background: linear-gradient(180deg, #8b9fe8 0%, #6b7aff 50%, #5865f2 100%);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+    0 6px 16px rgba(88, 101, 242, 0.5);
+}
+
+.btn-discord:active {
+  transform: scale(0.98) translateY(1px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Large button variant */
+.btn-large {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* Industrial Divider */
+.industrial-divider {
+  height: 8px;
+  background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+  border-top: 2px solid var(--color-brass);
+  border-bottom: 2px solid var(--color-bronze);
+  margin: var(--space-lg) 0;
+  position: relative;
+}
+
+.industrial-divider::before,
+.industrial-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--color-brass);
+  border-radius: 50%;
+  border: 2px solid var(--color-bronze);
+}
+
+.industrial-divider::before {
+  left: 10%;
+}
+
+.industrial-divider::after {
+  right: 10%;
+}
+
+/* Section Header Banner */
+.section-banner {
+  display: inline-block;
+  background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+  color: var(--color-surface);
+  padding: 0.5rem 2rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  border: 2px solid var(--color-brass);
+  border-radius: var(--border-radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--space-lg);
+}
+
+/* Docs content prose styling */
+.docs-content h1 {
+  font-size: 2.25rem;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 3px solid var(--color-brass);
+}
+
+.docs-content h2 {
+  font-size: 1.625rem;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+  color: var(--color-accent);
+}
+
+.docs-content h3 {
+  font-size: 1.25rem;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+.docs-content p {
+  margin-bottom: var(--space-md);
+}
+
+.docs-content pre {
+  background: var(--color-code-bg);
+  padding: var(--space-md);
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  border: 2px solid var(--color-border);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.docs-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.docs-content :not(pre) > code {
+  background: var(--color-code-bg);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  border: 1px solid var(--color-border);
+}
+
+.docs-content ul,
+.docs-content ol {
+  margin-bottom: var(--space-md);
+  padding-left: 1.5rem;
+}
+
+.docs-content li {
+  margin-bottom: var(--space-xs);
+}
+
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-md);
+}
+
+.docs-content th,
+.docs-content td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+}
+
+.docs-content th {
+  background: var(--color-bg-alt);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.docs-content blockquote {
+  margin: var(--space-md) 0;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-surface);
+  border-left: 4px solid var(--color-brass);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.docs-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Card styles - Industrial Frame */
+.card {
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--space-lg);
+  transition:
+    box-shadow var(--duration-slow) var(--ease-out-expo),
+    transform var(--duration-normal) var(--ease-out-expo),
+    border-color var(--duration-normal) var(--ease-in-out-smooth);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover {
+  border-color: var(--color-brass);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(205, 127, 50, 0.1);
+  transform: translateY(-4px);
+}
+
+.card h3 {
+  margin-bottom: var(--space-sm);
+  transition: color var(--duration-fast) var(--ease-in-out-smooth);
+}
+
+.card:hover h3 {
+  color: var(--color-accent);
+}
+
+.card p {
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+}
+
+/* Grid utilities */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Section utilities */
+.section {
+  padding: var(--space-xl) var(--space-lg);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-alt {
+  background: var(--color-bg-alt);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .site-header {
+    padding: var(--space-md);
+  }
+
+  .site-header nav {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .site-header .nav-links {
+    gap: var(--space-md);
+  }
+
+  .site-header .logo::before,
+  .site-header .logo::after {
+    display: none;
+  }
+
+  .section {
+    padding: var(--space-lg) var(--space-md);
+  }
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-brass);
+  color: var(--color-text);
+  padding: var(--space-sm) var(--space-md);
+  z-index: 1000;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Visually hidden utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Gear decoration utility */
+.gear-decoration {
+  position: relative;
+}
+
+.gear-decoration::before {
+  content: '⚙';
+  position: absolute;
+  font-size: 3rem;
+  color: var(--color-brass);
+  opacity: 0.3;
+}

@@ -5,6 +5,7 @@ interface Props {
   title: string;
   description?: string;
   date?: string;
+  isoDate?: string;
   author?: string;
   originalUrl?: string;
 }
@@ -13,12 +14,18 @@ const {
   title,
   description,
   date,
+  isoDate,
   author = 'Steve Yegge',
   originalUrl,
 } = Astro.props;
 ---
 
-<BaseLayout title={`${title} | Gas Town Blog`} description={description}>
+<BaseLayout
+  title={`${title} | Gas Town Blog`}
+  description={description}
+  type="article"
+  publishedDate={isoDate}
+>
   <article class="blog-article">
     <header class="blog-header">
       <a href="/" class="back-link">&larr; Back to Gas Town Hall</a>
