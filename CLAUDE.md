@@ -41,6 +41,7 @@ Tests in `scripts/lib/__tests__/`.
 ## Guidelines
 
 - **Generated files are read-only** - Don't edit `src-docs/pages/*.astro`, `src/pages/docs/*.astro`, or `tmp/public/`. Edit source markdown in `docs-fodder/`, then regenerate.
+- **Exception: `usage.astro`** - This file IS committed because CF build has no `gt` CLI. Regenerate locally with `npm run usage` when gt changes.
 - **Static assets source:** `src/static/` (copied to `tmp/public/` during build)
 - **Scratch files:** Use `tmp/` folder
 

@@ -89,9 +89,11 @@ Docs are generated to `src-docs/pages/` (canonical location for the subdomain), 
 
 ```
 docs-fodder/gastown-docs/ → shred-docs → src-docs/pages/*.astro
-gt --help                 → usage      → src-docs/pages/usage.astro
+gt --help                 → usage      → src-docs/pages/usage.astro (committed)
 src-docs/pages/           → copy-docs  → src/pages/docs/*.astro
 ```
+
+**Note:** `usage.astro` is committed to the repo (unlike other generated docs) because the Cloudflare build environment doesn't have the `gt` CLI installed. When `gt` changes, regenerate locally with `npm run usage` and commit the updated file.
 
 To update documentation:
 1. Edit markdown files in `docs-fodder/gastown-docs/`
