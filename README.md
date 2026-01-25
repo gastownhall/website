@@ -141,7 +141,7 @@ Single source of truth: `site.config.json` contains all site metadata.
 
 ## Quality Checks
 
-A pre-commit hook runs `npm run check` automatically before each commit, which includes:
+A pre-commit hook runs `npm run check` automatically on commits to `main` branch, which includes:
 - ESLint
 - Prettier format check
 - Unit tests

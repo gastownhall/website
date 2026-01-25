@@ -101,4 +101,4 @@ Generated during build (not committed):
 
 Do NOT commit or push until explicitly asked by the user.
 
-**Pre-commit hook:** Husky runs `npm run check` before each commit (lint, format, test, audit). To bypass: `git commit --no-verify`
+**Pre-commit hook:** Husky runs `npm run check` on commits to main branch only. Feature branches skip checks. To bypass: `git commit --no-verify`

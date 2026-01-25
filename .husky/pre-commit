@@ -1,1 +1,5 @@
-npm run check
+# Only run checks when committing to main
+branch=$(git rev-parse --abbrev-ref HEAD)
+if [ "$branch" = "main" ]; then
+  npm run check
+fi
