@@ -111,15 +111,34 @@ LLM-friendly text files are generated during every build (not committed):
 | `/docs/llms.txt` | Docs reference with full CLI usage |
 | `/docs/llms-full.txt` | Comprehensive docs reference |
 
-To update documentation:
-1. Edit markdown files in `docs-fodder/gastown-docs/`
-2. Run `npm run build` or `npm run dev` (regenerates automatically)
+### Updating from a New Gastown Release
 
-To sync docs from a new gastown release:
 ```bash
-npm run sync-docs                              # Uses default path
-node scripts/sync-gastown-docs.mjs /path/to/gastown  # Custom path
+# 1. Pull latest gastown
+cd ~/Code/Cache/steveyegge/gastown && git pull && cd -
+
+# 2. Sync docs from gastown repo (requires gt CLI installed locally)
+npm run sync-docs
+
+# 3. Preview locally
+npm run dev
+
+# 4. Commit the updated files (usage docs + astro pages)
+git add -A && git commit -m "Sync docs from gastown"
+
+# 5. Push to main - CF auto-builds both sites
+git push
 ```
+
+**What gets committed:** `src-docs/pages/usage/*.astro`, `src-docs/data/usage-commands.json`, and `src-docs/pages/*.astro`
+
+**What CF generates:** LLM reference files (`llms.txt`, `llms-full.txt`) are regenerated during each build.
+
+### Editing Docs Locally
+
+To edit documentation without syncing from gastown:
+1. Edit markdown files in `docs-fodder/gastown-docs/`
+2. Run `npm run dev` (regenerates automatically)
 
 ## Configuration
 
