@@ -25,6 +25,7 @@ Open http://localhost:4321 to view the site.
 | `npm run copy-assets` | Copy static assets to tmp/public/ |
 | `npm run shred-docs` | Generate docs to src-docs/pages/ from markdown |
 | `npm run copy-docs` | Copy src-docs/pages/ to src/pages/docs/ (with path transforms) |
+| `npm run sync-docs` | Sync docs from gastown repo and rebuild |
 | `npm run usage` | Generate CLI usage page from gt --help |
 | `npm run llms` | Regenerate llms.txt |
 | `npm run llms-full` | Regenerate llms-full.txt (comprehensive) |
@@ -69,6 +70,7 @@ Manual deploys:
 │   ├── copy-assets.mjs      # Copy src/static/ → tmp/public/
 │   ├── shred-docs.mjs       # Generate docs-fodder/ → src-docs/pages/
 │   ├── copy-docs.mjs        # Copy src-docs/pages/ → src/pages/docs/
+│   ├── sync-gastown-docs.mjs # Sync docs from gastown repo
 │   ├── generate-usage.mjs   # Generate CLI usage from gt --help
 │   ├── generate-llms.mjs    # Generate llms.txt
 │   ├── generate-llms-full.mjs
@@ -94,6 +96,12 @@ src-docs/pages/           → copy-docs  → src/pages/docs/*.astro
 To update documentation:
 1. Edit markdown files in `docs-fodder/gastown-docs/`
 2. Run `npm run build` or `npm run dev` (regenerates automatically)
+
+To sync docs from a new gastown release:
+```bash
+npm run sync-docs                              # Uses default path
+node scripts/sync-gastown-docs.mjs /path/to/gastown  # Custom path
+```
 
 ## Configuration
 

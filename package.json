@@ -10,6 +10,7 @@
     "copy-assets": "node scripts/copy-assets.mjs",
     "copy-docs": "node scripts/copy-docs.mjs",
     "shred-docs": "node scripts/shred-docs.mjs",
+    "sync-docs": "node scripts/sync-gastown-docs.mjs",
     "usage": "node scripts/generate-usage.mjs",
     "llms": "node scripts/generate-llms.mjs",
     "llms-full": "node scripts/generate-llms-full.mjs",
