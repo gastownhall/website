@@ -12,6 +12,15 @@ npm run dev          # Main site at localhost:4321
 npm run dev:docs     # Docs site at localhost:4322
 ```
 
+## Local Staging
+
+To preview production builds locally before deploying:
+
+```bash
+npm run build && npm run preview           # Main site
+npm run build:docs && npm run preview:docs # Docs site
+```
+
 ## Scripts
 
 | Command | Description |
@@ -21,7 +30,8 @@ npm run dev:docs     # Docs site at localhost:4322
 | `npm run build` | Build main site |
 | `npm run build:docs` | Build docs subdomain (Starlight) |
 | `npm run build:all` | Build both main site and docs |
-| `npm run preview` | Preview main site production build |
+| `npm run preview` | Preview main site production build (run build first) |
+| `npm run preview:docs` | Preview docs production build (run build:docs first) |
 | `npm run copy-assets` | Copy static assets to tmp/public/ |
 | `npm run sync-docs` | Sync docs from gastown repo (requires gt CLI) |
 | `npm run llms` | Regenerate llms.txt for main site |
