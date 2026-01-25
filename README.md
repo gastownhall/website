@@ -27,17 +27,20 @@ Open http://localhost:4321 to view the site.
 | `npm run copy-docs` | Copy src-docs/pages/ to src/pages/docs/ (with path transforms) |
 | `npm run sync-docs` | Sync docs from gastown repo and rebuild (requires gt CLI) |
 | `npm run usage` | Generate CLI usage pages from gt --help (requires gt CLI) |
-| `npm run llms` | Regenerate llms.txt |
-| `npm run llms-full` | Regenerate llms-full.txt (comprehensive) |
+| `npm run llms` | Regenerate llms.txt for main site |
+| `npm run llms-full` | Regenerate llms-full.txt (comprehensive) for main site root |
+| `npm run llms-full:main` | Regenerate /docs/llms-full.txt for main site |
+| `npm run llms:docs` | Regenerate llms.txt for docs subdomain (includes full CLI) |
+| `npm run llms:docs:main` | Regenerate /docs/llms.txt for main site (includes full CLI) |
 | `npm test` | Run unit tests (66 tests) |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format code with Prettier |
 | `npm run deploy` | Manual deploy to Cloudflare Pages |
 
 Build pipelines:
-- **Main site:** copy-assets → shred-docs → copy-docs → llms → llms-full → astro build → `deploy/`
-- **Docs subdomain:** copy-assets → shred-docs → astro build → `deploy-docs/`
-- **Dev server:** copy-assets → shred-docs → copy-docs → astro dev
+- **Main site:** copy-assets → shred-docs → copy-docs → llms → llms-full → llms-full:main → llms:docs:main → astro build → `deploy/`
+- **Docs subdomain:** copy-assets → shred-docs → llms:docs → astro build → `deploy-docs/`
+- **Dev server:** copy-assets → shred-docs → copy-docs → llms → llms-full → llms-full:main → llms:docs:main → astro dev
 - **Sync docs:** syncs gastown repo → shred-docs → usage → copy-docs (requires gt CLI)
 
 ## Deployment
@@ -73,8 +76,9 @@ Manual deploys:
 │   ├── copy-docs.mjs        # Copy src-docs/pages/ → src/pages/docs/
 │   ├── sync-gastown-docs.mjs # Sync docs from gastown repo
 │   ├── generate-usage.mjs   # Generate CLI usage from gt --help
-│   ├── generate-llms.mjs    # Generate llms.txt
-│   ├── generate-llms-full.mjs
+│   ├── generate-llms.mjs    # Generate /llms.txt
+│   ├── generate-llms-full.mjs # Generate /llms-full.txt (--main for /docs/)
+│   ├── generate-llms-docs.mjs # Generate /docs/llms.txt (--main for main site)
 │   └── lib/                 # Shared utilities and tests
 ├── src/static/              # Static assets (source of truth)
 ├── docs-fodder/
@@ -95,6 +99,17 @@ src-docs/pages/           → copy-docs  → src/pages/docs/*.astro
 ```
 
 **Note:** Usage docs (`src-docs/pages/usage/` and `src-docs/data/usage-commands.json`) are committed to the repo because the Cloudflare build environment doesn't have the `gt` CLI. When `gt` changes, run `npm run sync-docs` locally and commit the updated files.
+
+### LLM Reference Files
+
+LLM-friendly text files are generated during every build (not committed):
+
+| URL | Description |
+|-----|-------------|
+| `/llms.txt` | Short reference with page links |
+| `/llms-full.txt` | Comprehensive with content excerpts |
+| `/docs/llms.txt` | Docs reference with full CLI usage |
+| `/docs/llms-full.txt` | Comprehensive docs reference |
 
 To update documentation:
 1. Edit markdown files in `docs-fodder/gastown-docs/`

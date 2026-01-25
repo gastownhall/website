@@ -2,6 +2,14 @@
 
 Build scripts and utilities for the Gas Town Hall website.
 
+## Output Types
+
+| Type | Location | Committed? | When Generated |
+|------|----------|------------|----------------|
+| Usage docs | `src-docs/pages/usage/` | Yes | `npm run sync-docs` (requires gt CLI) |
+| LLM files | `tmp/public/*.txt` | No | Every `build` and `dev` |
+| Astro pages | `src-docs/pages/*.astro` | Yes | `npm run shred-docs` |
+
 ## Build Scripts
 
 ### copy-assets.mjs
@@ -65,7 +73,7 @@ After running, commit the changes for CF to build.
 
 ### generate-llms.mjs
 
-Generates `tmp/public/llms.txt` - a short LLM reference with page links.
+Generates `tmp/public/llms.txt` - a short LLM reference with page links for the main site.
 
 ```bash
 npm run llms
@@ -75,13 +83,25 @@ Scans all Astro pages and creates a structured text file listing site content.
 
 ### generate-llms-full.mjs
 
-Generates `tmp/public/llms-full.txt` - a comprehensive LLM reference with content excerpts.
+Generates comprehensive LLM reference with content excerpts, glossary definitions, CLI reference, and use cases.
 
 ```bash
-npm run llms-full
+npm run llms-full         # Output to tmp/public/llms-full.txt
+npm run llms-full:main    # Output to tmp/public/docs/llms-full.txt (for main site /docs/)
 ```
 
-Includes glossary definitions, concept excerpts, CLI reference, and use cases.
+The `--main` flag changes the output path for embedding in the main site at `/docs/llms-full.txt`.
+
+### generate-llms-docs.mjs
+
+Generates comprehensive LLM reference including full CLI usage from `usage-commands.json`.
+
+```bash
+npm run llms:docs         # Output to tmp/public/llms.txt (for docs subdomain)
+npm run llms:docs:main    # Output to tmp/public/docs/llms.txt (for main site)
+```
+
+Includes glossary definitions, concept excerpts, design docs, and **complete CLI command reference**. The `--main` flag changes the output path for embedding in the main site at `/docs/llms.txt`.
 
 ### generate-og-preview.mjs
 

@@ -41,10 +41,24 @@ Pure functions in `scripts/lib/`:
 
 Tests in `scripts/lib/__tests__/`.
 
+### LLM Reference Files
+
+Generated during `build` and `dev` (not committed, regenerated each build):
+
+| File | Location | Content |
+|------|----------|---------|
+| `llms.txt` | `/llms.txt` | Short reference with page links |
+| `llms-full.txt` | `/llms-full.txt` | Comprehensive with content excerpts |
+| `llms.txt` | `/docs/llms.txt` | Docs reference with full CLI usage |
+| `llms-full.txt` | `/docs/llms-full.txt` | Comprehensive docs reference |
+
+Scripts: `generate-llms.mjs`, `generate-llms-full.mjs` (with `--main` flag), `generate-llms-docs.mjs` (with `--main` flag)
+
 ## Guidelines
 
 - **Generated files are read-only** - Don't edit `src-docs/pages/*.astro`, `src/pages/docs/*.astro`, or `tmp/public/`. Edit source markdown in `docs-fodder/`, then regenerate.
 - **Usage docs are committed** - Files in `src-docs/pages/usage/` and `src-docs/data/usage-commands.json` ARE committed because CF has no `gt` CLI. Regenerate locally with `npm run sync-docs` when gt changes.
+- **LLM files are NOT committed** - Files in `tmp/public/*.txt` are regenerated on every build from source markdown.
 - **Static assets source:** `src/static/` (copied to `tmp/public/` during build)
 - **Scratch files:** Use `tmp/` folder
 
