@@ -41,7 +41,7 @@ Pure functions in `scripts/lib/`:
 - `docs.mjs` - Route mapping and Astro page generation
 - `llms.mjs` - llms.txt formatting
 
-Tests in `scripts/lib/__tests__/`.
+Tests in `scripts/lib/__tests__/`. E2E tests in `e2e/`.
 
 ### LLM Reference Files
 
@@ -90,3 +90,5 @@ Scripts: `generate-llms.mjs`, `generate-llms-full.mjs` (with `--main` flag), `ge
 ## Git Workflow
 
 Do NOT commit or push until explicitly asked by the user.
+
+**Pre-commit hook:** Husky runs `npm run check` before each commit (lint, format, test, audit). To bypass: `git commit --no-verify`

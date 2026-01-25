@@ -158,7 +158,19 @@ Single source of truth: `site.config.json` contains all site metadata.
 - [Astro](https://astro.build/) - Static site generator
 - [Plausible](https://plausible.io/) - Privacy-friendly analytics
 - [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) - Linting and formatting
+- [Playwright](https://playwright.dev/) - E2E testing
+- [Husky](https://typicode.github.io/husky/) - Git hooks
 - Node.js test runner - Unit testing
+
+## Quality Checks
+
+A pre-commit hook runs `npm run check` automatically before each commit, which includes:
+- ESLint
+- Prettier format check
+- Unit tests (72 tests)
+- Security audit (fails on high/critical vulnerabilities)
+
+To bypass temporarily: `git commit --no-verify`
 
 ## License
 

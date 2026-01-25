@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "npm run copy-assets && npm run shred-docs && npm run copy-docs && npm run llms && npm run llms-full && npm run llms-full:main && npm run llms:docs:main && astro dev",
     "build": "npm run copy-assets && npm run shred-docs && npm run copy-docs && npm run llms && npm run llms-full && npm run llms-full:main && npm run llms:docs:main && astro check && astro build",
-    "build:docs": "npm run copy-assets && npm run shred-docs && npm run llms:docs && astro check && astro build --config astro.config.docs.mjs",
+    "build:docs": "npm run copy-assets && npm run shred-docs && npm run llms:docs && npm run llms-full && astro check && astro build --config astro.config.docs.mjs",
     "build:all": "npm run build && npm run build:docs",
     "copy-assets": "node scripts/copy-assets.mjs",
     "copy-docs": "node scripts/copy-docs.mjs",
