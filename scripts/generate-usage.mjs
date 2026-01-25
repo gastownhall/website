@@ -96,11 +96,24 @@ function escapeHtml(text) {
 }
 
 /**
+ * Extract version number from gt version output.
+ * @param {string} versionOutput - Output from "gt version"
+ * @returns {string|null} Version string (e.g., "0.5.0") or null
+ */
+function parseVersion(versionOutput) {
+  if (!versionOutput) return null;
+  // Match "gt version X.Y.Z" pattern
+  const match = versionOutput.match(/version\s+(\d+\.\d+\.\d+)/);
+  return match ? match[1] : null;
+}
+
+/**
  * Generate the Astro page content.
  * @param {string} mainHelp - The main help output
  * @param {Object} commandHelps - Help output for each command
+ * @param {string|null} version - Gas Town version string
  */
-function generateAstroPage(mainHelp, commandHelps) {
+function generateAstroPage(mainHelp, commandHelps, version) {
   const escapedMainHelp = escapeHtml(mainHelp);
 
   let commandSections = '';
@@ -134,7 +147,7 @@ import DocsLayout from '../layouts/DocsLayout.astro';
 >
   <p class="intro">
     This page documents the <code>gt</code> command-line interface. The help output below
-    is automatically generated from the installed version of Gas Town.
+    is automatically generated from the installed version of ${version ? `<strong>Gas Town v${version}</strong>` : 'Gas Town'}.
   </p>
 
   <section class="main-help">
@@ -252,6 +265,14 @@ async function main() {
   }
   console.log(`  Found gt at: ${gtPath.trim()}`);
 
+  // Get version
+  console.log('  Capturing gt version...');
+  const versionOutput = runCommand('gt version');
+  const version = parseVersion(versionOutput);
+  if (version) {
+    console.log(`  Version: ${version}`);
+  }
+
   // Get main help
   console.log('  Capturing gt --help...');
   const mainHelp = runCommand('gt --help');
@@ -274,7 +295,7 @@ async function main() {
   }
 
   // Generate the Astro page
-  const pageContent = generateAstroPage(mainHelp, commandHelps);
+  const pageContent = generateAstroPage(mainHelp, commandHelps, version);
 
   // Ensure output directory exists and write file
   mkdirSync(dirname(OUTPUT_FILE), { recursive: true });
