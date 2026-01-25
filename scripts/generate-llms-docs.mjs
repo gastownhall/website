@@ -132,7 +132,9 @@ async function formatUsageCommands() {
 }
 
 async function main() {
-  const target = isMainSite ? 'main site (/docs/llms.txt)' : 'docs subdomain (/llms.txt)';
+  const target = isMainSite
+    ? 'main site (/docs/llms.txt)'
+    : 'docs subdomain (/llms.txt)';
   console.log(`Generating llms.txt for ${target}...`);
   const lastModified = new Date().toISOString().split('T')[0];
 

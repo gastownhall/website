@@ -32,9 +32,13 @@ Open http://localhost:4321 to view the site.
 | `npm run llms-full:main` | Regenerate /docs/llms-full.txt for main site |
 | `npm run llms:docs` | Regenerate llms.txt for docs subdomain (includes full CLI) |
 | `npm run llms:docs:main` | Regenerate /docs/llms.txt for main site (includes full CLI) |
-| `npm test` | Run unit tests (66 tests) |
+| `npm test` | Run unit tests (72 tests) |
+| `npm run test:e2e` | Run E2E tests with Playwright |
+| `npm run test:all` | Run all tests (unit + E2E) |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format code with Prettier |
+| `npm run audit:check` | Check for high/critical vulnerabilities |
+| `npm run check` | Run all quality checks (lint, format, test, audit) |
 | `npm run deploy` | Manual deploy to Cloudflare Pages |
 
 Build pipelines:

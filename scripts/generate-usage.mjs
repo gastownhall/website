@@ -13,7 +13,13 @@
  */
 
 import { execSync } from 'child_process';
-import { writeFileSync, mkdirSync, readFileSync, existsSync, readdirSync } from 'fs';
+import {
+  writeFileSync,
+  mkdirSync,
+  readFileSync,
+  existsSync,
+  readdirSync,
+} from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -289,7 +295,6 @@ function categoryToSlug(category) {
  * @param {Array} commands - Array of {name, description, help} objects
  */
 function generateCategoryPage(category, commands) {
-  const slug = categoryToSlug(category);
   const title = `${category} Commands`;
   const desc = `CLI reference for Gas Town ${category.toLowerCase()} commands`;
 
@@ -452,7 +457,9 @@ async function main() {
   // Parse commands by category from main help
   const categories = parseCommandsByCategory(mainHelp);
   const commands = flattenCommands(categories);
-  console.log(`  Found ${commands.length} commands in ${Object.keys(categories).length} categories`);
+  console.log(
+    `  Found ${commands.length} commands in ${Object.keys(categories).length} categories`
+  );
 
   // Get help for each command
   const commandHelps = {};
@@ -490,7 +497,9 @@ async function main() {
     }
   }
   if (fallbackCount > 0) {
-    console.log(`  Extracted ${fallbackCount} command(s) from source (see github.com/steveyegge/gastown/issues/975)`);
+    console.log(
+      `  Extracted ${fallbackCount} command(s) from source (see github.com/steveyegge/gastown/issues/975)`
+    );
   }
 
   // Ensure directories exist
@@ -519,7 +528,9 @@ async function main() {
     const pagePath = join(USAGE_DIR, `${slug}.astro`);
     writeFileSync(pagePath, pageContent, 'utf-8');
     pageCount++;
-    console.log(`    ${category} (${validCmds.length} commands) -> ${slug}.astro`);
+    console.log(
+      `    ${category} (${validCmds.length} commands) -> ${slug}.astro`
+    );
 
     // Add to sidebar data (include commands for anchor links)
     sidebarData.push({

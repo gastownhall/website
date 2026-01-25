@@ -27,3 +27,8 @@ src-docs/pages/*
 
 # Astro's public directory is tmp/public/ (configured in astro.config.mjs)
 # It's already ignored via tmp/ above
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/

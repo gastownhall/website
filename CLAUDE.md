@@ -11,7 +11,9 @@ npm run build:docs   # Build docs subdomain
 npm run sync-docs    # Sync docs from gastown repo (requires gt CLI)
 npm run deploy       # Build + deploy main site
 npm run deploy:docs  # Build + deploy docs subdomain
-npm test             # Run tests
+npm test             # Run unit tests
+npm run test:e2e     # Run E2E tests (Playwright)
+npm run check        # Run all quality checks
 npm run lint         # ESLint
 npm run format       # Prettier
 ```

@@ -98,7 +98,9 @@ async function main() {
   // Validate source exists
   if (!existsSync(docsSource)) {
     console.error(`\nError: Source docs not found at ${docsSource}`);
-    console.error('Please provide the path to the gastown repo as an argument:');
+    console.error(
+      'Please provide the path to the gastown repo as an argument:'
+    );
     console.error('  node scripts/sync-gastown-docs.mjs /path/to/gastown');
     process.exit(1);
   }
@@ -107,9 +109,18 @@ async function main() {
   await syncDocs(docsSource, DOCS_DEST);
 
   // Rebuild documentation
-  await runScript(join(__dirname, 'shred-docs.mjs'), 'Generating Astro pages from markdown');
-  await runScript(join(__dirname, 'generate-usage.mjs'), 'Generating CLI usage docs (requires gt CLI)');
-  await runScript(join(__dirname, 'copy-docs.mjs'), 'Copying docs to main site');
+  await runScript(
+    join(__dirname, 'shred-docs.mjs'),
+    'Generating Astro pages from markdown'
+  );
+  await runScript(
+    join(__dirname, 'generate-usage.mjs'),
+    'Generating CLI usage docs (requires gt CLI)'
+  );
+  await runScript(
+    join(__dirname, 'copy-docs.mjs'),
+    'Copying docs to main site'
+  );
 
   // Copy sidebar data to main site
   console.log('\n→ Copying sidebar data to main site');

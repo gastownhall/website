@@ -113,7 +113,9 @@ function parseGlossary(content) {
 }
 
 async function main() {
-  const target = isMainSite ? 'main site (/docs/llms-full.txt)' : 'root (/llms-full.txt)';
+  const target = isMainSite
+    ? 'main site (/docs/llms-full.txt)'
+    : 'root (/llms-full.txt)';
   console.log(`Generating llms-full.txt for ${target}...`);
   const lastModified = new Date().toISOString().split('T')[0];
 

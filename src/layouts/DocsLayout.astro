@@ -110,48 +110,97 @@ const breadcrumbSchema = {
             <div class="nav-item-with-toggle">
               <button
                 class="toggle-btn"
-                aria-expanded={isUsagePage ? "true" : "false"}
+                aria-expanded={isUsagePage ? 'true' : 'false'}
                 aria-label="Toggle CLI Usage submenu"
               >
                 <svg class="chevron" width="12" height="12" viewBox="0 0 12 12">
-                  <path d="M4 2 L8 6 L4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path
+                    d="M4 2 L8 6 L4 10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"></path>
                 </svg>
               </button>
               <a
                 href="/docs/usage"
-                class:list={[{ active: currentPath === '/docs/usage' || currentPath === '/docs/usage/' }]}
-                >CLI Usage</a
+                class:list={[
+                  {
+                    active:
+                      currentPath === '/docs/usage' ||
+                      currentPath === '/docs/usage/',
+                  },
+                ]}>CLI Usage</a
               >
             </div>
-            <ul class="usage-commands" data-expanded={isUsagePage ? "true" : "false"}>
-              {usageCommands.map((cat) => (
-                <li class="usage-category" data-category={cat.slug}>
-                  <div class="category-toggle">
-                    <svg class="category-chevron" width="10" height="10" viewBox="0 0 12 12" data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}>
-                      <path d="M4 2 L8 6 L4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <a
-                      href={`/docs/usage/${cat.slug}`}
-                      class:list={['category-link', { active: currentPath.includes(`/docs/usage/${cat.slug}`) }]}
-                      data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}
+            <ul
+              class="usage-commands"
+              data-expanded={isUsagePage ? 'true' : 'false'}
+            >
+              {
+                usageCommands.map((cat) => (
+                  <li class="usage-category" data-category={cat.slug}>
+                    <div class="category-toggle">
+                      <svg
+                        class="category-chevron"
+                        width="10"
+                        height="10"
+                        viewBox="0 0 12 12"
+                        data-expanded={
+                          currentPath.includes(`/docs/usage/${cat.slug}`)
+                            ? 'true'
+                            : 'false'
+                        }
+                      >
+                        <path
+                          d="M4 2 L8 6 L4 10"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      <a
+                        href={`/docs/usage/${cat.slug}`}
+                        class:list={[
+                          'category-link',
+                          {
+                            active: currentPath.includes(
+                              `/docs/usage/${cat.slug}`
+                            ),
+                          },
+                        ]}
+                        data-expanded={
+                          currentPath.includes(`/docs/usage/${cat.slug}`)
+                            ? 'true'
+                            : 'false'
+                        }
+                      >
+                        {cat.name}
+                      </a>
+                    </div>
+                    <ul
+                      class="command-anchors"
+                      data-expanded={
+                        currentPath.includes(`/docs/usage/${cat.slug}`)
+                          ? 'true'
+                          : 'false'
+                      }
                     >
-                      {cat.name}
-                    </a>
-                  </div>
-                  <ul class="command-anchors" data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}>
-                    {cat.commands.map((cmd) => (
-                      <li>
-                        <a
-                          href={`/docs/usage/${cat.slug}#${cmd.name}`}
-                          title={cmd.description}
-                        >
-                          {cmd.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
+                      {cat.commands.map((cmd) => (
+                        <li>
+                          <a
+                            href={`/docs/usage/${cat.slug}#${cmd.name}`}
+                            title={cmd.description}
+                          >
+                            {cmd.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))
+              }
             </ul>
           </li>
           <li>
@@ -530,7 +579,7 @@ const breadcrumbSchema = {
     transition: transform 0.2s ease;
   }
 
-  .toggle-btn[aria-expanded="true"] .chevron {
+  .toggle-btn[aria-expanded='true'] .chevron {
     transform: rotate(90deg);
   }
 
@@ -541,7 +590,7 @@ const breadcrumbSchema = {
     display: none;
   }
 
-  .usage-commands[data-expanded="true"] {
+  .usage-commands[data-expanded='true'] {
     display: block;
   }
 
@@ -562,7 +611,7 @@ const breadcrumbSchema = {
     transition: transform 0.2s ease;
   }
 
-  .category-chevron[data-expanded="true"] {
+  .category-chevron[data-expanded='true'] {
     transform: rotate(90deg);
   }
 
@@ -582,7 +631,7 @@ const breadcrumbSchema = {
     display: none;
   }
 
-  .command-anchors[data-expanded="true"] {
+  .command-anchors[data-expanded='true'] {
     display: block;
   }
 
@@ -646,7 +695,7 @@ const breadcrumbSchema = {
     const isExpanded = link.getAttribute('data-expanded') === 'true';
 
     // Collapse all categories first
-    document.querySelectorAll('.usage-category').forEach(cat => {
+    document.querySelectorAll('.usage-category').forEach((cat) => {
       const catLink = cat.querySelector('.category-link');
       const catList = cat.querySelector('.command-anchors');
       const catChevron = cat.querySelector('.category-chevron');
@@ -665,7 +714,7 @@ const breadcrumbSchema = {
     }
   }
 
-  document.querySelectorAll('.has-children').forEach(container => {
+  document.querySelectorAll('.has-children').forEach((container) => {
     const btn = container.querySelector('.toggle-btn');
     const link = container.querySelector('.nav-item-with-toggle > a');
 
@@ -681,7 +730,7 @@ const breadcrumbSchema = {
   });
 
   // Category toggle - clicking on category name shows/hides commands
-  document.querySelectorAll('.usage-category').forEach(category => {
+  document.querySelectorAll('.usage-category').forEach((category) => {
     const link = category.querySelector('.category-link');
     link?.addEventListener('click', (e) => {
       e.preventDefault();

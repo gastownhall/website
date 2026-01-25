@@ -22,10 +22,14 @@
     "deploy:docs": "npm run build:docs && wrangler pages deploy deploy-docs --project-name=gastown-docs",
     "astro": "astro",
     "test": "node --test scripts/lib/__tests__/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test && npm run test:e2e",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "audit:check": "npm audit --audit-level=high",
+    "check": "npm run lint && npm run format:check && npm run test && npm run audit:check"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",
@@ -36,6 +40,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.58.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.5.0",
