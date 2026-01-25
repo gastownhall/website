@@ -29,7 +29,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "audit:check": "npm audit --audit-level=high",
-    "check": "npm run lint && npm run format:check && npm run test && npm run audit:check"
+    "check": "npm run lint && npm run format:check && npm run test && npm run audit:check",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",
@@ -44,6 +45,7 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.5.0",
+    "husky": "^9.1.7",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "typescript-eslint": "^8.53.1",
