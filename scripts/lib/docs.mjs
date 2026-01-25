@@ -53,7 +53,6 @@ export function buildRouteMap(files, subdomain = false) {
  * @param {string} description - Page description
  * @param {number} depth - Directory depth for relative imports
  * @param {Map<string, string>} routeMap - Map of filename → route
- * @param {boolean} subdomain - If true, use subdomain layout path
  * @returns {string} Astro page content
  */
 export function generateAstroPage(
@@ -61,18 +60,14 @@ export function generateAstroPage(
   title,
   description,
   depth,
-  routeMap,
-  subdomain = false
+  routeMap
 ) {
-  // In subdomain mode, layouts are at ../layouts/ from pages/
-  // In normal mode, layouts are at ../../layouts/ from pages/docs/
-  const layoutPath = subdomain
-    ? '../'.repeat(depth + 1) + 'layouts/DocsLayout.astro'
-    : '../'.repeat(depth + 2) + 'layouts/DocsLayout.astro';
+  // Layouts are at ../layouts/ from src-docs/pages/
+  const layoutPath = '../'.repeat(depth + 1) + 'layouts/DocsLayout.astro';
 
   let cleanContent = removeFrontmatter(content);
   cleanContent = cleanContent.replace(/^#\s+.+\n?/, '').trim();
-  cleanContent = convertMarkdownToHtml(cleanContent, routeMap, subdomain);
+  cleanContent = convertMarkdownToHtml(cleanContent, routeMap, true);
 
   const escapedContent = JSON.stringify(cleanContent);
   const escapedTitle = title.replace(/"/g, '\\"');

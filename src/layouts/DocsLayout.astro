@@ -20,7 +20,11 @@ function buildBreadcrumbs(path: string, pageTitle: string) {
   ];
 
   // Parse the path segments after /docs/
-  const segments = path.replace(/^\/docs\/?/, '').replace(/\/$/, '').split('/').filter(Boolean);
+  const segments = path
+    .replace(/^\/docs\/?/, '')
+    .replace(/\/$/, '')
+    .split('/')
+    .filter(Boolean);
 
   if (segments.length > 0) {
     // Map segment names to readable titles
@@ -63,7 +67,10 @@ const breadcrumbSchema = {
 ---
 
 <BaseLayout title={`${title} | Gas Town Docs`} description={description}>
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumbSchema)}
+  />
   <picture class="docs-mayor">
     <source srcset="/images/mayor-of-gastown-360.webp" type="image/webp" />
     <img
@@ -346,6 +353,7 @@ const breadcrumbSchema = {
     left: max(2rem, calc((100% - 1200px) / 2 + 2rem));
     z-index: 1;
     opacity: 0.1;
+    pointer-events: none;
   }
 
   .docs-mayor-image {

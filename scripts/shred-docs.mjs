@@ -4,8 +4,10 @@
  * Docs Shredder - Generates Astro pages from gastown-docs markdown files.
  *
  * Usage:
- *   node scripts/shred-docs.mjs              # Build for /docs/ path (main site)
- *   node scripts/shred-docs.mjs --subdomain  # Build for subdomain (root level)
+ *   node scripts/shred-docs.mjs
+ *
+ * Outputs to src-docs/pages/ (the canonical location for the docs subdomain).
+ * For local development, use copy-docs-for-dev.mjs to copy to src/pages/docs/.
  *
  * This script is idempotent - running it multiple times will simply
  * regenerate all docs pages, overwriting any existing generated files.
@@ -38,15 +40,9 @@ import {
   getDirectoryDepth,
 } from './lib/docs.mjs';
 
-// Check for --subdomain flag
-const SUBDOMAIN_MODE = process.argv.includes('--subdomain');
-
 const DOCS_SOURCE = paths.gastown;
-// In subdomain mode, output to src-docs/pages/ at root level
-// In normal mode, output to src/pages/docs/
-const DOCS_OUTPUT = SUBDOMAIN_MODE
-  ? join(paths.root, 'src-docs', 'pages')
-  : join(paths.pages, 'docs');
+// Output to src-docs/pages/ (canonical location for docs subdomain)
+const DOCS_OUTPUT = join(paths.root, 'src-docs', 'pages');
 const SKIP_FILES = new Set();
 
 /**
@@ -57,14 +53,8 @@ const SKIP_FILES = new Set();
  * @param {string} fullPath - Full path to markdown file
  * @param {string} relativePath - Relative path within docs source
  * @param {Map} routeMap - Map of filename → route
- * @param {boolean} subdomain - If true, generate for subdomain
  */
-async function processFile(
-  fullPath,
-  relativePath,
-  routeMap,
-  subdomain = false
-) {
+async function processFile(fullPath, relativePath, routeMap) {
   const filename = basename(relativePath);
 
   if (SKIP_FILES.has(filename)) {
@@ -86,8 +76,7 @@ async function processFile(
     title,
     description,
     depth,
-    routeMap,
-    subdomain
+    routeMap
   );
 
   await mkdir(outputDir, { recursive: true });
@@ -98,28 +87,20 @@ async function processFile(
 
 async function shredDocs() {
   console.log('Docs Shredder starting...');
-  console.log(
-    `  Mode: ${SUBDOMAIN_MODE ? 'subdomain (docs.gastownhall.ai)' : 'main site (/docs/)'}`
-  );
   console.log(`  Source: ${relative(paths.root, DOCS_SOURCE)}`);
   console.log(`  Output: ${relative(paths.root, DOCS_OUTPUT)}`);
 
   const files = await findFiles(DOCS_SOURCE, '.md');
   console.log(`  Found ${files.length} markdown files`);
 
-  // Build route map for resolving .md links
-  const routeMap = buildRouteMap(files, SUBDOMAIN_MODE);
+  // Build route map for resolving .md links (subdomain mode - routes at root level)
+  const routeMap = buildRouteMap(files, true);
 
   let generated = 0;
   let skipped = 0;
 
   for (const { fullPath, relativePath } of files) {
-    const result = await processFile(
-      fullPath,
-      relativePath,
-      routeMap,
-      SUBDOMAIN_MODE
-    );
+    const result = await processFile(fullPath, relativePath, routeMap);
 
     if (result.status === 'skipped') {
       console.log(`  Skipping ${result.relativePath} (handled separately)`);

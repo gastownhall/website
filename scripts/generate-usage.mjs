@@ -21,7 +21,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const rootDir = join(__dirname, '..');
 
-const OUTPUT_FILE = join(rootDir, 'src', 'pages', 'docs', 'usage.astro');
+// Output to docs subdomain source (canonical location)
+const OUTPUT_FILE = join(rootDir, 'src-docs', 'pages', 'usage.astro');
 
 /**
  * Run a command and return its output, or null if it fails.
@@ -30,7 +31,7 @@ const OUTPUT_FILE = join(rootDir, 'src', 'pages', 'docs', 'usage.astro');
 function runCommand(cmd) {
   try {
     return execSync(cmd, { encoding: 'utf-8', timeout: 10000 });
-  } catch (error) {
+  } catch {
     console.error(`  Warning: Failed to run "${cmd}"`);
     return null;
   }
@@ -96,6 +97,8 @@ function escapeHtml(text) {
 
 /**
  * Generate the Astro page content.
+ * @param {string} mainHelp - The main help output
+ * @param {Object} commandHelps - Help output for each command
  */
 function generateAstroPage(mainHelp, commandHelps) {
   const escapedMainHelp = escapeHtml(mainHelp);
@@ -105,8 +108,8 @@ function generateAstroPage(mainHelp, commandHelps) {
     if (help) {
       const escapedHelp = escapeHtml(help);
       commandSections += `
-  <section id="${cmd}" class="command-section">
-    <h2><code>gt ${cmd}</code></h2>
+  <section class="command-section">
+    <h2 id="${cmd}"><code>gt ${cmd}</code></h2>
     <pre class="help-output">${escapedHelp}</pre>
   </section>
 `;
@@ -116,11 +119,13 @@ function generateAstroPage(mainHelp, commandHelps) {
   // Generate table of contents
   const tocItems = Object.keys(commandHelps)
     .filter((cmd) => commandHelps[cmd])
-    .map((cmd) => `        <li><a href="#${cmd}"><code>gt ${cmd}</code></a></li>`)
+    .map(
+      (cmd) => `        <li><a href="#${cmd}"><code>gt ${cmd}</code></a></li>`
+    )
     .join('\n');
 
   return `---
-import DocsLayout from '../../layouts/DocsLayout.astro';
+import DocsLayout from '../layouts/DocsLayout.astro';
 ---
 
 <DocsLayout
@@ -204,6 +209,7 @@ ${commandSections}
     font-family: var(--font-display);
     border-bottom: 2px solid var(--color-brass);
     padding-bottom: 0.5rem;
+    scroll-margin-top: calc(var(--header-height, 80px) + 2rem);
   }
 
   .help-output {
@@ -270,10 +276,8 @@ async function main() {
   // Generate the Astro page
   const pageContent = generateAstroPage(mainHelp, commandHelps);
 
-  // Ensure output directory exists
+  // Ensure output directory exists and write file
   mkdirSync(dirname(OUTPUT_FILE), { recursive: true });
-
-  // Write the file
   writeFileSync(OUTPUT_FILE, pageContent, 'utf-8');
   console.log(`\nWritten to ${OUTPUT_FILE}`);
   console.log('Done!');

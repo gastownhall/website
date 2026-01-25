@@ -66,29 +66,22 @@ describe('generateAstroPage', () => {
       'Test Title',
       'Test description',
       0,
-      routeMap,
-      false
+      routeMap
     );
 
+    // Depth 0 = ../layouts/ (from src-docs/pages/)
     assert.ok(
-      result.includes("import DocsLayout from '../../layouts/DocsLayout.astro'")
+      result.includes("import DocsLayout from '../layouts/DocsLayout.astro'")
     );
     assert.ok(result.includes('title="Test Title"'));
     assert.ok(result.includes('description="Test description"'));
     assert.ok(result.includes('<div class="markdown-content"'));
   });
 
-  it('uses correct layout path for subdomain mode', () => {
+  it('uses correct layout path for depth 0', () => {
     const content = '# Test\n\nContent';
     const routeMap = new Map();
-    const result = generateAstroPage(
-      content,
-      'Test',
-      'Desc',
-      0,
-      routeMap,
-      true
-    );
+    const result = generateAstroPage(content, 'Test', 'Desc', 0, routeMap);
 
     assert.ok(
       result.includes("import DocsLayout from '../layouts/DocsLayout.astro'")
@@ -98,18 +91,12 @@ describe('generateAstroPage', () => {
   it('adjusts layout path based on depth', () => {
     const content = '# Test\n\nContent';
     const routeMap = new Map();
-    const result = generateAstroPage(
-      content,
-      'Test',
-      'Desc',
-      2,
-      routeMap,
-      false
-    );
+    const result = generateAstroPage(content, 'Test', 'Desc', 2, routeMap);
 
+    // Depth 2 = ../../../layouts/ (from src-docs/pages/dir1/dir2/)
     assert.ok(
       result.includes(
-        "import DocsLayout from '../../../../layouts/DocsLayout.astro'"
+        "import DocsLayout from '../../../layouts/DocsLayout.astro'"
       )
     );
   });
@@ -122,8 +109,7 @@ describe('generateAstroPage', () => {
       'Title with "quotes"',
       'Description with "quotes"',
       0,
-      routeMap,
-      false
+      routeMap
     );
 
     assert.ok(result.includes('title="Title with \\"quotes\\""'));
