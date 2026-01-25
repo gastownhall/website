@@ -5,9 +5,10 @@ Guidance for Claude Code when working with this repository.
 ## Quick Reference
 
 ```bash
-npm run dev          # Start dev server (localhost:4321)
+npm run dev          # Start main site dev server (localhost:4321)
+npm run dev:docs     # Start docs dev server (localhost:4322)
 npm run build        # Build main site
-npm run build:docs   # Build docs subdomain
+npm run build:docs   # Build docs subdomain (Starlight)
 npm run sync-docs    # Sync docs from gastown repo (requires gt CLI)
 npm run deploy       # Build + deploy main site
 npm run deploy:docs  # Build + deploy docs subdomain
@@ -20,47 +21,56 @@ npm run format       # Prettier
 
 ## Key Architecture
 
-- **Canonical docs:** `src-docs/pages/` (for docs.gastownhall.ai)
-- **Main site docs:** `src/pages/docs/` (copied from src-docs/ with path transforms)
-- **Config:** `site.config.json` is the single source of truth
-- **Path alias:** `@/*` maps to `src/*`
-- **Gastown repo:** GitHub: https://github.com/steveyegge/gastown, local cache: ~/Code/Cache/steveyegge/gastown
+**npm workspaces monorepo** with two Astro projects:
+- **Main site** (`src/`) - gastownhall.ai
+- **Docs site** (`docs/`) - docs.gastownhall.ai (Astro Starlight workspace)
 
-### Layouts
+**Documentation flow:**
+```
+docs-fodder/gastown-docs/*.md  (source markdown)
+         ↓
+docs/scripts/sync-content.mjs  (adds frontmatter, transforms links)
+         ↓
+docs/src/content/docs/*.md     (Starlight content - generated, not committed)
+```
+
+**Config:** `site.config.json` is the single source of truth for main site
+**Path alias:** `@/*` maps to `src/*`
+**Gastown repo:** GitHub: https://github.com/steveyegge/gastown, local: ~/Code/Cache/steveyegge/gastown
+
+### Main Site Layouts
 
 - **BaseLayout** - Header, footer, SEO meta, JSON-LD, Plausible analytics
-- **DocsLayout** - Wraps BaseLayout, adds sidebar navigation
 - **BlogLayout** - Wraps BaseLayout, adds article formatting
+
+### Docs Site (Starlight)
+
+Uses Astro Starlight for documentation with:
+- Automatic sidebar from `docs/astro.config.mjs`
+- Content Collections in `docs/src/content/docs/`
+- Built-in search, dark mode, TOC
 
 ### Build Script Utilities
 
 Pure functions in `scripts/lib/`:
 - `config.mjs` - Site config and paths
 - `files.mjs` - File discovery
-- `markdown.mjs` - Markdown → HTML conversion
-- `docs.mjs` - Route mapping and Astro page generation
+- `markdown.mjs` - Markdown utilities
 - `llms.mjs` - llms.txt formatting
+- `sync.mjs` - Sync utilities
 
-Tests in `scripts/lib/__tests__/`. E2E tests in `e2e/`.
+Tests in `scripts/lib/__tests__/` and `docs/scripts/lib/__tests__/`. E2E tests in `e2e/`.
 
 ### LLM Reference Files
 
-Generated during `build` and `dev` (not committed, regenerated each build):
-
-| File | Location | Content |
-|------|----------|---------|
-| `llms.txt` | `/llms.txt` | Short reference with page links |
-| `llms-full.txt` | `/llms-full.txt` | Comprehensive with content excerpts |
-| `llms.txt` | `/docs/llms.txt` | Docs reference with full CLI usage |
-| `llms-full.txt` | `/docs/llms-full.txt` | Comprehensive docs reference |
-
-Scripts: `generate-llms.mjs`, `generate-llms-full.mjs` (with `--main` flag), `generate-llms-docs.mjs` (with `--main` flag)
+Generated during build (not committed):
+- `/llms.txt` - Short reference for main site
 
 ## Guidelines
 
-- **Generated files are read-only** - Don't edit `src-docs/pages/*.astro`, `src/pages/docs/*.astro`, or `tmp/public/`. Edit source markdown in `docs-fodder/`, then regenerate.
-- **Usage docs are committed** - Files in `src-docs/pages/usage/` and `src-docs/data/usage-commands.json` ARE committed because CF has no `gt` CLI. Regenerate locally with `npm run sync-docs` when gt changes.
-- **LLM files are NOT committed** - Files in `tmp/public/*.txt` are regenerated on every build from source markdown.
+- **Generated files are read-only** - Don't edit `docs/src/content/docs/*.md` or `tmp/public/`. Edit source markdown in `docs-fodder/`, then run `npm run sync-docs`.
+- **Docs content is generated** - Files in `docs/src/content/docs/` are generated from `docs-fodder/gastown-docs/` via sync-content.mjs.
+- **Usage docs require gt CLI** - generate-usage.mjs requires `gt` to be installed. Run `npm run sync-docs` locally when gt changes.
 - **Static assets source:** `src/static/` (copied to `tmp/public/` during build)
 - **Scratch files:** Use `tmp/` folder
 

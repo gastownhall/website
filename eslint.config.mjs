@@ -21,7 +21,7 @@ export default [
     ],
   },
   {
-    files: ['scripts/**/*.mjs'],
+    files: ['scripts/**/*.mjs', 'docs/scripts/**/*.mjs'],
     languageOptions: {
       globals: {
         console: 'readonly',

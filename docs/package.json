@@ -1,0 +1,16 @@
+{
+  "name": "gastown-docs",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "npm run sync-content && npm run generate-usage && astro dev",
+    "build": "npm run sync-content && npm run generate-usage && astro check && astro build",
+    "sync-content": "node scripts/sync-content.mjs",
+    "generate-usage": "node scripts/generate-usage.mjs",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.32.0",
+    "sharp": "^0.33.0"
+  }
+}

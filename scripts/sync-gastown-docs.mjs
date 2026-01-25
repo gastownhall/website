@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Syncs documentation from the gastown repo and rebuilds the docs site.
+ * Syncs documentation from the gastown repo and rebuilds the Starlight docs site.
  *
  * Usage:
  *   node scripts/sync-gastown-docs.mjs [gastown-path]
@@ -10,16 +10,14 @@
  *
  * This script:
  *   1. Syncs docs/ from gastown repo to docs-fodder/gastown-docs/
- *   2. Runs shred-docs to generate Astro pages
- *   3. Runs generate-usage to create CLI usage docs (requires gt CLI)
- *   4. Runs copy-docs to copy pages to main site
- *   5. Copies sidebar data to main site
+ *   2. Runs docs/scripts/sync-content.mjs to populate Starlight content
+ *   3. Runs docs/scripts/generate-usage.mjs to create CLI usage docs (requires gt CLI)
  *
  * After running, commit the changes for CF to build:
  *   git add -A && git commit -m "Sync docs"
  */
 
-import { cp, rm, copyFile, mkdir } from 'fs/promises';
+import { cp, rm } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
@@ -36,13 +34,13 @@ const DOCS_DEST = join(ROOT, 'docs-fodder', 'gastown-docs');
 /**
  * Run a node script and wait for it to complete.
  */
-function runScript(scriptPath, description) {
+function runScript(scriptPath, description, cwd = ROOT) {
   return new Promise((resolve, reject) => {
     console.log(`\n→ ${description}`);
     console.log(`  $ node ${relative(ROOT, scriptPath)}`);
 
     const child = spawn('node', [scriptPath], {
-      cwd: ROOT,
+      cwd,
       stdio: 'inherit',
     });
 
@@ -92,7 +90,7 @@ async function main() {
   const docsSource = join(gastownPath, 'docs');
 
   console.log('='.repeat(60));
-  console.log('Gas Town Docs Sync');
+  console.log('Gas Town Docs Sync (Starlight)');
   console.log('='.repeat(60));
 
   // Validate source exists
@@ -105,39 +103,28 @@ async function main() {
     process.exit(1);
   }
 
-  // Sync docs
+  // Sync docs from gastown to docs-fodder
   await syncDocs(docsSource, DOCS_DEST);
 
-  // Rebuild documentation
+  // Rebuild Starlight documentation
+  const docsDir = join(ROOT, 'docs');
   await runScript(
-    join(__dirname, 'shred-docs.mjs'),
-    'Generating Astro pages from markdown'
+    join(docsDir, 'scripts', 'sync-content.mjs'),
+    'Syncing content to Starlight',
+    docsDir
   );
   await runScript(
-    join(__dirname, 'generate-usage.mjs'),
-    'Generating CLI usage docs (requires gt CLI)'
+    join(docsDir, 'scripts', 'generate-usage.mjs'),
+    'Generating CLI usage docs (requires gt CLI)',
+    docsDir
   );
-  await runScript(
-    join(__dirname, 'copy-docs.mjs'),
-    'Copying docs to main site'
-  );
-
-  // Copy sidebar data to main site
-  console.log('\n→ Copying sidebar data to main site');
-  const sidebarSrc = join(ROOT, 'src-docs', 'data', 'usage-commands.json');
-  const sidebarDest = join(ROOT, 'src', 'data', 'usage-commands.json');
-  await mkdir(dirname(sidebarDest), { recursive: true });
-  await copyFile(sidebarSrc, sidebarDest);
-  console.log(`  Copied usage-commands.json`);
 
   console.log('\n' + '='.repeat(60));
   console.log('Sync complete!');
   console.log('='.repeat(60));
   console.log('\nNext steps:');
-  console.log('  git add -A && git commit -m "Sync docs"  # Commit for CF');
-  console.log('  npm run dev         # Preview changes locally');
-  console.log('  npm run build       # Build for production');
-  console.log('  npm run deploy      # Deploy main site');
+  console.log('  npm run dev:docs    # Preview docs locally (port 4322)');
+  console.log('  npm run build:docs  # Build docs for production');
   console.log('  npm run deploy:docs # Deploy docs subdomain');
 }
 

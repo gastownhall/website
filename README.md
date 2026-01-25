@@ -7,45 +7,37 @@ The official website for [Gas Town](https://github.com/steveyegge/gastown) - an 
 ## Quick Start
 
 ```bash
-npm install
-npm run dev
+npm install          # Installs all dependencies (monorepo with npm workspaces)
+npm run dev          # Main site at localhost:4321
+npm run dev:docs     # Docs site at localhost:4322
 ```
-
-Open http://localhost:4321 to view the site.
 
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build main site only |
-| `npm run build:docs` | Build docs subdomain only |
+| `npm run dev` | Start main site dev server (port 4321) |
+| `npm run dev:docs` | Start docs dev server (port 4322) |
+| `npm run build` | Build main site |
+| `npm run build:docs` | Build docs subdomain (Starlight) |
 | `npm run build:all` | Build both main site and docs |
-| `npm run preview` | Preview production build |
+| `npm run preview` | Preview main site production build |
 | `npm run copy-assets` | Copy static assets to tmp/public/ |
-| `npm run shred-docs` | Generate docs to src-docs/pages/ from markdown |
-| `npm run copy-docs` | Copy src-docs/pages/ to src/pages/docs/ (with path transforms) |
-| `npm run sync-docs` | Sync docs from gastown repo and rebuild (requires gt CLI) |
-| `npm run usage` | Generate CLI usage pages from gt --help (requires gt CLI) |
+| `npm run sync-docs` | Sync docs from gastown repo (requires gt CLI) |
 | `npm run llms` | Regenerate llms.txt for main site |
-| `npm run llms-full` | Regenerate llms-full.txt (comprehensive) for main site root |
-| `npm run llms-full:main` | Regenerate /docs/llms-full.txt for main site |
-| `npm run llms:docs` | Regenerate llms.txt for docs subdomain (includes full CLI) |
-| `npm run llms:docs:main` | Regenerate /docs/llms.txt for main site (includes full CLI) |
-| `npm test` | Run unit tests (72 tests) |
+| `npm test` | Run unit tests |
 | `npm run test:e2e` | Run E2E tests with Playwright |
 | `npm run test:all` | Run all tests (unit + E2E) |
 | `npm run lint` | Run ESLint |
 | `npm run format` | Format code with Prettier |
 | `npm run audit:check` | Check for high/critical vulnerabilities |
 | `npm run check` | Run all quality checks (lint, format, test, audit) |
-| `npm run deploy` | Manual deploy to Cloudflare Pages |
+| `npm run deploy` | Build + deploy main site to Cloudflare |
+| `npm run deploy:docs` | Build + deploy docs subdomain to Cloudflare |
 
 Build pipelines:
-- **Main site:** copy-assets → shred-docs → copy-docs → llms → llms-full → llms-full:main → llms:docs:main → astro build → `deploy/`
-- **Docs subdomain:** copy-assets → shred-docs → llms:docs → astro build → `deploy-docs/`
-- **Dev server:** copy-assets → shred-docs → copy-docs → llms → llms-full → llms-full:main → llms:docs:main → astro dev
-- **Sync docs:** syncs gastown repo → shred-docs → usage → copy-docs (requires gt CLI)
+- **Main site:** copy-assets → llms → astro build → `deploy/`
+- **Docs subdomain:** sync-content → generate-usage → astro build → `deploy-docs/`
 
 ## Deployment
 
@@ -64,25 +56,24 @@ Manual deploys:
 
 ## Project Structure
 
+This is an **npm workspaces monorepo** with two Astro projects:
+
 ```
+├── package.json             # Root package with workspaces: ["docs"]
 ├── src/                     # Main site source
 │   ├── site.config.ts       # Site configuration (URLs, social links)
 │   ├── pages/               # Astro pages (file-based routing)
-│   │   └── docs/            # Generated from src-docs/ via copy-docs
-│   ├── layouts/             # Page layouts (BaseLayout, DocsLayout, BlogLayout)
+│   ├── layouts/             # Page layouts (BaseLayout, BlogLayout)
 │   └── components/          # Reusable components
-├── src-docs/                # Docs subdomain source (canonical)
-│   ├── pages/               # Generated docs pages
-│   └── layouts/             # Docs-specific layouts
+├── docs/                    # Docs subdomain (Astro Starlight workspace)
+│   ├── package.json         # Workspace package (docs-specific deps)
+│   ├── astro.config.mjs     # Starlight config with sidebar
+│   ├── src/content/docs/    # Generated markdown content
+│   └── scripts/             # Docs build scripts
 ├── scripts/
 │   ├── copy-assets.mjs      # Copy src/static/ → tmp/public/
-│   ├── shred-docs.mjs       # Generate docs-fodder/ → src-docs/pages/
-│   ├── copy-docs.mjs        # Copy src-docs/pages/ → src/pages/docs/
 │   ├── sync-gastown-docs.mjs # Sync docs from gastown repo
-│   ├── generate-usage.mjs   # Generate CLI usage from gt --help
 │   ├── generate-llms.mjs    # Generate /llms.txt
-│   ├── generate-llms-full.mjs # Generate /llms-full.txt (--main for /docs/)
-│   ├── generate-llms-docs.mjs # Generate /docs/llms.txt (--main for main site)
 │   └── lib/                 # Shared utilities and tests
 ├── src/static/              # Static assets (source of truth)
 ├── docs-fodder/
@@ -94,26 +85,14 @@ Manual deploys:
 
 ## Documentation
 
-Docs are generated to `src-docs/pages/` (canonical location for the subdomain), then copied to `src/pages/docs/` for the main site.
+Docs use [Astro Starlight](https://starlight.astro.build/) for a modern documentation experience with built-in search, dark mode, and automatic navigation.
 
 ```
-docs-fodder/gastown-docs/ → shred-docs → src-docs/pages/*.astro
-gt --help                 → usage      → src-docs/pages/usage/*.astro (committed)
-src-docs/pages/           → copy-docs  → src/pages/docs/*.astro
+docs-fodder/gastown-docs/*.md  →  sync-content  →  docs/src/content/docs/*.md
+gt --help                      →  generate-usage →  docs/src/content/docs/usage/*.md
 ```
 
-**Note:** Usage docs (`src-docs/pages/usage/` and `src-docs/data/usage-commands.json`) are committed to the repo because the Cloudflare build environment doesn't have the `gt` CLI. When `gt` changes, run `npm run sync-docs` locally and commit the updated files.
-
-### LLM Reference Files
-
-LLM-friendly text files are generated during every build (not committed):
-
-| URL | Description |
-|-----|-------------|
-| `/llms.txt` | Short reference with page links |
-| `/llms-full.txt` | Comprehensive with content excerpts |
-| `/docs/llms.txt` | Docs reference with full CLI usage |
-| `/docs/llms-full.txt` | Comprehensive docs reference |
+**Note:** The `docs/src/content/docs/` directory is generated and not committed. Cloudflare builds regenerate it from `docs-fodder/`.
 
 ### Updating from a New Gastown Release
 
@@ -125,24 +104,21 @@ cd ~/Code/Cache/steveyegge/gastown && git pull && cd -
 npm run sync-docs
 
 # 3. Preview locally
-npm run dev
+npm run dev:docs
 
-# 4. Commit the updated files (usage docs + astro pages)
-git add -A && git commit -m "Sync docs from gastown"
+# 4. Test the build
+npm run build:docs
 
 # 5. Push to main - CF auto-builds both sites
 git push
 ```
 
-**What gets committed:** `src-docs/pages/usage/*.astro`, `src-docs/data/usage-commands.json`, and `src-docs/pages/*.astro`
-
-**What CF generates:** LLM reference files (`llms.txt`, `llms-full.txt`) are regenerated during each build.
-
 ### Editing Docs Locally
 
 To edit documentation without syncing from gastown:
 1. Edit markdown files in `docs-fodder/gastown-docs/`
-2. Run `npm run dev` (regenerates automatically)
+2. Run `npm run sync-docs` to regenerate Starlight content
+3. Run `npm run dev:docs` to preview
 
 ## Configuration
 
@@ -150,12 +126,13 @@ Single source of truth: `site.config.json` contains all site metadata.
 
 - `src/site.config.ts` - Re-exports JSON for Astro components
 - `scripts/lib/config.mjs` - Imports JSON for build scripts
-
-**Dev/Prod URL Switching:** Docs links automatically point to localhost in dev mode and docs.gastownhall.ai in production.
+- `docs/astro.config.mjs` - Starlight sidebar configuration
 
 ## Tech Stack
 
+- [npm workspaces](https://docs.npmjs.com/cli/using-npm/workspaces) - Monorepo management
 - [Astro](https://astro.build/) - Static site generator
+- [Astro Starlight](https://starlight.astro.build/) - Documentation framework
 - [Plausible](https://plausible.io/) - Privacy-friendly analytics
 - [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) - Linting and formatting
 - [Playwright](https://playwright.dev/) - E2E testing
@@ -167,7 +144,7 @@ Single source of truth: `site.config.json` contains all site metadata.
 A pre-commit hook runs `npm run check` automatically before each commit, which includes:
 - ESLint
 - Prettier format check
-- Unit tests (72 tests)
+- Unit tests
 - Security audit (fails on high/critical vulnerabilities)
 
 To bypass temporarily: `git commit --no-verify`
