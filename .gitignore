@@ -20,9 +20,10 @@ npm-debug.log*
 .env.local
 .env.*.local
 
-# Generated docs pages for subdomain build (except usage.astro which must be committed)
+# Generated docs pages for subdomain build (except usage files which must be committed for CF)
 src-docs/pages/*
 !src-docs/pages/usage.astro
+!src-docs/pages/usage/
 
 # Astro's public directory is tmp/public/ (configured in astro.config.mjs)
 # It's already ignored via tmp/ above

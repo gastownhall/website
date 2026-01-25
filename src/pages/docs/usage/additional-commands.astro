@@ -1,0 +1,137 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Additional Commands Commands"
+  description="CLI reference for Gas Town additional commands commands"
+>
+  <p class="intro">
+    This page documents the <strong>Additional Commands</strong> commands for the <code>gt</code> CLI.
+  </p>
+
+  <section class="command-section" id="cycle">
+    <h2><code>gt cycle</code></h2>
+    <p class="command-description">Cycle between sessions in the same group</p>
+    <pre class="help-output">Cycle between related tmux sessions based on the current session type.
+
+Session groups:
+- Town sessions: Mayor ↔ Deacon
+- Crew sessions: All crew members in the same rig (e.g., greenplace/crew/max ↔ greenplace/crew/joe)
+- Rig infra sessions: Witness ↔ Refinery (per rig)
+- Polecat sessions: All polecats in the same rig (e.g., greenplace/Toast ↔ greenplace/Nux)
+
+The appropriate cycling is detected automatically from the session name.
+
+Usage:
+  gt cycle [command]
+
+Available Commands:
+  next        Switch to next session in group
+  prev        Switch to previous session in group
+
+Flags:
+  -h, --help   help for cycle
+
+Use &quot;gt cycle [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="tap">
+    <h2><code>gt tap</code></h2>
+    <p class="command-description">Claude Code hook handlers</p>
+    <pre class="help-output">Hook handlers for Claude Code PreToolUse and PostToolUse events.
+
+These commands are called by Claude Code hooks to implement policies,
+auditing, and input transformation. They tap into the tool execution
+flow to guard, audit, inject, or check.
+
+Subcommands:
+  guard   - Block forbidden operations (PreToolUse, exit 2)
+  audit   - Log/record tool executions (PostToolUse) [planned]
+  inject  - Modify tool inputs (PreToolUse, updatedInput) [planned]
+  check   - Validate after execution (PostToolUse) [planned]
+
+Hook configuration in .claude/settings.json:
+  &#123;
+    &quot;PreToolUse&quot;: [&#123;
+      &quot;matcher&quot;: &quot;Bash(gh pr create*)&quot;,
+      &quot;hooks&quot;: [&#123;&quot;command&quot;: &quot;gt tap guard pr-workflow&quot;&#125;]
+    &#125;]
+  &#125;
+
+See ~/gt/docs/HOOKS.md for full documentation.
+
+Usage:
+  gt tap [command]
+
+Available Commands:
+  guard       Block forbidden operations (PreToolUse hook)
+
+Flags:
+  -h, --help   help for tap
+
+Use &quot;gt tap [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="town">
+    <h2><code>gt town</code></h2>
+    <p class="command-description">Town-level operations</p>
+    <pre class="help-output">Commands for town-level operations including session cycling.
+
+Usage:
+  gt town [command]
+
+Available Commands:
+  next        Switch to next town session (mayor/deacon)
+  prev        Switch to previous town session (mayor/deacon)
+
+Flags:
+  -h, --help   help for town
+
+Use &quot;gt town [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+</DocsLayout>
+
+<style>
+  .intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .command-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .command-section:last-child {
+    border-bottom: none;
+  }
+
+  .command-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .command-description {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .help-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+</style>

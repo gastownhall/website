@@ -1,0 +1,368 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Configuration Commands"
+  description="CLI reference for Gas Town configuration commands"
+>
+  <p class="intro">
+    This page documents the <strong>Configuration</strong> commands for the <code>gt</code> CLI.
+  </p>
+
+  <section class="command-section" id="account">
+    <h2><code>gt account</code></h2>
+    <p class="command-description">Manage Claude Code accounts</p>
+    <pre class="help-output">Manage multiple Claude Code accounts for Gas Town.
+
+This enables switching between accounts (e.g., personal vs work) with
+easy account selection per spawn or globally.
+
+Commands:
+  gt account list              List registered accounts
+  gt account add &lt;handle&gt;      Add a new account
+  gt account default &lt;handle&gt;  Set the default account
+  gt account status            Show current account info
+
+Usage:
+  gt account [flags]
+  gt account [command]
+
+Available Commands:
+  add         Add a new account
+  default     Set the default account
+  list        List registered accounts
+  status      Show current account info
+  switch      Switch to a different account
+
+Flags:
+  -h, --help   help for account
+
+Use &quot;gt account [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="completion">
+    <h2><code>gt completion</code></h2>
+    <p class="command-description">Generate the autocompletion script for the specified shell</p>
+    <pre class="help-output">Generate the autocompletion script for gt for the specified shell.
+See each sub-command's help for details on how to use the generated script.
+
+
+Usage:
+  gt completion [command]
+
+Available Commands:
+  bash        Generate the autocompletion script for bash
+  fish        Generate the autocompletion script for fish
+  powershell  Generate the autocompletion script for powershell
+  zsh         Generate the autocompletion script for zsh
+
+Flags:
+  -h, --help   help for completion
+
+Use &quot;gt completion [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="config">
+    <h2><code>gt config</code></h2>
+    <p class="command-description">Manage Gas Town configuration</p>
+    <pre class="help-output">Manage Gas Town configuration settings.
+
+This command allows you to view and modify configuration settings
+for your Gas Town workspace, including agent aliases and defaults.
+
+Commands:
+  gt config agent list              List all agents (built-in and custom)
+  gt config agent get &lt;name&gt;         Show agent configuration
+  gt config agent set &lt;name&gt; &lt;cmd&gt;   Set custom agent command
+  gt config agent remove &lt;name&gt;      Remove custom agent
+  gt config default-agent [name]     Get or set default agent
+
+Usage:
+  gt config [flags]
+  gt config [command]
+
+Available Commands:
+  agent              Manage agent configuration
+  agent-email-domain Get or set agent email domain
+  default-agent      Get or set default agent
+
+Flags:
+  -h, --help   help for config
+
+Use &quot;gt config [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="disable">
+    <h2><code>gt disable</code></h2>
+    <p class="command-description">Disable Gas Town system-wide</p>
+    <pre class="help-output">Disable Gas Town for all agentic coding tools.
+
+When disabled:
+  - Shell hooks become no-ops
+  - Claude Code SessionStart hooks skip 'gt prime'
+  - Tools work 100% vanilla (no Gas Town behavior)
+
+The workspace (~/gt) is preserved. Use 'gt enable' to re-enable.
+
+Flags:
+  --clean  Also remove shell integration from ~/.zshrc/~/.bashrc
+
+Environment overrides still work:
+  GASTOWN_ENABLED=1   - Enable for current session only
+
+Usage:
+  gt disable [flags]
+
+Flags:
+      --clean   Remove shell integration from RC files
+  -h, --help    help for disable
+</pre>
+  </section>
+
+  <section class="command-section" id="enable">
+    <h2><code>gt enable</code></h2>
+    <p class="command-description">Enable Gas Town system-wide</p>
+    <pre class="help-output">Enable Gas Town for all agentic coding tools.
+
+When enabled:
+  - Shell hooks set GT_TOWN_ROOT and GT_RIG environment variables
+  - Claude Code SessionStart hooks run 'gt prime' for context
+  - Git repos are auto-registered as rigs (configurable)
+
+Use 'gt disable' to turn off. Use 'gt status --global' to check state.
+
+Environment overrides:
+  GASTOWN_DISABLED=1  - Disable for current session only
+  GASTOWN_ENABLED=1   - Enable for current session only
+
+Usage:
+  gt enable [flags]
+
+Flags:
+  -h, --help   help for enable
+</pre>
+  </section>
+
+  <section class="command-section" id="hooks">
+    <h2><code>gt hooks</code></h2>
+    <p class="command-description">List all Claude Code hooks in the workspace</p>
+    <pre class="help-output">List all Claude Code hooks configured in the workspace.
+
+Scans for .claude/settings.json files and displays hooks by type.
+
+Hook types:
+  SessionStart     - Runs when Claude session starts
+  PreCompact       - Runs before context compaction
+  UserPromptSubmit - Runs before user prompt is submitted
+  PreToolUse       - Runs before tool execution
+  PostToolUse      - Runs after tool execution
+  Stop             - Runs when Claude session stops
+
+Examples:
+  gt hooks              # List all hooks in workspace
+  gt hooks --verbose    # Show hook commands
+  gt hooks --json       # Output as JSON
+
+Usage:
+  gt hooks [flags]
+  gt hooks [command]
+
+Available Commands:
+  install     Install a hook from the registry
+  list        List available hooks from the registry
+
+Flags:
+  -h, --help      help for hooks
+      --json      Output as JSON
+  -v, --verbose   Show hook commands
+
+Use &quot;gt hooks [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="issue">
+    <h2><code>gt issue</code></h2>
+    <p class="command-description">Manage current issue for status line display</p>
+    <pre class="help-output">Manage current issue for status line display
+
+Usage:
+  gt issue [command]
+
+Available Commands:
+  clear       Clear the current issue from status line
+  set         Set the current issue (shown in tmux status line)
+  show        Show the current issue
+
+Flags:
+  -h, --help   help for issue
+
+Use &quot;gt issue [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="plugin">
+    <h2><code>gt plugin</code></h2>
+    <p class="command-description">Plugin management</p>
+    <pre class="help-output">Manage plugins that run during Deacon patrol cycles.
+
+Plugins are periodic automation tasks defined by plugin.md files with TOML frontmatter.
+
+PLUGIN LOCATIONS:
+  ~/gt/plugins/           Town-level plugins (universal, apply everywhere)
+  &lt;rig&gt;/plugins/          Rig-level plugins (project-specific)
+
+GATE TYPES:
+  cooldown    Run if enough time has passed (e.g., 1h)
+  cron        Run on a schedule (e.g., &quot;0 9 * * *&quot;)
+  condition   Run if a check command returns exit 0
+  event       Run on events (e.g., startup)
+  manual      Never auto-run, trigger explicitly
+
+Examples:
+  gt plugin list                    # List all discovered plugins
+  gt plugin show &lt;name&gt;             # Show plugin details
+  gt plugin list --json             # JSON output
+
+Usage:
+  gt plugin [flags]
+  gt plugin [command]
+
+Available Commands:
+  history     Show plugin execution history
+  list        List all discovered plugins
+  run         Manually trigger plugin execution
+  show        Show plugin details
+
+Flags:
+  -h, --help   help for plugin
+
+Use &quot;gt plugin [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="shell">
+    <h2><code>gt shell</code></h2>
+    <p class="command-description">Manage shell integration</p>
+    <pre class="help-output">Manage shell integration
+
+Usage:
+  gt shell [flags]
+  gt shell [command]
+
+Available Commands:
+  install     Install or update shell integration
+  remove      Remove shell integration
+  status      Show shell integration status
+
+Flags:
+  -h, --help   help for shell
+
+Use &quot;gt shell [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="theme">
+    <h2><code>gt theme</code></h2>
+    <p class="command-description">View or set tmux theme for the current rig</p>
+    <pre class="help-output">Manage tmux status bar themes for Gas Town sessions.
+
+Without arguments, shows the current theme assignment.
+With a name argument, sets the theme for this rig.
+
+Examples:
+  gt theme              # Show current theme
+  gt theme --list       # List available themes
+  gt theme forest       # Set theme to 'forest'
+  gt theme apply        # Apply theme to all running sessions in this rig
+
+Usage:
+  gt theme [name] [flags]
+  gt theme [command]
+
+Available Commands:
+  apply       Apply theme to running sessions
+
+Flags:
+  -h, --help   help for theme
+  -l, --list   List available themes
+
+Use &quot;gt theme [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="uninstall">
+    <h2><code>gt uninstall</code></h2>
+    <p class="command-description">Remove Gas Town from the system</p>
+    <pre class="help-output">Completely remove Gas Town from the system.
+
+By default, removes:
+  - Shell integration (~/.zshrc or ~/.bashrc)
+  - Wrapper scripts (~/bin/gt-codex, ~/bin/gt-opencode)
+  - State directory (~/.local/state/gastown/)
+  - Config directory (~/.config/gastown/)
+  - Cache directory (~/.cache/gastown/)
+
+The workspace (e.g., ~/gt) is NOT removed unless --workspace is specified.
+
+Use --force to skip confirmation prompts.
+
+Examples:
+  gt uninstall                    # Remove Gas Town, keep workspace
+  gt uninstall --workspace        # Also remove workspace directory
+  gt uninstall --force            # Skip confirmation
+
+Usage:
+  gt uninstall [flags]
+
+Flags:
+  -f, --force       Skip confirmation prompts
+  -h, --help        help for uninstall
+      --workspace   Also remove the workspace directory (DESTRUCTIVE)
+</pre>
+  </section>
+</DocsLayout>
+
+<style>
+  .intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .command-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .command-section:last-child {
+    border-bottom: none;
+  }
+
+  .command-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .command-description {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .help-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+</style>

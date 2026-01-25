@@ -8,7 +8,9 @@ Guidance for Claude Code when working with this repository.
 npm run dev          # Start dev server (localhost:4321)
 npm run build        # Build main site
 npm run build:docs   # Build docs subdomain
-npm run sync-docs    # Sync docs from gastown repo and rebuild
+npm run sync-docs    # Sync docs from gastown repo (requires gt CLI)
+npm run deploy       # Build + deploy main site
+npm run deploy:docs  # Build + deploy docs subdomain
 npm test             # Run tests
 npm run lint         # ESLint
 npm run format       # Prettier
@@ -20,6 +22,7 @@ npm run format       # Prettier
 - **Main site docs:** `src/pages/docs/` (copied from src-docs/ with path transforms)
 - **Config:** `site.config.json` is the single source of truth
 - **Path alias:** `@/*` maps to `src/*`
+- **Gastown repo:** GitHub: https://github.com/steveyegge/gastown, local cache: ~/Code/Cache/steveyegge/gastown
 
 ### Layouts
 
@@ -41,7 +44,7 @@ Tests in `scripts/lib/__tests__/`.
 ## Guidelines
 
 - **Generated files are read-only** - Don't edit `src-docs/pages/*.astro`, `src/pages/docs/*.astro`, or `tmp/public/`. Edit source markdown in `docs-fodder/`, then regenerate.
-- **Exception: `usage.astro`** - This file IS committed because CF build has no `gt` CLI. Regenerate locally with `npm run usage` when gt changes.
+- **Usage docs are committed** - Files in `src-docs/pages/usage/` and `src-docs/data/usage-commands.json` ARE committed because CF has no `gt` CLI. Regenerate locally with `npm run sync-docs` when gt changes.
 - **Static assets source:** `src/static/` (copied to `tmp/public/` during build)
 - **Scratch files:** Use `tmp/` folder
 

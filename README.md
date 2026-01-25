@@ -25,8 +25,8 @@ Open http://localhost:4321 to view the site.
 | `npm run copy-assets` | Copy static assets to tmp/public/ |
 | `npm run shred-docs` | Generate docs to src-docs/pages/ from markdown |
 | `npm run copy-docs` | Copy src-docs/pages/ to src/pages/docs/ (with path transforms) |
-| `npm run sync-docs` | Sync docs from gastown repo and rebuild |
-| `npm run usage` | Generate CLI usage page from gt --help |
+| `npm run sync-docs` | Sync docs from gastown repo and rebuild (requires gt CLI) |
+| `npm run usage` | Generate CLI usage pages from gt --help (requires gt CLI) |
 | `npm run llms` | Regenerate llms.txt |
 | `npm run llms-full` | Regenerate llms-full.txt (comprehensive) |
 | `npm test` | Run unit tests (66 tests) |
@@ -35,9 +35,10 @@ Open http://localhost:4321 to view the site.
 | `npm run deploy` | Manual deploy to Cloudflare Pages |
 
 Build pipelines:
-- **Main site:** copy-assets → shred-docs → usage → copy-docs → llms → llms-full → astro build → `deploy/`
-- **Docs subdomain:** copy-assets → shred-docs → usage → astro build → `deploy-docs/`
-- **Dev server:** copy-assets → shred-docs → usage → copy-docs → astro dev
+- **Main site:** copy-assets → shred-docs → copy-docs → llms → llms-full → astro build → `deploy/`
+- **Docs subdomain:** copy-assets → shred-docs → astro build → `deploy-docs/`
+- **Dev server:** copy-assets → shred-docs → copy-docs → astro dev
+- **Sync docs:** syncs gastown repo → shred-docs → usage → copy-docs (requires gt CLI)
 
 ## Deployment
 
@@ -89,11 +90,11 @@ Docs are generated to `src-docs/pages/` (canonical location for the subdomain), 
 
 ```
 docs-fodder/gastown-docs/ → shred-docs → src-docs/pages/*.astro
-gt --help                 → usage      → src-docs/pages/usage.astro (committed)
+gt --help                 → usage      → src-docs/pages/usage/*.astro (committed)
 src-docs/pages/           → copy-docs  → src/pages/docs/*.astro
 ```
 
-**Note:** `usage.astro` is committed to the repo (unlike other generated docs) because the Cloudflare build environment doesn't have the `gt` CLI installed. When `gt` changes, regenerate locally with `npm run usage` and commit the updated file.
+**Note:** Usage docs (`src-docs/pages/usage/` and `src-docs/data/usage-commands.json`) are committed to the repo because the Cloudflare build environment doesn't have the `gt` CLI. When `gt` changes, run `npm run sync-docs` locally and commit the updated files.
 
 To update documentation:
 1. Edit markdown files in `docs-fodder/gastown-docs/`

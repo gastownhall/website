@@ -1,6 +1,18 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import { site } from '../site.config';
+import usageCommandsData from '../data/usage-commands.json';
+
+interface Command {
+  name: string;
+  description: string;
+}
+
+interface Category {
+  name: string;
+  slug: string;
+  commands: Command[];
+}
 
 interface Props {
   title: string;
@@ -9,6 +21,8 @@ interface Props {
 
 const { title, description } = Astro.props;
 const currentPath = Astro.url.pathname;
+const isUsagePage = currentPath.includes('/docs/usage');
+const usageCommands = usageCommandsData as Category[];
 
 // Mayor image shown on desktop only, positioned like on home page
 
@@ -92,12 +106,53 @@ const breadcrumbSchema = {
               ]}>Overview</a
             >
           </li>
-          <li>
-            <a
-              href="/docs/usage"
-              class:list={[{ active: currentPath.includes('/docs/usage') }]}
-              >CLI Usage</a
-            >
+          <li class="has-children">
+            <div class="nav-item-with-toggle">
+              <button
+                class="toggle-btn"
+                aria-expanded={isUsagePage ? "true" : "false"}
+                aria-label="Toggle CLI Usage submenu"
+              >
+                <svg class="chevron" width="12" height="12" viewBox="0 0 12 12">
+                  <path d="M4 2 L8 6 L4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <a
+                href="/docs/usage"
+                class:list={[{ active: currentPath === '/docs/usage' || currentPath === '/docs/usage/' }]}
+                >CLI Usage</a
+              >
+            </div>
+            <ul class="usage-commands" data-expanded={isUsagePage ? "true" : "false"}>
+              {usageCommands.map((cat) => (
+                <li class="usage-category" data-category={cat.slug}>
+                  <div class="category-toggle">
+                    <svg class="category-chevron" width="10" height="10" viewBox="0 0 12 12" data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}>
+                      <path d="M4 2 L8 6 L4 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <a
+                      href={`/docs/usage/${cat.slug}`}
+                      class:list={['category-link', { active: currentPath.includes(`/docs/usage/${cat.slug}`) }]}
+                      data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}
+                    >
+                      {cat.name}
+                    </a>
+                  </div>
+                  <ul class="command-anchors" data-expanded={currentPath.includes(`/docs/usage/${cat.slug}`) ? "true" : "false"}>
+                    {cat.commands.map((cmd) => (
+                      <li>
+                        <a
+                          href={`/docs/usage/${cat.slug}#${cmd.name}`}
+                          title={cmd.description}
+                        >
+                          {cmd.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
           </li>
           <li>
             <a
@@ -445,6 +500,103 @@ const breadcrumbSchema = {
     font-weight: 600;
   }
 
+  /* Collapsible nav items */
+  .has-children .nav-item-with-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .has-children .nav-item-with-toggle a {
+    flex: 1;
+  }
+
+  .toggle-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .toggle-btn:hover {
+    color: var(--color-accent);
+  }
+
+  .toggle-btn .chevron {
+    transition: transform 0.2s ease;
+  }
+
+  .toggle-btn[aria-expanded="true"] .chevron {
+    transform: rotate(90deg);
+  }
+
+  /* Usage commands nested navigation - Level 1 indent */
+  .usage-commands {
+    margin-top: 0.5rem;
+    padding-left: 1.25rem;
+    display: none;
+  }
+
+  .usage-commands[data-expanded="true"] {
+    display: block;
+  }
+
+  .usage-commands > li {
+    margin: 0;
+  }
+
+  /* Category toggle container */
+  .category-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .category-chevron {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .category-chevron[data-expanded="true"] {
+    transform: rotate(90deg);
+  }
+
+  .usage-category .category-link {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.3rem 0.5rem;
+    flex: 1;
+  }
+
+  /* Command anchors - Level 2 indent */
+  .command-anchors {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0 0.5rem 0;
+    padding-left: 1.5rem;
+    display: none;
+  }
+
+  .command-anchors[data-expanded="true"] {
+    display: block;
+  }
+
+  .command-anchors > li > a {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+  }
+
+  .command-anchors > li > a:hover {
+    color: var(--color-accent);
+  }
+
   .docs-content {
     flex: 1;
     min-width: 0;
@@ -473,3 +625,67 @@ const breadcrumbSchema = {
     }
   }
 </style>
+
+<script>
+  function toggleUsageMenu(container: Element) {
+    const btn = container.querySelector('.toggle-btn');
+    const list = container.querySelector('.usage-commands');
+    if (!btn || !list) return;
+
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    list.setAttribute('data-expanded', String(!expanded));
+  }
+
+  function toggleCategory(categoryEl: Element) {
+    const link = categoryEl.querySelector('.category-link');
+    const list = categoryEl.querySelector('.command-anchors');
+    const chevron = categoryEl.querySelector('.category-chevron');
+    if (!link || !list) return;
+
+    const isExpanded = link.getAttribute('data-expanded') === 'true';
+
+    // Collapse all categories first
+    document.querySelectorAll('.usage-category').forEach(cat => {
+      const catLink = cat.querySelector('.category-link');
+      const catList = cat.querySelector('.command-anchors');
+      const catChevron = cat.querySelector('.category-chevron');
+      if (catLink && catList) {
+        catLink.setAttribute('data-expanded', 'false');
+        catList.setAttribute('data-expanded', 'false');
+        catChevron?.setAttribute('data-expanded', 'false');
+      }
+    });
+
+    // If it wasn't expanded, expand it now
+    if (!isExpanded) {
+      link.setAttribute('data-expanded', 'true');
+      list.setAttribute('data-expanded', 'true');
+      chevron?.setAttribute('data-expanded', 'true');
+    }
+  }
+
+  document.querySelectorAll('.has-children').forEach(container => {
+    const btn = container.querySelector('.toggle-btn');
+    const link = container.querySelector('.nav-item-with-toggle > a');
+
+    btn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleUsageMenu(container);
+    });
+
+    link?.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleUsageMenu(container);
+    });
+  });
+
+  // Category toggle - clicking on category name shows/hides commands
+  document.querySelectorAll('.usage-category').forEach(category => {
+    const link = category.querySelector('.category-link');
+    link?.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleCategory(category);
+    });
+  });
+</script>

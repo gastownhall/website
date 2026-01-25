@@ -1,0 +1,319 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="Workspace Commands"
+  description="CLI reference for Gas Town workspace commands"
+>
+  <p class="intro">
+    This page documents the <strong>Workspace</strong> commands for the <code>gt</code> CLI.
+  </p>
+
+  <section class="command-section" id="crew">
+    <h2><code>gt crew</code></h2>
+    <p class="command-description">Manage crew workers (persistent workspaces for humans)</p>
+    <pre class="help-output">Manage crew workers - persistent workspaces for human developers.
+
+CREW VS POLECATS:
+  Polecats: Ephemeral. Witness-managed. Auto-nuked after work.
+  Crew:     Persistent. User-managed. Stays until you remove it.
+
+Crew workers are full git clones (not worktrees) for human developers
+who want persistent context and control over their workspace lifecycle.
+Use crew workers for exploratory work, long-running tasks, or when you
+want to keep uncommitted changes around.
+
+Features:
+  - Gas Town integrated: Mail, nudge, handoff all work
+  - Recognizable names: dave, emma, fred (not ephemeral pool names)
+  - Tmux optional: Can work in terminal directly without tmux session
+
+Commands:
+  gt crew start &lt;name&gt;     Start session (creates workspace if needed)
+  gt crew stop &lt;name&gt;      Stop session(s)
+  gt crew add &lt;name&gt;       Create workspace without starting
+  gt crew list             List workspaces with status
+  gt crew at &lt;name&gt;        Attach to session
+  gt crew remove &lt;name&gt;    Remove workspace
+  gt crew refresh &lt;name&gt;   Context cycle with handoff mail
+  gt crew restart &lt;name&gt;   Kill and restart session fresh
+
+Usage:
+  gt crew [flags]
+  gt crew [command]
+
+Available Commands:
+  add         Create a new crew workspace
+  at          Attach to crew workspace session
+  list        List crew workspaces with status
+  pristine    Sync crew workspaces with remote
+  refresh     Context cycling with mail-to-self handoff
+  remove      Remove crew workspace(s)
+  rename      Rename a crew workspace
+  restart     Kill and restart crew workspace session(s)
+  start       Start crew worker(s) in a rig
+  status      Show detailed workspace status
+  stop        Stop crew workspace session(s)
+
+Flags:
+  -h, --help   help for crew
+
+Use &quot;gt crew [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="git-init">
+    <h2><code>gt git-init</code></h2>
+    <p class="command-description">Initialize git repository for a Gas Town HQ</p>
+    <pre class="help-output">Initialize or configure git for an existing Gas Town HQ.
+
+This command:
+  1. Creates a comprehensive .gitignore for Gas Town
+  2. Initializes a git repository if not already present
+  3. Optionally creates a GitHub repository (private by default)
+
+The .gitignore excludes:
+  - Polecat worktrees and rig clones (recreated with 'gt sling' or 'gt rig add')
+  - Runtime state files (state.json, *.lock)
+  - OS and editor files
+
+And tracks:
+  - CLAUDE.md and role contexts
+  - .beads/ configuration and issues
+  - Rig configs and hop/ directory
+
+Examples:
+  gt git-init                             # Init git with .gitignore
+  gt git-init --github=user/repo          # Create private GitHub repo (default)
+  gt git-init --github=user/repo --public # Create public GitHub repo
+
+Usage:
+  gt git-init [flags]
+
+Flags:
+      --github string   Create GitHub repo (format: owner/repo, private by default)
+  -h, --help            help for git-init
+      --public          Make GitHub repo public (repos are private by default)
+</pre>
+  </section>
+
+  <section class="command-section" id="init">
+    <h2><code>gt init</code></h2>
+    <p class="command-description">Initialize current directory as a Gas Town rig</p>
+    <pre class="help-output">Initialize the current directory for use as a Gas Town rig.
+
+This creates the standard agent directories (polecats/, witness/, refinery/,
+mayor/) and updates .git/info/exclude to ignore them.
+
+The current directory must be a git repository. Use --force to reinitialize
+an existing rig structure.
+
+Usage:
+  gt init [flags]
+
+Flags:
+  -f, --force   Reinitialize existing structure
+  -h, --help    help for init
+</pre>
+  </section>
+
+  <section class="command-section" id="install">
+    <h2><code>gt install</code></h2>
+    <p class="command-description">Create a new Gas Town HQ (workspace)</p>
+    <pre class="help-output">Create a new Gas Town HQ at the specified path.
+
+The HQ (headquarters) is the top-level directory where Gas Town is installed -
+the root of your workspace where all rigs and agents live. It contains:
+  - CLAUDE.md            Mayor role context (Mayor runs from HQ root)
+  - mayor/               Mayor config, state, and rig registry
+  - .beads/              Town-level beads DB (hq-* prefix for mayor mail)
+
+If path is omitted, uses the current directory.
+
+See docs/hq.md for advanced HQ configurations including beads
+redirects, multi-system setups, and HQ templates.
+
+Examples:
+  gt install ~/gt                              # Create HQ at ~/gt
+  gt install . --name my-workspace             # Initialize current dir
+  gt install ~/gt --no-beads                   # Skip .beads/ initialization
+  gt install ~/gt --git                        # Also init git with .gitignore
+  gt install ~/gt --github=user/repo           # Create private GitHub repo (default)
+  gt install ~/gt --github=user/repo --public  # Create public GitHub repo
+  gt install ~/gt --shell                      # Install shell integration (sets GT_TOWN_ROOT/GT_RIG)
+
+Usage:
+  gt install [path] [flags]
+
+Flags:
+  -f, --force                Overwrite existing HQ
+      --git                  Initialize git with .gitignore
+      --github string        Create GitHub repo (format: owner/repo, private by default)
+  -h, --help                 help for install
+  -n, --name string          Town name (defaults to directory name)
+      --no-beads             Skip town beads initialization
+      --owner string         Owner email for entity identity (defaults to git config user.email)
+      --public               Make GitHub repo public (use with --github)
+      --public-name string   Public display name (defaults to town name)
+      --shell                Install shell integration (sets GT_TOWN_ROOT/GT_RIG env vars)
+      --wrappers             Install gt-codex/gt-opencode wrapper scripts to ~/bin/
+</pre>
+  </section>
+
+  <section class="command-section" id="namepool">
+    <h2><code>gt namepool</code></h2>
+    <p class="command-description">Manage polecat name pools</p>
+    <pre class="help-output">Manage themed name pools for polecats in Gas Town.
+
+By default, polecats get themed names from the Mad Max universe
+(furiosa, nux, slit, etc.). You can change the theme or add custom names.
+
+Examples:
+  gt namepool              # Show current pool status
+  gt namepool --list       # List available themes
+  gt namepool themes       # Show theme names
+  gt namepool set minerals # Set theme to 'minerals'
+  gt namepool add ember    # Add custom name to pool
+  gt namepool reset        # Reset pool state
+
+Usage:
+  gt namepool [flags]
+  gt namepool [command]
+
+Available Commands:
+  add         Add a custom name to the pool
+  reset       Reset the pool state (release all names)
+  set         Set the namepool theme for this rig
+  themes      List available themes and their names
+
+Flags:
+  -h, --help   help for namepool
+  -l, --list   List available themes
+
+Use &quot;gt namepool [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="rig">
+    <h2><code>gt rig</code></h2>
+    <p class="command-description">Manage rigs in the workspace</p>
+    <pre class="help-output">Manage rigs (project containers) in the Gas Town workspace.
+
+A rig is a container for managing a project and its agents:
+  - refinery/rig/  Canonical main clone (Refinery's working copy)
+  - mayor/rig/     Mayor's working clone for this rig
+  - crew/&lt;name&gt;/   Human workspace(s)
+  - witness/       Witness agent (no clone)
+  - polecats/      Worker directories
+  - .beads/        Rig-level issue tracking
+
+Usage:
+  gt rig [flags]
+  gt rig [command]
+
+Available Commands:
+  add         Add a new rig to the workspace
+  boot        Start witness and refinery for a rig
+  config      View and manage rig configuration
+  dock        Dock a rig (global, persistent shutdown)
+  list        List all rigs in the workspace
+  park        Park one or more rigs (stops agents, daemon won't auto-restart)
+  reboot      Restart witness and refinery for a rig
+  remove      Remove a rig from the registry (does not delete files)
+  reset       Reset rig state (handoff content, mail, stale issues)
+  restart     Restart one or more rigs (stop then start)
+  shutdown    Gracefully stop all rig agents
+  start       Start witness and refinery on patrol for one or more rigs
+  status      Show detailed status for a specific rig
+  stop        Stop one or more rigs (shutdown semantics)
+  undock      Undock a rig (remove global docked status)
+  unpark      Unpark one or more rigs (allow daemon to auto-restart agents)
+
+Flags:
+  -h, --help   help for rig
+
+Use &quot;gt rig [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section" id="worktree">
+    <h2><code>gt worktree</code></h2>
+    <p class="command-description">Create worktree in another rig for cross-rig work</p>
+    <pre class="help-output">Create a git worktree in another rig for cross-rig work.
+
+This command is for crew workers who need to work on another rig's codebase
+while maintaining their identity. It creates a worktree in the target rig's
+crew/ directory with a name that identifies your source rig and identity.
+
+The worktree is created at: ~/gt/&lt;target-rig&gt;/crew/&lt;source-rig&gt;-&lt;name&gt;/
+
+For example, if you're gastown/crew/joe and run 'gt worktree beads':
+- Creates worktree at ~/gt/beads/crew/gastown-joe/
+- The worktree checks out main branch
+- Your identity (BD_ACTOR, GT_ROLE) remains gastown/crew/joe
+
+Use --no-cd to just print the path without printing shell commands.
+
+Examples:
+  gt worktree beads         # Create worktree in beads rig
+  gt worktree gastown       # Create worktree in gastown rig (from another rig)
+  gt worktree beads --no-cd # Just print the path
+
+Usage:
+  gt worktree &lt;rig&gt; [flags]
+  gt worktree [command]
+
+Available Commands:
+  list        List all cross-rig worktrees owned by current crew member
+  remove      Remove a cross-rig worktree
+
+Flags:
+  -h, --help    help for worktree
+      --no-cd   Just print path (don't print cd command)
+
+Use &quot;gt worktree [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+</DocsLayout>
+
+<style>
+  .intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .command-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .command-section:last-child {
+    border-bottom: none;
+  }
+
+  .command-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .command-description {
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .help-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+</style>

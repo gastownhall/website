@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npm run copy-assets && npm run shred-docs && npm run usage && npm run copy-docs && astro dev",
-    "build": "npm run copy-assets && npm run shred-docs && npm run usage && npm run copy-docs && npm run llms && npm run llms-full && astro check && astro build",
-    "build:docs": "npm run copy-assets && npm run shred-docs && npm run usage && astro check && astro build --config astro.config.docs.mjs",
+    "dev": "npm run copy-assets && npm run shred-docs && npm run copy-docs && astro dev",
+    "build": "npm run copy-assets && npm run shred-docs && npm run copy-docs && npm run llms && npm run llms-full && astro check && astro build",
+    "build:docs": "npm run copy-assets && npm run shred-docs && astro check && astro build --config astro.config.docs.mjs",
     "build:all": "npm run build && npm run build:docs",
     "copy-assets": "node scripts/copy-assets.mjs",
     "copy-docs": "node scripts/copy-docs.mjs",

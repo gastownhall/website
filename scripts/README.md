@@ -32,15 +32,36 @@ node scripts/shred-docs.mjs --subdomain
 
 ### generate-usage.mjs
 
-Generates the CLI Usage page from `gt --help` output.
+Generates CLI Usage pages from `gt --help` output.
 
 ```bash
-npm run usage
+npm run usage          # Standalone (requires gt CLI)
+npm run sync-docs      # Full pipeline including usage generation
 ```
 
-Captures help text from `gt --help` and all subcommands, then generates an Astro page with formatted documentation. Requires `gt` to be installed and available in PATH.
+Captures help text from `gt --help` and all subcommands, then generates Astro pages organized by category. Requires `gt` to be installed and available in PATH. Fails loudly if gt is not available.
 
-**Output:** `src/pages/docs/usage.astro`
+**Output:** `src-docs/pages/usage/*.astro` and `src-docs/data/usage-commands.json`
+
+**Note:** Usage docs are committed to the repo because Cloudflare builds don't have the `gt` CLI. The standard `build` and `build:docs` commands use the committed files.
+
+### sync-gastown-docs.mjs
+
+Syncs documentation from the gastown repo and rebuilds all docs.
+
+```bash
+npm run sync-docs                              # Uses default path
+node scripts/sync-gastown-docs.mjs /path/to/gastown  # Custom path
+```
+
+This is the primary script for updating docs when gastown changes. It:
+1. Syncs `docs/` from gastown repo to `docs-fodder/gastown-docs/`
+2. Runs shred-docs to generate Astro pages
+3. Runs generate-usage to create CLI usage docs (requires gt CLI)
+4. Runs copy-docs to copy pages to main site
+5. Copies sidebar data to main site
+
+After running, commit the changes for CF to build.
 
 ### generate-llms.mjs
 

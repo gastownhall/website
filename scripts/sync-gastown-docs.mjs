@@ -11,10 +11,15 @@
  * This script:
  *   1. Syncs docs/ from gastown repo to docs-fodder/gastown-docs/
  *   2. Runs shred-docs to generate Astro pages
- *   3. Runs copy-docs to copy to main site
+ *   3. Runs generate-usage to create CLI usage docs (requires gt CLI)
+ *   4. Runs copy-docs to copy pages to main site
+ *   5. Copies sidebar data to main site
+ *
+ * After running, commit the changes for CF to build:
+ *   git add -A && git commit -m "Sync docs"
  */
 
-import { cp, rm } from 'fs/promises';
+import { cp, rm, copyFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, dirname, relative } from 'path';
 import { fileURLToPath } from 'url';
@@ -103,12 +108,22 @@ async function main() {
 
   // Rebuild documentation
   await runScript(join(__dirname, 'shred-docs.mjs'), 'Generating Astro pages from markdown');
+  await runScript(join(__dirname, 'generate-usage.mjs'), 'Generating CLI usage docs (requires gt CLI)');
   await runScript(join(__dirname, 'copy-docs.mjs'), 'Copying docs to main site');
+
+  // Copy sidebar data to main site
+  console.log('\n→ Copying sidebar data to main site');
+  const sidebarSrc = join(ROOT, 'src-docs', 'data', 'usage-commands.json');
+  const sidebarDest = join(ROOT, 'src', 'data', 'usage-commands.json');
+  await mkdir(dirname(sidebarDest), { recursive: true });
+  await copyFile(sidebarSrc, sidebarDest);
+  console.log(`  Copied usage-commands.json`);
 
   console.log('\n' + '='.repeat(60));
   console.log('Sync complete!');
   console.log('='.repeat(60));
   console.log('\nNext steps:');
+  console.log('  git add -A && git commit -m "Sync docs"  # Commit for CF');
   console.log('  npm run dev         # Preview changes locally');
   console.log('  npm run build       # Build for production');
   console.log('  npm run deploy      # Deploy main site');

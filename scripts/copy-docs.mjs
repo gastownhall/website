@@ -14,8 +14,9 @@
  * Usage: node scripts/copy-docs.mjs
  */
 
-import { readdir, readFile, writeFile, mkdir } from 'fs/promises';
-import { join, relative } from 'path';
+import { readdir, readFile, writeFile, mkdir, copyFile } from 'fs/promises';
+import { existsSync } from 'fs';
+import { join, relative, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +25,8 @@ const rootDir = join(__dirname, '..');
 
 const SRC_DIR = join(rootDir, 'src-docs', 'pages');
 const DEST_DIR = join(rootDir, 'src', 'pages', 'docs');
+const SIDEBAR_SRC = join(rootDir, 'src-docs', 'data', 'usage-commands.json');
+const SIDEBAR_DEST = join(rootDir, 'src', 'data', 'usage-commands.json');
 
 /**
  * Recursively finds all .astro files in a directory.
@@ -106,6 +109,14 @@ async function main() {
   }
 
   console.log(`\nCopied ${copied} files`);
+
+  // Copy sidebar data if it exists
+  if (existsSync(SIDEBAR_SRC)) {
+    await mkdir(dirname(SIDEBAR_DEST), { recursive: true });
+    await copyFile(SIDEBAR_SRC, SIDEBAR_DEST);
+    console.log(`Copied sidebar data`);
+  }
+
   console.log('Done!');
 }
 
