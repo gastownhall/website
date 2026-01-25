@@ -1,0 +1,3863 @@
+---
+import DocsLayout from '../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+  title="CLI Usage"
+  description="Command-line usage reference for the gt (Gas Town) CLI tool"
+>
+  <p class="intro">
+    This page documents the <code>gt</code> command-line interface. The help output below
+    is automatically generated from the installed version of <strong>Gas Town v0.5.0</strong>.
+  </p>
+
+  <section class="main-help">
+    <h2>Overview</h2>
+    <pre class="help-output">Gas Town (gt) manages multi-agent workspaces called rigs.
+
+It coordinates agent spawning, work distribution, and communication
+across distributed teams of AI agents working on shared codebases.
+
+Usage:
+  gt [command]
+
+Work Management:
+  bead        Bead management utilities
+  cat         Display bead content
+  close       Close one or more beads
+  commit      Git commit with automatic agent identity
+  convoy      Track batches of work across rigs
+  done        Signal work ready for merge queue
+  formula     Manage workflow formulas
+  gate        Gate coordination commands
+  handoff     Hand off to a fresh session, work continues from hook
+  hook        Show or attach work on your hook
+  mol         Agent molecule workflow commands
+  mq          Merge queue operations
+  orphans     Find lost polecat work
+  park        Park work on a gate for async resumption
+  ready       Show work ready across town
+  release     Release stuck in_progress issues back to pending
+  resume      Resume from parked work or check for handoff messages
+  show        Show details of a bead
+  sling       Assign work to an agent (THE unified work dispatch command)
+  synthesis   Manage convoy synthesis steps
+  trail       Show recent agent activity
+  unsling     Remove work from an agent's hook
+
+Agent Management:
+  agents      Switch between Gas Town agent sessions
+  boot        Manage Boot (Deacon watchdog)
+  callbacks   Handle agent callbacks
+  deacon      Manage the Deacon (town-level watchdog)
+  dog         Manage dogs (cross-rig infrastructure workers)
+  mayor       Manage the Mayor (Chief of Staff for cross-rig coordination)
+  polecat     Manage polecats (ephemeral workers, one task then nuked)
+  refinery    Manage the Refinery (merge queue processor)
+  role        Show or manage agent role
+  session     Manage polecat sessions
+  witness     Manage the Witness (per-rig polecat health monitor)
+
+Communication:
+  broadcast   Send a nudge message to all workers
+  dnd         Toggle Do Not Disturb mode for notifications
+  escalate    Escalation system for critical issues
+  mail        Agent messaging system
+  notify      Set notification level
+  nudge       Send a synchronous message to any Gas Town worker
+  peek        View recent output from a polecat or crew session
+
+Services:
+  daemon      Manage the Gas Town daemon
+  down        Stop all Gas Town services
+  shutdown    Shutdown Gas Town with cleanup
+  start       Start Gas Town or a crew workspace
+  up          Bring up all Gas Town services
+
+Workspace:
+  crew        Manage crew workers (persistent workspaces for humans)
+  git-init    Initialize git repository for a Gas Town HQ
+  init        Initialize current directory as a Gas Town rig
+  install     Create a new Gas Town HQ (workspace)
+  namepool    Manage polecat name pools
+  rig         Manage rigs in the workspace
+  worktree    Create worktree in another rig for cross-rig work
+
+Configuration:
+  account     Manage Claude Code accounts
+  completion  Generate the autocompletion script for the specified shell
+  config      Manage Gas Town configuration
+  disable     Disable Gas Town system-wide
+  enable      Enable Gas Town system-wide
+  hooks       List all Claude Code hooks in the workspace
+  issue       Manage current issue for status line display
+  plugin      Plugin management
+  shell       Manage shell integration
+  theme       View or set tmux theme for the current rig
+  uninstall   Remove Gas Town from the system
+
+Diagnostics:
+  activity    Emit and view activity events
+  audit       Query work history by actor
+  checkpoint  Manage session checkpoints for crash recovery
+  costs       Show costs for running Claude sessions [DISABLED]
+  dashboard   Start the convoy tracking web dashboard
+  doctor      Run health checks on the workspace
+  feed        Show real-time activity feed from beads and gt events
+  help        Help about any command
+  info        Show Gas Town information and what's new
+  log         View town activity log
+  patrol      Patrol digest management
+  prime       Output role context for current directory
+  seance      Talk to your predecessor sessions
+  stale       Check if the gt binary is stale
+  status      Show overall town status
+  thanks      Thank the human contributors to Gas Town
+  version     Print version information
+  whoami      Show current identity for mail commands
+
+Additional Commands:
+  cycle       Cycle between sessions in the same group
+  tap         Claude Code hook handlers
+  town        Town-level operations
+
+Flags:
+  -h, --help      help for gt
+  -v, --version   version for gt
+
+Use &quot;gt [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <nav class="command-toc">
+    <h2>Command Reference</h2>
+    <p>Click a command to jump to its detailed help:</p>
+    <ul class="toc-list">
+        <li><a href="#bead"><code>gt bead</code></a></li>
+        <li><a href="#cat"><code>gt cat</code></a></li>
+        <li><a href="#close"><code>gt close</code></a></li>
+        <li><a href="#commit"><code>gt commit</code></a></li>
+        <li><a href="#convoy"><code>gt convoy</code></a></li>
+        <li><a href="#done"><code>gt done</code></a></li>
+        <li><a href="#formula"><code>gt formula</code></a></li>
+        <li><a href="#gate"><code>gt gate</code></a></li>
+        <li><a href="#handoff"><code>gt handoff</code></a></li>
+        <li><a href="#hook"><code>gt hook</code></a></li>
+        <li><a href="#mol"><code>gt mol</code></a></li>
+        <li><a href="#mq"><code>gt mq</code></a></li>
+        <li><a href="#orphans"><code>gt orphans</code></a></li>
+        <li><a href="#park"><code>gt park</code></a></li>
+        <li><a href="#ready"><code>gt ready</code></a></li>
+        <li><a href="#release"><code>gt release</code></a></li>
+        <li><a href="#resume"><code>gt resume</code></a></li>
+        <li><a href="#show"><code>gt show</code></a></li>
+        <li><a href="#sling"><code>gt sling</code></a></li>
+        <li><a href="#synthesis"><code>gt synthesis</code></a></li>
+        <li><a href="#trail"><code>gt trail</code></a></li>
+        <li><a href="#unsling"><code>gt unsling</code></a></li>
+        <li><a href="#agents"><code>gt agents</code></a></li>
+        <li><a href="#boot"><code>gt boot</code></a></li>
+        <li><a href="#callbacks"><code>gt callbacks</code></a></li>
+        <li><a href="#deacon"><code>gt deacon</code></a></li>
+        <li><a href="#dog"><code>gt dog</code></a></li>
+        <li><a href="#mayor"><code>gt mayor</code></a></li>
+        <li><a href="#polecat"><code>gt polecat</code></a></li>
+        <li><a href="#refinery"><code>gt refinery</code></a></li>
+        <li><a href="#role"><code>gt role</code></a></li>
+        <li><a href="#session"><code>gt session</code></a></li>
+        <li><a href="#witness"><code>gt witness</code></a></li>
+        <li><a href="#broadcast"><code>gt broadcast</code></a></li>
+        <li><a href="#dnd"><code>gt dnd</code></a></li>
+        <li><a href="#escalate"><code>gt escalate</code></a></li>
+        <li><a href="#mail"><code>gt mail</code></a></li>
+        <li><a href="#notify"><code>gt notify</code></a></li>
+        <li><a href="#nudge"><code>gt nudge</code></a></li>
+        <li><a href="#peek"><code>gt peek</code></a></li>
+        <li><a href="#daemon"><code>gt daemon</code></a></li>
+        <li><a href="#down"><code>gt down</code></a></li>
+        <li><a href="#shutdown"><code>gt shutdown</code></a></li>
+        <li><a href="#start"><code>gt start</code></a></li>
+        <li><a href="#up"><code>gt up</code></a></li>
+        <li><a href="#crew"><code>gt crew</code></a></li>
+        <li><a href="#git-init"><code>gt git-init</code></a></li>
+        <li><a href="#init"><code>gt init</code></a></li>
+        <li><a href="#install"><code>gt install</code></a></li>
+        <li><a href="#namepool"><code>gt namepool</code></a></li>
+        <li><a href="#rig"><code>gt rig</code></a></li>
+        <li><a href="#worktree"><code>gt worktree</code></a></li>
+        <li><a href="#account"><code>gt account</code></a></li>
+        <li><a href="#completion"><code>gt completion</code></a></li>
+        <li><a href="#config"><code>gt config</code></a></li>
+        <li><a href="#disable"><code>gt disable</code></a></li>
+        <li><a href="#enable"><code>gt enable</code></a></li>
+        <li><a href="#hooks"><code>gt hooks</code></a></li>
+        <li><a href="#issue"><code>gt issue</code></a></li>
+        <li><a href="#plugin"><code>gt plugin</code></a></li>
+        <li><a href="#shell"><code>gt shell</code></a></li>
+        <li><a href="#theme"><code>gt theme</code></a></li>
+        <li><a href="#uninstall"><code>gt uninstall</code></a></li>
+        <li><a href="#activity"><code>gt activity</code></a></li>
+        <li><a href="#audit"><code>gt audit</code></a></li>
+        <li><a href="#checkpoint"><code>gt checkpoint</code></a></li>
+        <li><a href="#costs"><code>gt costs</code></a></li>
+        <li><a href="#dashboard"><code>gt dashboard</code></a></li>
+        <li><a href="#doctor"><code>gt doctor</code></a></li>
+        <li><a href="#feed"><code>gt feed</code></a></li>
+        <li><a href="#help"><code>gt help</code></a></li>
+        <li><a href="#info"><code>gt info</code></a></li>
+        <li><a href="#log"><code>gt log</code></a></li>
+        <li><a href="#patrol"><code>gt patrol</code></a></li>
+        <li><a href="#prime"><code>gt prime</code></a></li>
+        <li><a href="#seance"><code>gt seance</code></a></li>
+        <li><a href="#stale"><code>gt stale</code></a></li>
+        <li><a href="#status"><code>gt status</code></a></li>
+        <li><a href="#thanks"><code>gt thanks</code></a></li>
+        <li><a href="#version"><code>gt version</code></a></li>
+        <li><a href="#whoami"><code>gt whoami</code></a></li>
+        <li><a href="#cycle"><code>gt cycle</code></a></li>
+        <li><a href="#tap"><code>gt tap</code></a></li>
+        <li><a href="#town"><code>gt town</code></a></li>
+    </ul>
+  </nav>
+
+
+  <section class="command-section">
+    <h2 id="bead"><code>gt bead</code></h2>
+    <pre class="help-output">Utilities for managing beads across repositories.
+
+Usage:
+  gt bead [command]
+
+Aliases:
+  bead, bd
+
+Available Commands:
+  move        Move a bead to a different repository
+  read        Show details of a bead (alias for 'show')
+  show        Show details of a bead
+
+Flags:
+  -h, --help   help for bead
+
+Use &quot;gt bead [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="cat"><code>gt cat</code></h2>
+    <pre class="help-output">Display the content of a bead (issue, task, molecule, etc.).
+
+This is a convenience wrapper around 'bd show' that integrates with gt.
+Accepts any bead ID (bd-*, hq-*, mol-*).
+
+Examples:
+  gt cat bd-abc123       # Show a bead
+  gt cat hq-xyz789       # Show a town-level bead
+  gt cat bd-abc --json   # Output as JSON
+
+Usage:
+  gt cat &lt;bead-id&gt; [flags]
+
+Flags:
+  -h, --help   help for cat
+      --json   Output as JSON
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="close"><code>gt close</code></h2>
+    <pre class="help-output">Close one or more issues.
+
+If no issue ID is provided, closes the last touched issue (from most recent
+create, update, show, or close operation).
+
+Usage:
+  bd close [id...] [flags]
+
+Flags:
+      --continue         Auto-advance to next step in molecule
+  -f, --force            Force close pinned issues
+  -h, --help             help for close
+      --no-auto          With --continue, show next step but don't claim it
+  -r, --reason string    Reason for closing
+      --session string   Claude Code session ID (or set CLAUDE_SESSION_ID env var)
+      --suggest-next     Show newly unblocked issues after closing
+
+Global Flags:
+      --actor string            Actor name for audit trail (default: $BD_ACTOR, git user.name, $USER)
+      --allow-stale             Allow operations on potentially stale data (skip staleness check)
+      --db string               Database path (default: auto-discover .beads/*.db)
+      --json                    Output in JSON format
+      --lock-timeout duration   SQLite busy timeout (0 = fail immediately if locked) (default 30s)
+      --no-auto-flush           Disable automatic JSONL sync after CRUD operations
+      --no-auto-import          Disable automatic JSONL import when newer than DB
+      --no-daemon               Force direct storage mode, bypass daemon if running
+      --no-db                   Use no-db mode: load from JSONL, no SQLite
+      --profile                 Generate CPU profile for performance analysis
+  -q, --quiet                   Suppress non-essential output (errors only)
+      --readonly                Read-only mode: block write operations (for worker sandboxes)
+      --sandbox                 Sandbox mode: disables daemon and auto-sync
+  -v, --verbose                 Enable verbose/debug output
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="commit"><code>gt commit</code></h2>
+    <pre class="help-output">GIT-COMMIT(1)                     Git Manual                     GIT-COMMIT(1)
+
+NNAAMMEE
+       git-commit - Record changes to the repository
+
+SSYYNNOOPPSSIISS
+       ggiitt ccoommmmiitt [--aa | ----iinntteerraaccttiivvee | ----ppaattcchh] [--ss] [--vv] [--uu[_&lt;_m_o_d_e_&gt;]] [----aammeenndd]
+               [----ddrryy--rruunn] [(--cc | --CC | ----ssqquuaasshh) _&lt;_c_o_m_m_i_t_&gt; | ----ffiixxuupp [(aammeenndd|rreewwoorrdd)::]_&lt;_c_o_m_m_i_t_&gt;]
+               [--FF _&lt;_f_i_l_e_&gt; | --mm _&lt;_m_s_g_&gt;] [----rreesseett--aauutthhoorr] [----aallllooww--eemmppttyy]
+               [----aallllooww--eemmppttyy--mmeessssaaggee] [----nnoo--vveerriiffyy] [--ee] [----aauutthhoorr==_&lt;_a_u_t_h_o_r_&gt;]
+               [----ddaattee==_&lt;_d_a_t_e_&gt;] [----cclleeaannuupp==_&lt;_m_o_d_e_&gt;] [----[nnoo--]ssttaattuuss]
+               [--ii | --oo] [----ppaatthhssppeecc--ffrroomm--ffiillee==_&lt;_f_i_l_e_&gt; [----ppaatthhssppeecc--ffiillee--nnuull]]
+               [(----ttrraaiilleerr _&lt;_t_o_k_e_n_&gt;[(==|::)_&lt;_v_a_l_u_e_&gt;])...] [--SS[_&lt;_k_e_y_i_d_&gt;]]
+               [----] [_&lt;_p_a_t_h_s_p_e_c_&gt;...]
+
+DDEESSCCRRIIPPTTIIOONN
+       Create a new commit containing the current contents of the index and
+       the given log message describing the changes. The new commit is a
+       direct child of HEAD, usually the tip of the current branch, and the
+       branch is updated to point to it (unless no branch is associated with
+       the working tree, in which case HHEEAADD is &quot;detached&quot; as described in ggiitt--
+       cchheecckkoouutt(1)).
+
+       The content to be committed can be specified in several ways:
+
+        1. by using ggiitt--aadddd(1) to incrementally &quot;add&quot; changes to the index
+           before using the ccoommmmiitt command (Note: even modified files must be
+           &quot;added&quot;);
+
+        2. by using ggiitt--rrmm(1) to remove files from the working tree and the
+           index, again before using the ccoommmmiitt command;
+
+        3. by listing files as arguments to the ccoommmmiitt command (without
+           ----iinntteerraaccttiivvee or ----ppaattcchh switch), in which case the commit will
+           ignore changes staged in the index, and instead record the current
+           content of the listed files (which must already be known to Git);
+
+        4. by using the --aa switch with the ccoommmmiitt command to automatically
+           &quot;add&quot; changes from all known files (i.e. all files that are already
+           listed in the index) and to automatically &quot;rm&quot; files in the index
+           that have been removed from the working tree, and then perform the
+           actual commit;
+
+        5. by using the ----iinntteerraaccttiivvee or ----ppaattcchh switches with the ccoommmmiitt
+           command to decide one by one which files or hunks should be part of
+           the commit in addition to contents in the index, before finalizing
+           the operation. See the “Interactive Mode” section of ggiitt--aadddd(1) to
+           learn how to operate these modes.
+
+       The ----ddrryy--rruunn option can be used to obtain a summary of what is
+       included by any of the above for the next commit by giving the same set
+       of parameters (options and paths).
+
+       If you make a commit and then find a mistake immediately after that,
+       you can recover from it with ggiitt rreesseett.
+
+OOPPTTIIOONNSS
+       --aa, ----aallll
+           Automatically stage files that have been modified and deleted, but
+           new files you have not told Git about are not affected.
+
+       --pp, ----ppaattcchh
+           Use the interactive patch selection interface to choose which
+           changes to commit. See ggiitt--aadddd(1) for details.
+
+       --CC _&lt;_c_o_m_m_i_t_&gt;, ----rreeuussee--mmeessssaaggee==_&lt;_c_o_m_m_i_t_&gt;
+           Take an existing _&lt;_c_o_m_m_i_t_&gt; object, and reuse the log message and the
+           authorship information (including the timestamp) when creating the
+           commit.
+
+       --cc _&lt;_c_o_m_m_i_t_&gt;, ----rreeeeddiitt--mmeessssaaggee==_&lt;_c_o_m_m_i_t_&gt;
+           Like --CC, but with --cc the editor is invoked, so that the user can
+           further edit the commit message.
+
+       ----ffiixxuupp==[(aammeenndd|rreewwoorrdd)::]_&lt;_c_o_m_m_i_t_&gt;
+           Create a new commit which &quot;fixes up&quot; _&lt;_c_o_m_m_i_t_&gt; when applied with ggiitt
+           rreebbaassee ----aauuttoossqquuaasshh. Plain ----ffiixxuupp==_&lt;_c_o_m_m_i_t_&gt; creates a &quot;fixup!&quot;
+           commit which changes the content of _&lt;_c_o_m_m_i_t_&gt; but leaves its log
+           message untouched.  ----ffiixxuupp==aammeenndd::_&lt;_c_o_m_m_i_t_&gt; is similar but creates
+           an &quot;amend!&quot; commit which also replaces the log message of _&lt;_c_o_m_m_i_t_&gt;
+           with the log message of the &quot;amend!&quot; commit.
+           ----ffiixxuupp==rreewwoorrdd::_&lt;_c_o_m_m_i_t_&gt; creates an &quot;amend!&quot; commit which replaces
+           the log message of _&lt;_c_o_m_m_i_t_&gt; with its own log message but makes no
+           changes to the content of _&lt;_c_o_m_m_i_t_&gt;.
+
+           The commit created by plain ----ffiixxuupp==_&lt;_c_o_m_m_i_t_&gt; has a title composed
+           of &quot;fixup!&quot; followed by the title of _&lt;_c_o_m_m_i_t_&gt;, and is recognized
+           specially by ggiitt rreebbaassee ----aauuttoossqquuaasshh. The --mm option may be used to
+           supplement the log message of the created commit, but the
+           additional commentary will be thrown away once the &quot;fixup!&quot; commit
+           is squashed into _&lt;_c_o_m_m_i_t_&gt; by ggiitt rreebbaassee ----aauuttoossqquuaasshh.
+
+           The commit created by ----ffiixxuupp==aammeenndd::_&lt;_c_o_m_m_i_t_&gt; is similar but its
+           title is instead prefixed with &quot;amend!&quot;. The log message of
+           _&lt;_c_o_m_m_i_t_&gt; is copied into the log message of the &quot;amend!&quot; commit and
+           opened in an editor so it can be refined. When ggiitt rreebbaassee
+           ----aauuttoossqquuaasshh squashes the &quot;amend!&quot; commit into _&lt;_c_o_m_m_i_t_&gt;, the log
+           message of _&lt;_c_o_m_m_i_t_&gt; is replaced by the refined log message from the
+           &quot;amend!&quot; commit. It is an error for the &quot;amend!&quot; commit’s log
+           message to be empty unless ----aallllooww--eemmppttyy--mmeessssaaggee is specified.
+
+           ----ffiixxuupp==rreewwoorrdd::_&lt;_c_o_m_m_i_t_&gt; is shorthand for ----ffiixxuupp==aammeenndd::_&lt;_c_o_m_m_i_t_&gt;
+           ----oonnllyy. It creates an &quot;amend!&quot; commit with only a log message
+           (ignoring any changes staged in the index). When squashed by ggiitt
+           rreebbaassee ----aauuttoossqquuaasshh, it replaces the log message of _&lt;_c_o_m_m_i_t_&gt;
+           without making any other changes.
+
+           Neither &quot;fixup!&quot; nor &quot;amend!&quot; commits change authorship of _&lt;_c_o_m_m_i_t_&gt;
+           when applied by ggiitt rreebbaassee ----aauuttoossqquuaasshh. See ggiitt--rreebbaassee(1) for
+           details.
+
+       ----ssqquuaasshh==_&lt;_c_o_m_m_i_t_&gt;
+           Construct a commit message for use with ggiitt rreebbaassee ----aauuttoossqquuaasshh.
+           The commit message title is taken from the specified commit with a
+           prefix of &quot;squash! &quot;. Can be used with additional commit message
+           options (--mm/--cc/--CC/--FF). See ggiitt--rreebbaassee(1) for details.
+
+       ----rreesseett--aauutthhoorr
+           When used with --CC/--cc/----aammeenndd options, or when committing after a
+           conflicting cherry-pick, declare that the authorship of the
+           resulting commit now belongs to the committer. This also renews the
+           author timestamp.
+
+       ----sshhoorrtt
+           When doing a dry-run, give the output in the short-format. See ggiitt--
+           ssttaattuuss(1) for details. Implies ----ddrryy--rruunn.
+
+       ----bbrraanncchh
+           Show the branch and tracking info even in short-format.
+
+       ----ppoorrcceellaaiinn
+           When doing a dry-run, give the output in a porcelain-ready format.
+           See ggiitt--ssttaattuuss(1) for details. Implies ----ddrryy--rruunn.
+
+       ----lloonngg
+           When doing a dry-run, give the output in the long-format. Implies
+           ----ddrryy--rruunn.
+
+       --zz, ----nnuullll
+           When showing sshhoorrtt or ppoorrcceellaaiinn status output, print the filename
+           verbatim and terminate the entries with _N_U_L, instead of _L_F. If no
+           format is given, implies the ----ppoorrcceellaaiinn output format. Without the
+           --zz option, filenames with &quot;unusual&quot; characters are quoted as
+           explained for the configuration variable ccoorree..qquuootteePPaatthh (see ggiitt--
+           ccoonnffiigg(1)).
+
+       --FF _&lt;_f_i_l_e_&gt;, ----ffiillee==_&lt;_f_i_l_e_&gt;
+           Take the commit message from _&lt;_f_i_l_e_&gt;. Use _- to read the message from
+           the standard input.
+
+       ----aauutthhoorr==_&lt;_a_u_t_h_o_r_&gt;
+           Override the commit author. Specify an explicit author using the
+           standard AA UU TThhoorr &lt;author@example.ccoomm&gt; format. Otherwise _&lt;_a_u_t_h_o_r_&gt;
+           is assumed to be a pattern and is used to search for an existing
+           commit by that author (i.e.  ggiitt rreevv--lliisstt ----aallll --ii
+           ----aauutthhoorr==_&lt;_a_u_t_h_o_r_&gt;); the commit author is then copied from the first
+           such commit found.
+
+       ----ddaattee==_&lt;_d_a_t_e_&gt;
+           Override the author date used in the commit.
+
+       --mm _&lt;_m_s_g_&gt;, ----mmeessssaaggee==_&lt;_m_s_g_&gt;
+           Use _&lt;_m_s_g_&gt; as the commit message. If multiple --mm options are given,
+           their values are concatenated as separate paragraphs.
+
+           The --mm option is mutually exclusive with --cc, --CC, and --FF.
+
+       --tt _&lt;_f_i_l_e_&gt;, ----tteemmppllaattee==_&lt;_f_i_l_e_&gt;
+           When editing the commit message, start the editor with the contents
+           in _&lt;_f_i_l_e_&gt;. The ccoommmmiitt..tteemmppllaattee configuration variable is often used
+           to give this option implicitly to the command. This mechanism can
+           be used by projects that want to guide participants with some hints
+           on what to write in the message in what order. If the user exits
+           the editor without editing the message, the commit is aborted. This
+           has no effect when a message is given by other means, e.g. with the
+           --mm or --FF options.
+
+       --ss, ----ssiiggnnooffff, ----nnoo--ssiiggnnooffff
+           Add a SSiiggnneedd--ooffff--bbyy trailer by the committer at the end of the
+           commit log message. The meaning of a signoff depends on the project
+           to which you’re committing. For example, it may certify that the
+           committer has the rights to submit the work under the project’s
+           license or agrees to some contributor representation, such as a
+           Developer Certificate of Origin. (See
+           hhttttppss::////ddeevveellooppeerrcceerrttiiffiiccaattee..oorrgg for the one used by the Linux
+           kernel and Git projects.) Consult the documentation or leadership
+           of the project to which you’re contributing to understand how the
+           signoffs are used in that project.
+
+           The ----nnoo--ssiiggnnooffff option can be used to countermand an earlier
+           ----ssiiggnnooffff option on the command line.
+
+       ----ttrraaiilleerr _&lt;_t_o_k_e_n_&gt;[(==|::)_&lt;_v_a_l_u_e_&gt;]
+           Specify a (_&lt;_t_o_k_e_n_&gt;, _&lt;_v_a_l_u_e_&gt;) pair that should be applied as a
+           trailer. (e.g.  ggiitt ccoommmmiitt ----ttrraaiilleerr &quot;Signed-off-by:C OO MMiitttteerr \\
+           &lt;committer@example.ccoomm&gt;&quot; ----ttrraaiilleerr &quot;Helped-by:C OO MMiitttteerr \\
+           &lt;committer@example.ccoomm&gt;&quot; will add the SSiiggnneedd--ooffff--bbyy trailer and the
+           HHeellppeedd--bbyy trailer to the commit message.) The ttrraaiilleerr..**
+           configuration variables (ggiitt--iinntteerrpprreett--ttrraaiilleerrss(1)) can be used to
+           define if a duplicated trailer is omitted, where in the run of
+           trailers each trailer would appear, and other details.
+
+       --nn, ----[nnoo--]vveerriiffyy
+           Bypass the pprree--ccoommmmiitt and ccoommmmiitt--mmssgg hooks. See also ggiitthhooookkss(5).
+
+       ----aallllooww--eemmppttyy
+           Usually recording a commit that has the exact same tree as its sole
+           parent commit is a mistake, and the command prevents you from
+           making such a commit. This option bypasses the safety, and is
+           primarily for use by foreign SCM interface scripts.
+
+       ----aallllooww--eemmppttyy--mmeessssaaggee
+           Create a commit with an empty commit message without using plumbing
+           commands like ggiitt--ccoommmmiitt--ttrreeee(1). Like ----aallllooww--eemmppttyy, this command
+           is primarily for use by foreign SCM interface scripts.
+
+       ----cclleeaannuupp==_&lt;_m_o_d_e_&gt;
+           Determine how the supplied commit message should be cleaned up
+           before committing. The _&lt;_m_o_d_e_&gt; can be ssttrriipp, wwhhiitteessppaaccee, vveerrbbaattiimm,
+           sscciissssoorrss or ddeeffaauulltt.
+
+           ssttrriipp
+               Strip leading and trailing empty lines, trailing whitespace,
+               commentary and collapse consecutive empty lines.
+
+           wwhhiitteessppaaccee
+               Same as ssttrriipp except #commentary is not removed.
+
+           vveerrbbaattiimm
+               Do not change the message at all.
+
+           sscciissssoorrss
+               Same as wwhhiitteessppaaccee except that everything from (and including)
+               the line found below is truncated, if the message is to be
+               edited. &quot;#&quot; can be customized with ccoorree..ccoommmmeennttCChhaarr.
+
+                   # ------------------------ &gt;8 ------------------------
+
+           ddeeffaauulltt
+               Same as ssttrriipp if the message is to be edited. Otherwise
+               wwhhiitteessppaaccee.
+
+           The default can be changed by the ccoommmmiitt..cclleeaannuupp configuration
+           variable (see ggiitt--ccoonnffiigg(1)).
+
+       --ee, ----eeddiitt
+           Let the user further edit the message taken from _&lt;_f_i_l_e_&gt; with --FF
+           _&lt;_f_i_l_e_&gt;, command line with --mm _&lt;_m_e_s_s_a_g_e_&gt;, and from _&lt;_c_o_m_m_i_t_&gt; with --CC
+           _&lt;_c_o_m_m_i_t_&gt;.
+
+       ----nnoo--eeddiitt
+           Use the selected commit message without launching an editor. For
+           example, ggiitt ccoommmmiitt ----aammeenndd ----nnoo--eeddiitt amends a commit without
+           changing its commit message.
+
+       ----aammeenndd
+           Replace the tip of the current branch by creating a new commit. The
+           recorded tree is prepared as usual (including the effect of the --ii
+           and --oo options and explicit pathspec), and the message from the
+           original commit is used as the starting point, instead of an empty
+           message, when no other message is specified from the command line
+           via options such as --mm, --FF, --cc, etc. The new commit has the same
+           parents and author as the current one (the ----rreesseett--aauutthhoorr option
+           can countermand this).
+
+           It is a rough equivalent for:
+
+                       $ git reset --soft HEAD^
+                       $ ... do something else to come up with the right tree ...
+                       $ git commit -c ORIG_HEAD
+
+           but can be used to amend a merge commit.
+
+           You should understand the implications of rewriting history if you
+           amend a commit that has already been published. (See the
+           &quot;RECOVERING FROM UPSTREAM REBASE&quot; section in ggiitt--rreebbaassee(1).)
+
+       ----nnoo--ppoosstt--rreewwrriittee
+           Bypass the ppoosstt--rreewwrriittee hook.
+
+       --ii, ----iinncclluuddee
+           Before making a commit out of staged contents so far, stage the
+           contents of paths given on the command line as well. This is
+           usually not what you want unless you are concluding a conflicted
+           merge.
+
+       --oo, ----oonnllyy
+           Make a commit by taking the updated working tree contents of the
+           paths specified on the command line, disregarding any contents that
+           have been staged for other paths. This is the default mode of
+           operation of ggiitt ccoommmmiitt if any paths are given on the command line,
+           in which case this option can be omitted. If this option is
+           specified together with ----aammeenndd, then no paths need to be
+           specified, which can be used to amend the last commit without
+           committing changes that have already been staged. If used together
+           with ----aallllooww--eemmppttyy paths are also not required, and an empty commit
+           will be created.
+
+       ----ppaatthhssppeecc--ffrroomm--ffiillee==_&lt;_f_i_l_e_&gt;
+           Pass pathspec in _&lt;_f_i_l_e_&gt; instead of commandline args. If _&lt;_f_i_l_e_&gt; is
+           exactly -- then standard input is used. Pathspec elements are
+           separated by _L_F or _C_R/_L_F. Pathspec elements can be quoted as
+           explained for the configuration variable ccoorree..qquuootteePPaatthh (see ggiitt--
+           ccoonnffiigg(1)). See also ----ppaatthhssppeecc--ffiillee--nnuull and global
+           ----lliitteerraall--ppaatthhssppeeccss.
+
+       ----ppaatthhssppeecc--ffiillee--nnuull
+           Only meaningful with ----ppaatthhssppeecc--ffrroomm--ffiillee. Pathspec elements are
+           separated with _N_U_L character and all other characters are taken
+           literally (including newlines and quotes).
+
+       --uu[_&lt;_m_o_d_e_&gt;], ----uunnttrraacckkeedd--ffiilleess[==_&lt;_m_o_d_e_&gt;]
+           Show untracked files.
+
+           The _&lt;_m_o_d_e_&gt; parameter is optional (defaults to aallll), and is used to
+           specify the handling of untracked files; when --uu is not used, the
+           default is nnoorrmmaall, i.e. show untracked files and directories.
+
+           The possible options are:
+
+           nnoo
+               Show no untracked files
+
+           nnoorrmmaall
+               Shows untracked files and directories
+
+           aallll
+               Also shows individual files in untracked directories.
+
+           All usual spellings for Boolean value ttrruuee are taken as nnoorrmmaall and
+           ffaallssee as nnoo. The default can be changed using the
+           ssttaattuuss..sshhoowwUUnnttrraacckkeeddFFiilleess configuration variable documented in ggiitt--
+           ccoonnffiigg(1).
+
+       --vv, ----vveerrbboossee
+           Show unified diff between the HHEEAADD commit and what would be
+           committed at the bottom of the commit message template to help the
+           user describe the commit by reminding what changes the commit has.
+           Note that this diff output doesn’t have its lines prefixed with #.
+           This diff will not be a part of the commit message. See the
+           ccoommmmiitt..vveerrbboossee configuration variable in ggiitt--ccoonnffiigg(1).
+
+           If specified twice, show in addition the unified diff between what
+           would be committed and the worktree files, i.e. the unstaged
+           changes to tracked files.
+
+       --qq, ----qquuiieett
+           Suppress commit summary message.
+
+       ----ddrryy--rruunn
+           Do not create a commit, but show a list of paths that are to be
+           committed, paths with local changes that will be left uncommitted
+           and paths that are untracked.
+
+       ----ssttaattuuss
+           Include the output of ggiitt--ssttaattuuss(1) in the commit message template
+           when using an editor to prepare the commit message. Defaults to on,
+           but can be used to override configuration variable ccoommmmiitt..ssttaattuuss.
+
+       ----nnoo--ssttaattuuss
+           Do not include the output of ggiitt--ssttaattuuss(1) in the commit message
+           template when using an editor to prepare the default commit
+           message.
+
+       --SS[_&lt;_k_e_y_-_i_d_&gt;], ----ggppgg--ssiiggnn[==_&lt;_k_e_y_-_i_d_&gt;], ----nnoo--ggppgg--ssiiggnn
+           GPG-sign commits. The _&lt;_k_e_y_-_i_d_&gt; is optional and defaults to the
+           committer identity; if specified, it must be stuck to the option
+           without a space.  ----nnoo--ggppgg--ssiiggnn is useful to countermand both
+           ccoommmmiitt..ggppggSSiiggnn configuration variable, and earlier ----ggppgg--ssiiggnn.
+
+       ----
+           Do not interpret any more arguments as options.
+
+       _&lt;_p_a_t_h_s_p_e_c_&gt;...
+           When _&lt;_p_a_t_h_s_p_e_c_&gt; is given on the command line, commit the contents
+           of the files that match the pathspec without recording the changes
+           already added to the index. The contents of these files are also
+           staged for the next commit on top of what have been staged before.
+
+           For more details, see the _p_a_t_h_s_p_e_c entry in ggiittgglloossssaarryy(7).
+
+EEXXAAMMPPLLEESS
+       When recording your own work, the contents of modified files in your
+       working tree are temporarily stored to a staging area called the
+       &quot;index&quot; with ggiitt aadddd. A file can be reverted back, only in the index
+       but not in the working tree, to that of the last commit with ggiitt
+       rreessttoorree ----ssttaaggeedd _&lt;_f_i_l_e_&gt;, which effectively reverts ggiitt aadddd and prevents
+       the changes to this file from participating in the next commit. After
+       building the state to be committed incrementally with these commands,
+       ggiitt ccoommmmiitt (without any pathname parameter) is used to record what has
+       been staged so far. This is the most basic form of the command. An
+       example:
+
+           $ edit hello.c
+           $ git rm goodbye.c
+           $ git add hello.c
+           $ git commit
+
+       Instead of staging files after each individual change, you can tell ggiitt
+       ccoommmmiitt to notice the changes to the files whose contents are tracked in
+       your working tree and do corresponding ggiitt aadddd and ggiitt rrmm for you. That
+       is, this example does the same as the earlier example if there is no
+       other change in your working tree:
+
+           $ edit hello.c
+           $ rm goodbye.c
+           $ git commit -a
+
+       The command ggiitt ccoommmmiitt --aa first looks at your working tree, notices
+       that you have modified hheelllloo..cc and removed ggooooddbbyyee..cc, and performs
+       necessary ggiitt aadddd and ggiitt rrmm for you.
+
+       After staging changes to many files, you can alter the order the
+       changes are recorded in, by giving pathnames to ggiitt ccoommmmiitt. When
+       pathnames are given, the command makes a commit that only records the
+       changes made to the named paths:
+
+           $ edit hello.c hello.h
+           $ git add hello.c hello.h
+           $ edit Makefile
+           $ git commit Makefile
+
+       This makes a commit that records the modification to MMaakkeeffiillee. The
+       changes staged for hheelllloo..cc and hheelllloo..hh are not included in the
+       resulting commit. However, their changes are not lost — they are still
+       staged and merely held back. After the above sequence, if you do:
+
+           $ git commit
+
+       this second commit would record the changes to hheelllloo..cc and hheelllloo..hh as
+       expected.
+
+       After a merge (initiated by ggiitt mmeerrggee or ggiitt ppuullll) stops because of
+       conflicts, cleanly merged paths are already staged to be committed for
+       you, and paths that conflicted are left in unmerged state. You would
+       have to first check which paths are conflicting with ggiitt ssttaattuuss and
+       after fixing them manually in your working tree, you would stage the
+       result as usual with ggiitt aadddd:
+
+           $ git status | grep unmerged
+           unmerged: hello.c
+           $ edit hello.c
+           $ git add hello.c
+
+       After resolving conflicts and staging the result, ggiitt llss--ffiilleess --uu would
+       stop mentioning the conflicted path. When you are done, run ggiitt ccoommmmiitt
+       to finally record the merge:
+
+           $ git commit
+
+       As with the case to record your own changes, you can use --aa option to
+       save typing. One difference is that during a merge resolution, you
+       cannot use ggiitt ccoommmmiitt with pathnames to alter the order the changes are
+       committed, because the merge should be recorded as a single commit. In
+       fact, the command refuses to run when given pathnames (but see --ii
+       option).
+
+CCOOMMMMIITT IINNFFOORRMMAATTIIOONN
+       Author and committer information is taken from the following
+       environment variables, if set:
+
+       •   GGIITT__AAUUTTHHOORR__NNAAMMEE
+
+       •   GGIITT__AAUUTTHHOORR__EEMMAAIILL
+
+       •   GGIITT__AAUUTTHHOORR__DDAATTEE
+
+       •   GGIITT__CCOOMMMMIITTTTEERR__NNAAMMEE
+
+       •   GGIITT__CCOOMMMMIITTTTEERR__EEMMAAIILL
+
+       •   GGIITT__CCOOMMMMIITTTTEERR__DDAATTEE
+
+       (nb &quot;&lt;&quot;, &quot;&gt;&quot; and &quot;\n&quot;s are stripped)
+
+       The author and committer names are by convention some form of a
+       personal name (that is, the name by which other humans refer to you),
+       although Git does not enforce or require any particular form. Arbitrary
+       Unicode may be used, subject to the constraints listed above. This name
+       has no effect on authentication; for that, see the ccrreeddeennttiiaall..uusseerrnnaammee
+       variable in ggiitt--ccoonnffiigg(1).
+
+       In case (some of) these environment variables are not set, the
+       information is taken from the configuration items uusseerr..nnaammee and
+       uusseerr..eemmaaiill, or, if not present, the environment variable EEMMAAIILL, or, if
+       that is not set, system user name and the hostname used for outgoing
+       mail (taken from //eettcc//mmaaiillnnaammee and falling back to the fully qualified
+       hostname when that file does not exist).
+
+       The aauutthhoorr..nnaammee and ccoommmmiitttteerr..nnaammee and their corresponding email
+       options override uusseerr..nnaammee and uusseerr..eemmaaiill if set and are overridden
+       themselves by the environment variables.
+
+       The typical usage is to set just the uusseerr..nnaammee and uusseerr..eemmaaiill
+       variables; the other options are provided for more complex use cases.
+
+DDAATTEE FFOORRMMAATTSS
+       The GGIITT__AAUUTTHHOORR__DDAATTEE and GGIITT__CCOOMMMMIITTTTEERR__DDAATTEE environment variables
+       support the following date formats:
+
+       Git internal format
+           It is _&lt;_u_n_i_x_-_t_i_m_e_s_t_a_m_p_&gt; _&lt;_t_i_m_e_-_z_o_n_e_-_o_f_f_s_e_t_&gt;, where _&lt;_u_n_i_x_-_t_i_m_e_s_t_a_m_p_&gt;
+           is the number of seconds since the UNIX epoch.  _&lt;_t_i_m_e_-_z_o_n_e_-_o_f_f_s_e_t_&gt;
+           is a positive or negative offset from UTC. For example CET (which
+           is 1 hour ahead of UTC) is ++00110000.
+
+       RFC 2822
+           The standard date format as described by RFC 2822, for example TThhuu,
+           0077 AApprr 22000055 2222::1133::1133 ++00220000.
+
+       ISO 8601
+           Time and date specified by the ISO 8601 standard, for example
+           22000055--0044--0077TT2222::1133::1133. The parser accepts a space instead of the TT
+           character as well. Fractional parts of a second will be ignored,
+           for example 22000055--0044--0077TT2222::1133::1133..001199 will be treated as
+           22000055--0044--0077TT2222::1133::1133.
+
+               NNoottee
+               In addition, the date part is accepted in the following
+               formats: YYYYYYYY..MMMM..DDDD, MMMM//DDDD//YYYYYYYY and DDDD..MMMM..YYYYYYYY.
+
+       In addition to recognizing all date formats above, the ----ddaattee option
+       will also try to make sense of other, more human-centric date formats,
+       such as relative dates like &quot;yesterday&quot; or &quot;last Friday at noon&quot;.
+
+DDIISSCCUUSSSSIIOONN
+       Though not required, it’s a good idea to begin the commit message with
+       a single short (no more than 50 characters) line summarizing the
+       change, followed by a blank line and then a more thorough description.
+       The text up to the first blank line in a commit message is treated as
+       the commit title, and that title is used throughout Git. For example,
+       ggiitt--ffoorrmmaatt--ppaattcchh(1) turns a commit into email, and it uses the title on
+       the Subject line and the rest of the commit in the body.
+
+       Git is to some extent character encoding agnostic.
+
+       •   The contents of the blob objects are uninterpreted sequences of
+           bytes. There is no encoding translation at the core level.
+
+       •   Path names are encoded in UTF-8 normalization form C. This applies
+           to tree objects, the index file, ref names, as well as path names
+           in command line arguments, environment variables and config files
+           (.ggiitt//ccoonnffiigg (see ggiitt--ccoonnffiigg(1)), ggiittiiggnnoorree(5), ggiittaattttrriibbuutteess(5)
+           and ggiittmmoodduulleess(5)).
+
+           Note that Git at the core level treats path names simply as
+           sequences of non-NUL bytes, there are no path name encoding
+           conversions (except on Mac and Windows). Therefore, using non-ASCII
+           path names will mostly work even on platforms and file systems that
+           use legacy extended ASCII encodings. However, repositories created
+           on such systems will not work properly on UTF-8-based systems (e.g.
+           Linux, Mac, Windows) and vice versa. Additionally, many Git-based
+           tools simply assume path names to be UTF-8 and will fail to display
+           other encodings correctly.
+
+       •   Commit log messages are typically encoded in UTF-8, but other
+           extended ASCII encodings are also supported. This includes
+           ISO-8859-x, CP125x and many others, but _n_o_t UTF-16/32, EBCDIC and
+           CJK multi-byte encodings (GBK, Shift-JIS, Big5, EUC-x, CP9xx etc.).
+
+       Although we encourage that the commit log messages are encoded in
+       UTF-8, both the core and Git Porcelain are designed not to force UTF-8
+       on projects. If all participants of a particular project find it more
+       convenient to use legacy encodings, Git does not forbid it. However,
+       there are a few things to keep in mind.
+
+        1. ggiitt ccoommmmiitt and ggiitt ccoommmmiitt--ttrreeee issue a warning if the commit log
+           message given to it does not look like a valid UTF-8 string, unless
+           you explicitly say your project uses a legacy encoding. The way to
+           say this is to have ii1188nn..ccoommmmiittEEnnccooddiinngg in .ggiitt//ccoonnffiigg file, like
+           this:
+
+               [i18n]
+                       commitEncoding = ISO-8859-1
+
+           Commit objects created with the above setting record the value of
+           ii1188nn..ccoommmmiittEEnnccooddiinngg in their eennccooddiinngg header. This is to help other
+           people who look at them later. Lack of this header implies that the
+           commit log message is encoded in UTF-8.
+
+        2. ggiitt lloogg, ggiitt sshhooww, ggiitt bbllaammee and friends look at the eennccooddiinngg
+           header of a commit object, and try to re-code the log message into
+           UTF-8 unless otherwise specified. You can specify the desired
+           output encoding with ii1188nn..llooggOOuuttppuuttEEnnccooddiinngg in .ggiitt//ccoonnffiigg file,
+           like this:
+
+               [i18n]
+                       logOutputEncoding = ISO-8859-1
+
+           If you do not have this configuration variable, the value of
+           ii1188nn..ccoommmmiittEEnnccooddiinngg is used instead.
+
+       Note that we deliberately chose not to re-code the commit log message
+       when a commit is made to force UTF-8 at the commit object level,
+       because re-coding to UTF-8 is not necessarily a reversible operation.
+
+EENNVVIIRROONNMMEENNTT AANNDD CCOONNFFIIGGUURRAATTIIOONN VVAARRIIAABBLLEESS
+       The editor used to edit the commit log message will be chosen from the
+       GGIITT__EEDDIITTOORR environment variable, the ccoorree..eeddiittoorr configuration
+       variable, the VVIISSUUAALL environment variable, or the EEDDIITTOORR environment
+       variable (in that order). See ggiitt--vvaarr(1) for details.
+
+       Everything above this line in this section isn’t included from the ggiitt--
+       ccoonnffiigg(1) documentation. The content that follows is the same as what’s
+       found there:
+
+       ccoommmmiitt..cclleeaannuupp
+           This setting overrides the default of the ----cclleeaannuupp option in ggiitt
+           ccoommmmiitt. Changing the default can be useful when you always want to
+           keep lines that begin with the comment character (ccoorree..ccoommmmeennttCChhaarr,
+           default #) in your log message, in which case you would do ggiitt
+           ccoonnffiigg ccoommmmiitt..cclleeaannuupp wwhhiitteessppaaccee (note that you will have to remove
+           the help lines that begin with the comment character in the commit
+           log template yourself, if you do this).
+
+       ccoommmmiitt..ggppggSSiiggnn
+           A boolean to specify whether all commits should be GPG signed. Use
+           of this option when doing operations such as rebase can result in a
+           large number of commits being signed. It may be convenient to use
+           an agent to avoid typing your GPG passphrase several times.
+
+       ccoommmmiitt..ssttaattuuss
+           A boolean to enable/disable inclusion of status information in the
+           commit message template when using an editor to prepare the commit
+           message. Defaults to ttrruuee.
+
+       ccoommmmiitt..tteemmppllaattee
+           Specify the pathname of a file to use as the template for new
+           commit messages.
+
+       ccoommmmiitt..vveerrbboossee
+           A boolean or int to specify the level of verbosity with ggiitt ccoommmmiitt.
+
+HHOOOOKKSS
+       This command can run ccoommmmiitt--mmssgg, pprreeppaarree--ccoommmmiitt--mmssgg, pprree--ccoommmmiitt,
+       ppoosstt--ccoommmmiitt and ppoosstt--rreewwrriittee hooks. See ggiitthhooookkss(5) for more
+       information.
+
+FFIILLEESS
+       $$GGIITT__DDIIRR//CCOOMMMMIITT__EEDDIITTMMSSGG
+           This file contains the commit message of a commit in progress. If
+           ggiitt ccoommmmiitt exits due to an error before creating a commit, any
+           commit message that has been provided by the user (e.g., in an
+           editor session) will be available in this file, but will be
+           overwritten by the next invocation of ggiitt ccoommmmiitt.
+
+SSEEEE AALLSSOO
+       ggiitt--aadddd(1), ggiitt--rrmm(1), ggiitt--mmvv(1), ggiitt--mmeerrggee(1), ggiitt--ccoommmmiitt--ttrreeee(1)
+
+GGIITT
+       Part of the ggiitt(1) suite
+
+Git 2.50.1.428.g0e8243            2025-07-22                     GIT-COMMIT(1)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="convoy"><code>gt convoy</code></h2>
+    <pre class="help-output">Manage convoys - the primary unit for tracking batched work.
+
+A convoy is a persistent tracking unit that monitors related issues across
+rigs. When you kick off work (even a single issue), a convoy tracks it so
+you can see when it lands and what was included.
+
+WHAT IS A CONVOY:
+  - Persistent tracking unit with an ID (hq-*)
+  - Tracks issues across rigs (frontend+backend, beads+gastown, etc.)
+  - Auto-closes when all tracked issues complete → notifies subscribers
+  - Can be reopened by adding more issues
+
+WHAT IS A SWARM:
+  - Ephemeral: &quot;the workers currently assigned to a convoy's issues&quot;
+  - No separate ID - uses the convoy ID
+  - Dissolves when work completes
+
+TRACKING SEMANTICS:
+  - 'tracks' relation is non-blocking (tracked issues don't block convoy)
+  - Cross-prefix capable (convoy in hq-* tracks issues in gt-*, bd-*)
+  - Landed: all tracked issues closed → notification sent to subscribers
+
+COMMANDS:
+  create    Create a convoy tracking specified issues
+  add       Add issues to an existing convoy (reopens if closed)
+  close     Close a convoy (manually, regardless of tracked issue status)
+  status    Show convoy progress, tracked issues, and active workers
+  list      List convoys (the dashboard view)
+
+Usage:
+  gt convoy [flags]
+  gt convoy [command]
+
+Available Commands:
+  add         Add issues to an existing convoy
+  check       Check and auto-close completed convoys
+  close       Close a convoy
+  create      Create a new convoy
+  list        List convoys
+  status      Show convoy status
+  stranded    Find stranded convoys with ready work but no workers
+
+Flags:
+  -h, --help          help for convoy
+  -i, --interactive   Interactive tree view
+
+Use &quot;gt convoy [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="done"><code>gt done</code></h2>
+    <pre class="help-output">Signal that your work is complete and ready for the merge queue.
+
+This is a convenience command for polecats that:
+1. Submits the current branch to the merge queue
+2. Auto-detects issue ID from branch name
+3. Notifies the Witness with the exit outcome
+4. Exits the Claude session (polecats don't stay alive after completion)
+
+Exit statuses:
+  COMPLETED      - Work done, MR submitted (default)
+  ESCALATED      - Hit blocker, needs human intervention
+  DEFERRED       - Work paused, issue still open
+  PHASE_COMPLETE - Phase done, awaiting gate (use --phase-complete)
+
+Phase handoff workflow:
+  When a molecule has gate steps (async waits), use --phase-complete to signal
+  that the current phase is complete but work continues after the gate closes.
+  The Witness will recycle this polecat and dispatch a new one when the gate
+  resolves.
+
+Examples:
+  gt done                              # Submit branch, notify COMPLETED, exit session
+  gt done --issue gt-abc               # Explicit issue ID
+  gt done --status ESCALATED           # Signal blocker, skip MR
+  gt done --status DEFERRED            # Pause work, skip MR
+  gt done --phase-complete --gate g-x  # Phase done, waiting on gate g-x
+
+Usage:
+  gt done [flags]
+
+Flags:
+      --cleanup-status string   Git cleanup status: clean, uncommitted, unpushed, stash, unknown (ZFC: agent-observed)
+      --gate string             Gate bead ID to wait on (with --phase-complete)
+  -h, --help                    help for done
+      --issue string            Source issue ID (default: parse from branch name)
+      --phase-complete          Signal phase complete - await gate before continuing
+  -p, --priority int            Override priority (0-4, default: inherit from issue) (default -1)
+      --status string           Exit status: COMPLETED, ESCALATED, or DEFERRED (default &quot;COMPLETED&quot;)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="formula"><code>gt formula</code></h2>
+    <pre class="help-output">Manage workflow formulas - reusable molecule templates.
+
+Formulas are TOML/JSON files that define workflows with steps, variables,
+and composition rules. They can be &quot;poured&quot; to create molecules or &quot;wisped&quot;
+for ephemeral patrol cycles.
+
+Commands:
+  list    List available formulas from all search paths
+  show    Display formula details (steps, variables, composition)
+  run     Execute a formula (pour and dispatch)
+  create  Create a new formula template
+
+Search paths (in order):
+  1. .beads/formulas/ (project)
+  2. ~/.beads/formulas/ (user)
+  3. $GT_ROOT/.beads/formulas/ (orchestrator)
+
+Examples:
+  gt formula list                    # List all formulas
+  gt formula show shiny              # Show formula details
+  gt formula run shiny --pr=123      # Run formula on PR #123
+  gt formula create my-workflow      # Create new formula template
+
+Usage:
+  gt formula [flags]
+  gt formula [command]
+
+Aliases:
+  formula, formulas
+
+Available Commands:
+  create      Create a new formula template
+  list        List available formulas
+  run         Execute a formula
+  show        Display formula details
+
+Flags:
+  -h, --help   help for formula
+
+Use &quot;gt formula [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="gate"><code>gt gate</code></h2>
+    <pre class="help-output">Gate commands for async coordination.
+
+Most gate commands are in beads:
+  bd gate create   - Create a gate (timer, gh:run, human, mail)
+  bd gate show     - Show gate details
+  bd gate list     - List open gates
+  bd gate close    - Close a gate
+  bd gate approve  - Approve a human gate
+  bd gate eval     - Evaluate and close elapsed gates
+
+The gt gate command provides Gas Town integration:
+  gt gate wake     - Send wake mail to gate waiters after close
+
+Usage:
+  gt gate [command]
+
+Available Commands:
+  wake        Send wake mail to gate waiters
+
+Flags:
+  -h, --help   help for gate
+
+Use &quot;gt gate [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="handoff"><code>gt handoff</code></h2>
+    <pre class="help-output">End watch. Hand off to a fresh agent session.
+
+This is the canonical way to end any agent session. It handles all roles:
+
+  - Mayor, Crew, Witness, Refinery, Deacon: Respawns with fresh Claude instance
+  - Polecats: Calls 'gt done --status DEFERRED' (Witness handles lifecycle)
+
+When run without arguments, hands off the current session.
+When given a bead ID (gt-xxx, hq-xxx), hooks that work first, then restarts.
+When given a role name, hands off that role's session (and switches to it).
+
+Examples:
+  gt handoff                          # Hand off current session
+  gt handoff gt-abc                   # Hook bead, then restart
+  gt handoff gt-abc -s &quot;Fix it&quot;       # Hook with context, then restart
+  gt handoff -s &quot;Context&quot; -m &quot;Notes&quot;  # Hand off with custom message
+  gt handoff -c                       # Collect state into handoff message
+  gt handoff crew                     # Hand off crew session
+  gt handoff mayor                    # Hand off mayor session
+
+The --collect (-c) flag gathers current state (hooked work, inbox, ready beads,
+in-progress items) and includes it in the handoff mail. This provides context
+for the next session without manual summarization.
+
+Any molecule on the hook will be auto-continued by the new session.
+The SessionStart hook runs 'gt prime' to restore context.
+
+Usage:
+  gt handoff [bead-or-role] [flags]
+
+Flags:
+  -c, --collect          Auto-collect state (status, inbox, beads) into handoff message
+  -n, --dry-run          Show what would be done without executing
+  -h, --help             help for handoff
+  -m, --message string   Message body for handoff mail (optional)
+  -s, --subject string   Subject for handoff mail (optional)
+  -w, --watch            Switch to new session (for remote handoff) (default true)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="hook"><code>gt hook</code></h2>
+    <pre class="help-output">Show what's on your hook, or attach new work.
+
+With no arguments, shows your current hook status (alias for 'gt mol status').
+With a bead ID, attaches that work to your hook.
+
+The hook is the &quot;durability primitive&quot; - work on your hook survives session
+restarts, context compaction, and handoffs. When you restart (via gt handoff),
+your SessionStart hook finds the attached work and you continue from where
+you left off.
+
+Examples:
+  gt hook                           # Show what's on my hook
+  gt hook status                    # Same as above
+  gt hook gt-abc                    # Attach issue gt-abc to your hook
+  gt hook gt-abc -s &quot;Fix the bug&quot;   # With subject for handoff mail
+
+Related commands:
+  gt sling &lt;bead&gt;    # Hook + start now (keep context)
+  gt handoff &lt;bead&gt;  # Hook + restart (fresh context)
+  gt unsling         # Remove work from hook
+
+Usage:
+  gt hook [bead-id] [flags]
+  gt hook [command]
+
+Aliases:
+  hook, work
+
+Available Commands:
+  show        Show what's on an agent's hook (compact)
+  status      Show what's on your hook
+
+Flags:
+      --clear            Clear your hook (alias for 'gt unhook')
+  -n, --dry-run          Show what would be done
+  -f, --force            Replace existing incomplete hooked bead
+  -h, --help             help for hook
+      --json             Output as JSON (for status)
+  -m, --message string   Message for handoff mail (optional)
+  -s, --subject string   Subject for handoff mail (optional)
+
+Use &quot;gt hook [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="mol"><code>gt mol</code></h2>
+    <pre class="help-output">Agent-specific molecule workflow operations.
+
+These commands operate on YOUR hook and YOUR attached molecules.
+Use 'gt hook' to see what's on your hook (alias for 'gt mol status').
+
+VIEWING YOUR WORK:
+  gt hook              Show what's on your hook
+  gt mol current       Show what you should be working on
+  gt mol progress      Show execution progress
+
+WORKING ON STEPS:
+  gt mol step done     Complete current step (auto-continues)
+
+LIFECYCLE:
+  gt mol attach        Attach molecule to your hook
+  gt mol detach        Detach molecule from your hook
+  gt mol burn          Discard attached molecule (no record)
+  gt mol squash        Compress to digest (permanent record)
+
+TO DISPATCH WORK (with molecules):
+  gt sling mol-xxx target   # Pour formula + sling to agent
+  gt formulas               # List available formulas
+
+Usage:
+  gt mol [flags]
+  gt mol [command]
+
+Aliases:
+  mol, molecule
+
+Available Commands:
+  attach           Attach a molecule to a pinned bead
+  attach-from-mail Attach a molecule from a mail message
+  attachment       Show attachment status of a pinned bead
+  burn             Burn current molecule without creating a digest
+  current          Show what agent should be working on
+  detach           Detach molecule from a pinned bead
+  progress         Show progress through a molecule's steps
+  squash           Compress molecule into a digest
+  status           Show what's on an agent's hook
+  step             Molecule step operations
+
+Flags:
+  -h, --help   help for mol
+
+Use &quot;gt mol [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="mq"><code>gt mq</code></h2>
+    <pre class="help-output">Manage merge requests and the merge queue for a rig.
+
+Alias: 'gt mr' is equivalent to 'gt mq' (merge request vs merge queue).
+
+The merge queue tracks work branches from polecats waiting to be merged.
+Use these commands to view, submit, retry, and manage merge requests.
+
+Usage:
+  gt mq [flags]
+  gt mq [command]
+
+Aliases:
+  mq, mr
+
+Available Commands:
+  integration Manage integration branches for epics
+  list        Show the merge queue
+  next        Show the highest-priority merge request
+  reject      Reject a merge request
+  retry       Retry a failed merge request
+  status      Show detailed merge request status
+  submit      Submit current branch to the merge queue
+
+Flags:
+  -h, --help   help for mq
+
+Use &quot;gt mq [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="orphans"><code>gt orphans</code></h2>
+    <pre class="help-output">Find orphaned commits that were never merged to main.
+
+Polecat work can get lost when:
+- Session killed before merge
+- Refinery fails to process
+- Network issues during push
+
+This command uses 'git fsck --unreachable' to find dangling commits,
+filters to recent ones, and shows details to help recovery.
+
+Examples:
+  gt orphans              # Last 7 days (default)
+  gt orphans --days=14    # Last 2 weeks
+  gt orphans --all        # Show all orphans (no date filter)
+
+Usage:
+  gt orphans [flags]
+  gt orphans [command]
+
+Available Commands:
+  kill        Remove all orphans (commits and processes)
+  procs       Manage orphaned Claude processes
+
+Flags:
+      --all        Show all orphans (no date filter)
+      --days int   Show orphans from last N days (default 7)
+  -h, --help       help for orphans
+
+Use &quot;gt orphans [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="park"><code>gt park</code></h2>
+    <pre class="help-output">Park current work on a gate, allowing the agent to exit safely.
+
+When you need to wait for an external condition (timer, CI, human approval),
+park your work on a gate. When the gate closes, you'll receive wake mail.
+
+The park command:
+  1. Saves your current hook state (molecule/bead you're working on)
+  2. Adds you as a waiter on the gate
+  3. Stores context notes in the parked state
+
+After parking, you can exit the session safely. Use 'gt resume' to check
+for cleared gates and continue work.
+
+Examples:
+  # Create a timer gate and park work on it
+  bd gate create --await timer:30m --title &quot;Coffee break&quot;
+  gt park &lt;gate-id&gt; -m &quot;Taking a break, will resume auth work&quot;
+
+  # Park on a human approval gate
+  bd gate create --await human:deploy-approval --notify ops/
+  gt park &lt;gate-id&gt; -m &quot;Deploy staged, awaiting approval&quot;
+
+  # Park on a GitHub Actions gate
+  bd gate create --await gh:run:123456789
+  gt park &lt;gate-id&gt; -m &quot;Waiting for CI to complete&quot;
+
+Usage:
+  gt park &lt;gate-id&gt; [flags]
+
+Flags:
+  -n, --dry-run          Show what would be done without executing
+  -h, --help             help for park
+  -m, --message string   Context notes for resumption
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="ready"><code>gt ready</code></h2>
+    <pre class="help-output">Display all ready work items across the town and all rigs.
+
+Aggregates ready issues from:
+- Town beads (hq-* items: convoys, cross-rig coordination)
+- Each rig's beads (project-level issues, MRs)
+
+Ready items have no blockers and can be worked immediately.
+Results are sorted by priority (highest first) then by source.
+
+Examples:
+  gt ready              # Show all ready work
+  gt ready --json       # Output as JSON
+  gt ready --rig=gastown  # Show only one rig
+
+Usage:
+  gt ready [flags]
+
+Flags:
+  -h, --help         help for ready
+      --json         Output as JSON
+      --rig string   Filter to a specific rig
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="release"><code>gt release</code></h2>
+    <pre class="help-output">Release one or more in_progress issues back to open/pending status.
+
+This is used to recover stuck steps when a worker dies mid-task.
+The issue is moved to &quot;open&quot; status and the assignee is cleared,
+allowing another worker to claim and complete it.
+
+Examples:
+  gt release gt-abc           # Release single issue
+  gt release gt-abc gt-def    # Release multiple issues
+  gt release gt-abc -r &quot;worker died&quot;  # Release with reason
+
+This implements nondeterministic idempotence - work can be safely
+retried by releasing and reclaiming stuck steps.
+
+Usage:
+  gt release &lt;issue-id&gt;... [flags]
+
+Flags:
+  -h, --help            help for release
+  -r, --reason string   Reason for releasing (added as note)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="resume"><code>gt resume</code></h2>
+    <pre class="help-output">Resume work that was parked on a gate, or check for handoff messages.
+
+By default, this command checks for parked work (from 'gt park') and whether
+its gate has cleared. If the gate is closed, it restores your work context.
+
+With --handoff, it checks the inbox for handoff messages (messages with
+&quot;HANDOFF&quot; in the subject) and displays them formatted for easy continuation.
+
+The resume command:
+  1. Checks for parked work state (default) or handoff messages (--handoff)
+  2. For parked work: verifies gate has closed
+  3. Restores the hook with your previous work
+  4. Displays context notes to help you continue
+
+Examples:
+  gt resume              # Check for and resume parked work
+  gt resume --status     # Just show parked work status without resuming
+  gt resume --handoff    # Check inbox for handoff messages
+
+Usage:
+  gt resume [flags]
+
+Flags:
+      --handoff   Check for handoff messages instead of parked work
+  -h, --help      help for resume
+      --json      Output as JSON
+      --status    Just show parked work status
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="show"><code>gt show</code></h2>
+    <pre class="help-output">Show issue details
+
+Usage:
+  bd show [id...] [flags]
+
+Flags:
+  -h, --help     help for show
+      --refs     Show issues that reference this issue (reverse lookup)
+      --short    Show compact one-line output per issue
+      --thread   Show full conversation thread (for messages)
+
+Global Flags:
+      --actor string            Actor name for audit trail (default: $BD_ACTOR, git user.name, $USER)
+      --allow-stale             Allow operations on potentially stale data (skip staleness check)
+      --db string               Database path (default: auto-discover .beads/*.db)
+      --json                    Output in JSON format
+      --lock-timeout duration   SQLite busy timeout (0 = fail immediately if locked) (default 30s)
+      --no-auto-flush           Disable automatic JSONL sync after CRUD operations
+      --no-auto-import          Disable automatic JSONL import when newer than DB
+      --no-daemon               Force direct storage mode, bypass daemon if running
+      --no-db                   Use no-db mode: load from JSONL, no SQLite
+      --profile                 Generate CPU profile for performance analysis
+  -q, --quiet                   Suppress non-essential output (errors only)
+      --readonly                Read-only mode: block write operations (for worker sandboxes)
+      --sandbox                 Sandbox mode: disables daemon and auto-sync
+  -v, --verbose                 Enable verbose/debug output
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="sling"><code>gt sling</code></h2>
+    <pre class="help-output">Sling work onto an agent's hook and start working immediately.
+
+This is THE command for assigning work in Gas Town. It handles:
+  - Existing agents (mayor, crew, witness, refinery)
+  - Auto-spawning polecats when target is a rig
+  - Dispatching to dogs (Deacon's helper workers)
+  - Formula instantiation and wisp creation
+  - Auto-convoy creation for dashboard visibility
+
+Auto-Convoy:
+  When slinging a single issue (not a formula), sling automatically creates
+  a convoy to track the work unless --no-convoy is specified. This ensures
+  all work appears in 'gt convoy list', even &quot;swarm of one&quot; assignments.
+
+  gt sling gt-abc gastown              # Creates &quot;Work: &lt;issue-title&gt;&quot; convoy
+  gt sling gt-abc gastown --no-convoy  # Skip auto-convoy creation
+
+Target Resolution:
+  gt sling gt-abc                       # Self (current agent)
+  gt sling gt-abc crew                  # Crew worker in current rig
+  gt sling gp-abc greenplace               # Auto-spawn polecat in rig
+  gt sling gt-abc greenplace/Toast         # Specific polecat
+  gt sling gt-abc mayor                 # Mayor
+  gt sling gt-abc deacon/dogs           # Auto-dispatch to idle dog
+  gt sling gt-abc deacon/dogs/alpha     # Specific dog
+
+Spawning Options (when target is a rig):
+  gt sling gp-abc greenplace --create               # Create polecat if missing
+  gt sling gp-abc greenplace --force                # Ignore unread mail
+  gt sling gp-abc greenplace --account work         # Use specific Claude account
+
+Natural Language Args:
+  gt sling gt-abc --args &quot;patch release&quot;
+  gt sling code-review --args &quot;focus on security&quot;
+
+The --args string is stored in the bead and shown via gt prime. Since the
+executor is an LLM, it interprets these instructions naturally.
+
+Formula Slinging:
+  gt sling mol-release mayor/           # Cook + wisp + attach + nudge
+  gt sling towers-of-hanoi --var disks=3
+
+Formula-on-Bead (--on flag):
+  gt sling mol-review --on gt-abc       # Apply formula to existing work
+  gt sling shiny --on gt-abc crew       # Apply formula, sling to crew
+
+Compare:
+  gt hook &lt;bead&gt;      # Just attach (no action)
+  gt sling &lt;bead&gt;     # Attach + start now (keep context)
+  gt handoff &lt;bead&gt;   # Attach + restart (fresh context)
+
+The propulsion principle: if it's on your hook, YOU RUN IT.
+
+Batch Slinging:
+  gt sling gt-abc gt-def gt-ghi gastown   # Sling multiple beads to a rig
+
+  When multiple beads are provided with a rig target, each bead gets its own
+  polecat. This parallelizes work dispatch without running gt sling N times.
+
+Usage:
+  gt sling &lt;bead-or-formula&gt; [target] [flags]
+
+Flags:
+      --account string    Claude Code account handle to use
+      --agent string      Override agent/runtime for this sling (e.g., claude, gemini, codex, or custom alias)
+  -a, --args string       Natural language instructions for the executor (e.g., 'patch release')
+      --create            Create polecat if it doesn't exist
+  -n, --dry-run           Show what would be done
+      --force             Force spawn even if polecat has unread mail
+  -h, --help              help for sling
+      --hook-raw-bead     Hook raw bead without default formula (expert mode)
+  -m, --message string    Context message for the work
+      --no-convoy         Skip auto-convoy creation for single-issue sling
+      --on string         Apply formula to existing bead (implies wisp scaffolding)
+  -s, --subject string    Context subject for the work
+      --var stringArray   Formula variable (key=value), can be repeated
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="synthesis"><code>gt synthesis</code></h2>
+    <pre class="help-output">Manage synthesis steps for convoy formulas.
+
+Synthesis is the final step in a convoy workflow that combines outputs
+from all parallel legs into a unified deliverable.
+
+Commands:
+  start     Start synthesis for a convoy (checks all legs complete)
+  status    Show synthesis readiness and leg outputs
+  close     Close convoy after synthesis complete
+
+Examples:
+  gt synthesis status hq-cv-abc     # Check if ready for synthesis
+  gt synthesis start hq-cv-abc      # Start synthesis step
+  gt synthesis close hq-cv-abc      # Close convoy after synthesis
+
+Usage:
+  gt synthesis [flags]
+  gt synthesis [command]
+
+Aliases:
+  synthesis, synth
+
+Available Commands:
+  close       Close convoy after synthesis
+  start       Start synthesis for a convoy
+  status      Show synthesis readiness
+
+Flags:
+  -h, --help   help for synthesis
+
+Use &quot;gt synthesis [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="trail"><code>gt trail</code></h2>
+    <pre class="help-output">Show recent activity in the workspace.
+
+Without a subcommand, shows recent commits from agents.
+
+Subcommands:
+  commits    Recent git commits from agents
+  beads      Recent beads (work items)
+  hooks      Recent hook activity
+
+Flags:
+  --since    Show activity since this time (e.g., &quot;1h&quot;, &quot;24h&quot;, &quot;7d&quot;)
+  --limit    Maximum number of items to show (default: 20)
+  --json     Output as JSON
+  --all      Include all activity (not just agents)
+
+Examples:
+  gt trail                     # Recent commits (default)
+  gt trail commits             # Same as above
+  gt trail commits --since 1h  # Last hour
+  gt trail beads               # Recent beads
+  gt trail hooks               # Recent hook activity
+  gt recent                    # Alias for gt trail
+  gt recap --since 24h         # Activity from last 24 hours
+
+Usage:
+  gt trail [flags]
+  gt trail [command]
+
+Aliases:
+  trail, recent, recap
+
+Available Commands:
+  beads       Show recent beads
+  commits     Show recent commits from agents
+  hooks       Show recent hook activity
+
+Flags:
+      --all            Include all activity (not just agents)
+  -h, --help           help for trail
+      --json           Output as JSON
+      --limit int      Maximum number of items to show (default 20)
+      --since string   Show activity since this time (e.g., 1h, 24h, 7d)
+
+Use &quot;gt trail [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="unsling"><code>gt unsling</code></h2>
+    <pre class="help-output">Remove work from an agent's hook (the inverse of sling/hook).
+
+With no arguments, clears your own hook. With a bead ID, only unslings
+if that specific bead is currently hooked. With a target, operates on
+another agent's hook.
+
+Examples:
+  gt unsling                        # Clear my hook (whatever's there)
+  gt unsling gt-abc                 # Only unsling if gt-abc is hooked
+  gt unsling greenplace/joe            # Clear joe's hook
+  gt unsling gt-abc greenplace/joe     # Unsling gt-abc from joe
+
+The bead's status changes from 'hooked' back to 'open'.
+
+Related commands:
+  gt sling &lt;bead&gt;    # Hook + start (inverse of unsling)
+  gt hook &lt;bead&gt;     # Hook without starting
+  gt hook      # See what's on your hook
+
+Usage:
+  gt unsling [bead-id] [target] [flags]
+
+Aliases:
+  unsling, unhook
+
+Flags:
+  -n, --dry-run   Show what would be done
+  -f, --force     Unsling even if work is incomplete
+  -h, --help      help for unsling
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="agents"><code>gt agents</code></h2>
+    <pre class="help-output">Display a popup menu of core Gas Town agent sessions.
+
+Shows Mayor, Deacon, Witnesses, Refineries, and Crew workers.
+Polecats are hidden (use 'gt polecat list' to see them).
+
+The menu appears as a tmux popup for quick session switching.
+
+Usage:
+  gt agents [flags]
+  gt agents [command]
+
+Aliases:
+  agents, ag
+
+Available Commands:
+  check       Check for identity collisions and stale locks
+  fix         Fix identity collisions and clean up stale locks
+  list        List agent sessions (no popup)
+  state       Get or set operational state on agent beads
+
+Flags:
+  -a, --all    Include polecats in the menu
+  -h, --help   help for agents
+
+Use &quot;gt agents [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="boot"><code>gt boot</code></h2>
+    <pre class="help-output">Manage Boot - the daemon's watchdog for Deacon triage.
+
+Boot is a special dog that runs fresh on each daemon tick. It observes
+the system state and decides whether to start/wake/nudge/interrupt the
+Deacon, or do nothing. This centralizes the &quot;when to wake&quot; decision in
+an agent that can reason about it.
+
+Boot lifecycle:
+  1. Daemon tick spawns Boot (fresh each time)
+  2. Boot runs triage: observe, decide, act
+  3. Boot cleans inbox (discards stale handoffs)
+  4. Boot exits (or handoffs in non-degraded mode)
+
+Location: ~/gt/deacon/dogs/boot/
+Session: gt-boot
+
+Usage:
+  gt boot [command]
+
+Available Commands:
+  spawn       Spawn Boot for triage
+  status      Show Boot status
+  triage      Run triage directly (degraded mode)
+
+Flags:
+  -h, --help   help for boot
+
+Use &quot;gt boot [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="callbacks"><code>gt callbacks</code></h2>
+    <pre class="help-output">Handle callbacks from agents during Deacon patrol.
+
+Callbacks are messages sent to the Mayor from:
+- Witnesses reporting polecat status
+- Refineries reporting merge results
+- Polecats requesting help or escalation
+- External triggers (webhooks, timers)
+
+This command processes the Mayor's inbox and handles each message
+appropriately, routing to other agents or updating state as needed.
+
+Usage:
+  gt callbacks [command]
+
+Available Commands:
+  process     Process pending callbacks
+
+Flags:
+  -h, --help   help for callbacks
+
+Use &quot;gt callbacks [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="deacon"><code>gt deacon</code></h2>
+    <pre class="help-output">Manage the Deacon - the town-level watchdog for Gas Town.
+
+The Deacon (&quot;daemon beacon&quot;) is the only agent that receives mechanical
+heartbeats from the daemon. It monitors system health across all rigs:
+  - Watches all Witnesses (are they alive? stuck? responsive?)
+  - Manages Dogs for cross-rig infrastructure work
+  - Handles lifecycle requests (respawns, restarts)
+  - Receives heartbeat pokes and decides what needs attention
+
+The Deacon patrols the town; Witnesses patrol their rigs; Polecats work.
+
+Role shortcuts: &quot;deacon&quot; in mail/nudge addresses resolves to this agent.
+
+Usage:
+  gt deacon [flags]
+  gt deacon [command]
+
+Aliases:
+  deacon, dea
+
+Available Commands:
+  attach          Attach to the Deacon session
+  cleanup-orphans Clean up orphaned claude subagent processes
+  force-kill      Force-kill an unresponsive agent session
+  health-check    Send a health check ping to an agent and track response
+  health-state    Show health check state for all monitored agents
+  heartbeat       Update the Deacon heartbeat
+  pause           Pause the Deacon to prevent patrol actions
+  restart         Restart the Deacon session
+  resume          Resume the Deacon to allow patrol actions
+  stale-hooks     Find and unhook stale hooked beads
+  start           Start the Deacon session
+  status          Check Deacon session status
+  stop            Stop the Deacon session
+  trigger-pending Trigger pending polecat spawns (bootstrap mode)
+  zombie-scan     Find and clean zombie Claude processes not in active tmux sessions
+
+Flags:
+  -h, --help   help for deacon
+
+Use &quot;gt deacon [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="dog"><code>gt dog</code></h2>
+    <pre class="help-output">Manage dogs - reusable workers for infrastructure and cleanup.
+
+CATS VS DOGS:
+  Polecats (cats) build features. One rig. Ephemeral (one task, then nuked).
+  Dogs clean up messes. Cross-rig. Reusable (multiple tasks, eventually recycled).
+
+Dogs are managed by the Deacon for town-level work:
+  - Infrastructure tasks (rebuilding, syncing, migrations)
+  - Cleanup operations (orphan branches, stale files)
+  - Cross-rig work that spans multiple projects
+
+Each dog has worktrees into every configured rig, enabling cross-project
+operations. Dogs return to idle state after completing work (unlike cats).
+
+The kennel is at ~/gt/deacon/dogs/. The Deacon dispatches work to dogs.
+
+Usage:
+  gt dog [command]
+
+Aliases:
+  dog, dogs
+
+Available Commands:
+  add         Create a new dog in the kennel
+  call        Wake idle dog(s) for work
+  dispatch    Dispatch plugin execution to a dog
+  list        List all dogs in the kennel
+  remove      Remove dogs from the kennel
+  status      Show detailed dog status
+
+Flags:
+  -h, --help   help for dog
+
+Use &quot;gt dog [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="mayor"><code>gt mayor</code></h2>
+    <pre class="help-output">Manage the Mayor - the Overseer's Chief of Staff.
+
+The Mayor is the global coordinator for Gas Town:
+  - Receives escalations from Witnesses and Deacon
+  - Coordinates work across multiple rigs
+  - Handles human communication when needed
+  - Routes strategic decisions and cross-project issues
+
+The Mayor is the primary interface between the human Overseer and the
+automated agents. When in doubt, escalate to the Mayor.
+
+Role shortcuts: &quot;mayor&quot; in mail/nudge addresses resolves to this agent.
+
+Usage:
+  gt mayor [flags]
+  gt mayor [command]
+
+Aliases:
+  mayor, may
+
+Available Commands:
+  attach      Attach to the Mayor session
+  restart     Restart the Mayor session
+  start       Start the Mayor session
+  status      Check Mayor session status
+  stop        Stop the Mayor session
+
+Flags:
+  -h, --help   help for mayor
+
+Use &quot;gt mayor [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="polecat"><code>gt polecat</code></h2>
+    <pre class="help-output">Manage polecat lifecycle in rigs.
+
+Polecats are EPHEMERAL workers: spawned for one task, nuked when done.
+There is NO idle state. A polecat is either:
+  - Working: Actively doing assigned work
+  - Stalled: Session crashed mid-work (needs Witness intervention)
+  - Zombie: Finished but gt done failed (needs cleanup)
+
+Self-cleaning model: When work completes, the polecat runs 'gt done',
+which pushes the branch, submits to the merge queue, and exits. The
+Witness then nukes the sandbox. Polecats don't wait for more work.
+
+Session vs sandbox: The Claude session cycles frequently (handoffs,
+compaction). The git worktree (sandbox) persists until nuke. Work
+survives session restarts.
+
+Cats build features. Dogs clean up messes.
+
+Usage:
+  gt polecat [flags]
+  gt polecat [command]
+
+Aliases:
+  polecat, polecats
+
+Available Commands:
+  check-recovery Check if polecat needs recovery vs safe to nuke
+  gc             Garbage collect stale polecat branches
+  git-state      Show git state for pre-kill verification
+  identity       Manage polecat identities
+  list           List polecats in a rig
+  nuke           Completely destroy a polecat (session, worktree, branch, agent bead)
+  remove         Remove polecats from a rig
+  stale          Detect stale polecats that may need cleanup
+  status         Show detailed status for a polecat
+  sync           Sync beads for a polecat
+
+Flags:
+  -h, --help   help for polecat
+
+Use &quot;gt polecat [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="refinery"><code>gt refinery</code></h2>
+    <pre class="help-output">Manage the Refinery - the per-rig merge queue processor.
+
+The Refinery serializes all merges to main for a rig:
+  - Receives MRs submitted by polecats (via gt done)
+  - Rebases work branches onto latest main
+  - Runs validation (tests, builds, checks)
+  - Merges to main when clear
+  - If conflict: spawns FRESH polecat to re-implement (original is gone)
+
+Work flows: Polecat completes → gt done → MR in queue → Refinery merges.
+The polecat is already nuked by the time the Refinery processes.
+
+One Refinery per rig. Persistent agent that processes work as it arrives.
+
+Role shortcuts: &quot;refinery&quot; in mail/nudge addresses resolves to this rig's Refinery.
+
+Usage:
+  gt refinery [flags]
+  gt refinery [command]
+
+Aliases:
+  refinery, ref
+
+Available Commands:
+  attach      Attach to refinery session
+  blocked     List MRs blocked by open tasks
+  claim       Claim an MR for processing
+  queue       Show merge queue
+  ready       List MRs ready for processing (unclaimed and unblocked)
+  release     Release a claimed MR back to the queue
+  restart     Restart the refinery
+  start       Start the refinery
+  status      Show refinery status
+  stop        Stop the refinery
+  unclaimed   List unclaimed MRs available for processing
+
+Flags:
+  -h, --help   help for refinery
+
+Use &quot;gt refinery [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="role"><code>gt role</code></h2>
+    <pre class="help-output">Display the current agent role and its detection source.
+
+Role is determined by:
+1. GT_ROLE environment variable (authoritative if set)
+2. Current working directory (fallback)
+
+If both are available and disagree, a warning is shown.
+
+Usage:
+  gt role [flags]
+  gt role [command]
+
+Available Commands:
+  def         Display role definition (session, health, env config)
+  detect      Force cwd-based role detection (debugging)
+  env         Print export statements for current role
+  home        Show home directory for a role
+  list        List all known roles
+  show        Show current role
+
+Flags:
+  -h, --help   help for role
+
+Use &quot;gt role [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="session"><code>gt session</code></h2>
+    <pre class="help-output">Manage tmux sessions for polecats.
+
+Sessions are tmux sessions running Claude for each polecat.
+Use the subcommands to start, stop, attach, and monitor sessions.
+
+TIP: To send messages to a running session, use 'gt nudge' (not 'session inject').
+The nudge command uses reliable delivery that works correctly with Claude Code.
+
+Usage:
+  gt session [flags]
+  gt session [command]
+
+Aliases:
+  session, sess
+
+Available Commands:
+  at          Attach to a running session
+  capture     Capture recent session output
+  check       Check session health for polecats
+  inject      Send message to session (prefer 'gt nudge')
+  list        List all sessions
+  restart     Restart a polecat session
+  start       Start a polecat session
+  status      Show session status details
+  stop        Stop a polecat session
+
+Flags:
+  -h, --help   help for session
+
+Use &quot;gt session [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="witness"><code>gt witness</code></h2>
+    <pre class="help-output">Manage the Witness - the per-rig polecat health monitor.
+
+The Witness patrols a single rig, watching over its polecats:
+  - Detects stalled polecats (crashed or stuck mid-work)
+  - Nudges unresponsive sessions back to life
+  - Cleans up zombie polecats (finished but failed to exit)
+  - Nukes sandboxes when polecats complete via 'gt done'
+
+The Witness does NOT force session cycles or interrupt working polecats.
+Polecats manage their own sessions (via gt handoff). The Witness handles
+failures and edge cases only.
+
+One Witness per rig. The Deacon monitors all Witnesses.
+
+Role shortcuts: &quot;witness&quot; in mail/nudge addresses resolves to this rig's Witness.
+
+Usage:
+  gt witness [flags]
+  gt witness [command]
+
+Available Commands:
+  attach      Attach to witness session
+  restart     Restart the witness
+  start       Start the witness
+  status      Show witness status
+  stop        Stop the witness
+
+Flags:
+  -h, --help   help for witness
+
+Use &quot;gt witness [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="broadcast"><code>gt broadcast</code></h2>
+    <pre class="help-output">Broadcasts a message to all active workers (polecats and crew).
+
+By default, only workers (polecats and crew) receive the message.
+Use --all to include infrastructure agents (mayor, deacon, witness, refinery).
+
+The message is sent as a nudge to each worker's Claude Code session.
+
+Examples:
+  gt broadcast &quot;Check your mail&quot;
+  gt broadcast --rig greenplace &quot;New priority work available&quot;
+  gt broadcast --all &quot;System maintenance in 5 minutes&quot;
+  gt broadcast --dry-run &quot;Test message&quot;
+
+Usage:
+  gt broadcast &lt;message&gt; [flags]
+
+Flags:
+      --all          Include all agents (mayor, witness, etc.), not just workers
+      --dry-run      Show what would be sent without sending
+  -h, --help         help for broadcast
+      --rig string   Only broadcast to workers in this rig
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="dnd"><code>gt dnd</code></h2>
+    <pre class="help-output">Control notification level for the current agent.
+
+Do Not Disturb (DND) mode mutes non-critical notifications,
+allowing you to focus on work without interruption.
+
+Subcommands:
+  on      Enable DND mode (mute notifications)
+  off     Disable DND mode (resume normal notifications)
+  status  Show current notification level
+
+Without arguments, toggles DND mode.
+
+Related: gt notify - for fine-grained notification level control
+
+Usage:
+  gt dnd [on|off|status] [flags]
+
+Flags:
+  -h, --help   help for dnd
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="escalate"><code>gt escalate</code></h2>
+    <pre class="help-output">Create and manage escalations for critical issues.
+
+The escalation system provides severity-based routing for issues that need
+human or mayor attention. Escalations are tracked as beads with gt:escalation label.
+
+SEVERITY LEVELS:
+  critical  (P0) Immediate attention required
+  high      (P1) Urgent, needs attention soon
+  medium    (P2) Standard escalation (default)
+  low       (P3) Informational, can wait
+
+WORKFLOW:
+  1. Agent encounters blocking issue
+  2. Runs: gt escalate &quot;Description&quot; --severity high --reason &quot;details&quot;
+  3. Escalation is routed based on settings/escalation.json
+  4. Recipient acknowledges with: gt escalate ack &lt;id&gt;
+  5. After resolution: gt escalate close &lt;id&gt; --reason &quot;fixed&quot;
+
+CONFIGURATION:
+  Routing is configured in ~/gt/settings/escalation.json:
+  - routes: Map severity to action lists (bead, mail:mayor, email:human, sms:human)
+  - contacts: Human email/SMS for external notifications
+  - stale_threshold: When unacked escalations are re-escalated (default: 4h)
+  - max_reescalations: How many times to bump severity (default: 2)
+
+Examples:
+  gt escalate &quot;Build failing&quot; --severity critical --reason &quot;CI blocked&quot;
+  gt escalate &quot;Need API credentials&quot; --severity high --source &quot;plugin:rebuild-gt&quot;
+  gt escalate &quot;Code review requested&quot; --reason &quot;PR #123 ready&quot;
+  gt escalate list                          # Show open escalations
+  gt escalate ack hq-abc123                 # Acknowledge
+  gt escalate close hq-abc123 --reason &quot;Fixed in commit abc&quot;
+  gt escalate stale                         # Re-escalate stale escalations
+
+Usage:
+  gt escalate [description] [flags]
+  gt escalate [command]
+
+Available Commands:
+  ack         Acknowledge an escalation
+  close       Close a resolved escalation
+  list        List open escalations
+  show        Show details of an escalation
+  stale       Re-escalate stale unacknowledged escalations
+
+Flags:
+  -n, --dry-run           Show what would be done without executing
+  -h, --help              help for escalate
+      --json              Output as JSON
+  -r, --reason string     Detailed reason for escalation
+      --related string    Related bead ID (task, bug, etc.)
+  -s, --severity string   Severity level: critical, high, medium, low (default &quot;medium&quot;)
+      --source string     Source identifier (e.g., plugin:rebuild-gt, patrol:deacon)
+
+Use &quot;gt escalate [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="mail"><code>gt mail</code></h2>
+    <pre class="help-output">Send and receive messages between agents.
+
+The mail system allows Mayor, polecats, and the Refinery to communicate.
+Messages are stored in beads as issues with type=message.
+
+MAIL ROUTING:
+  ┌─────────────────────────────────────────────────────┐
+  │                    Town (.beads/)                   │
+  │  ┌─────────────────────────────────────────────┐   │
+  │  │                 Mayor Inbox                 │   │
+  │  │  └── mayor/                                 │   │
+  │  └─────────────────────────────────────────────┘   │
+  │                                                     │
+  │  ┌─────────────────────────────────────────────┐   │
+  │  │           gastown/ (rig mailboxes)          │   │
+  │  │  ├── witness      ← greenplace/witness         │   │
+  │  │  ├── refinery     ← greenplace/refinery        │   │
+  │  │  ├── Toast        ← greenplace/Toast           │   │
+  │  │  └── crew/max     ← greenplace/crew/max        │   │
+  │  └─────────────────────────────────────────────┘   │
+  └─────────────────────────────────────────────────────┘
+
+ADDRESS FORMATS:
+  mayor/              → Mayor inbox
+  &lt;rig&gt;/witness       → Rig's Witness
+  &lt;rig&gt;/refinery      → Rig's Refinery
+  &lt;rig&gt;/&lt;polecat&gt;     → Polecat (e.g., greenplace/Toast)
+  &lt;rig&gt;/crew/&lt;name&gt;   → Crew worker (e.g., greenplace/crew/max)
+  --human             → Special: human overseer
+
+COMMANDS:
+  inbox     View your inbox
+  send      Send a message
+  read      Read a specific message
+  mark      Mark messages read/unread
+
+Usage:
+  gt mail [flags]
+  gt mail [command]
+
+Available Commands:
+  announces   List or read announce channels
+  archive     Archive messages
+  channel     Manage and view beads-native channels
+  check       Check for new mail (for hooks)
+  claim       Claim a message from a queue
+  clear       Clear all messages from an inbox
+  delete      Delete messages
+  group       Manage mail groups
+  hook        Attach mail to your hook (alias for 'gt hook attach')
+  inbox       Check inbox
+  mark-read   Mark messages as read without archiving
+  mark-unread Mark messages as unread
+  peek        Show preview of first unread message
+  queue       Manage mail queues
+  read        Read a message
+  release     Release a claimed queue message
+  reply       Reply to a message
+  search      Search messages by content
+  send        Send a message
+  thread      View a message thread
+
+Flags:
+  -h, --help   help for mail
+
+Use &quot;gt mail [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="notify"><code>gt notify</code></h2>
+    <pre class="help-output">Control the notification level for the current agent.
+
+Notification levels:
+  verbose  All notifications (mail, convoy events, status updates)
+  normal   Important notifications only (default)
+  muted    Silent/DND mode - batch notifications for later
+
+Without arguments, shows the current notification level.
+
+Examples:
+  gt notify           # Show current level
+  gt notify verbose   # Enable all notifications
+  gt notify normal    # Default notification level
+  gt notify muted     # Enable DND mode
+
+Related: gt dnd - quick toggle for DND mode
+
+Usage:
+  gt notify [verbose|normal|muted] [flags]
+
+Flags:
+  -h, --help   help for notify
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="nudge"><code>gt nudge</code></h2>
+    <pre class="help-output">Universal synchronous messaging API for Gas Town worker-to-worker communication.
+
+Delivers a message directly to any worker's Claude Code session: polecats, crew,
+witness, refinery, mayor, or deacon. Use this for real-time coordination when
+you need immediate attention from another worker.
+
+Uses a reliable delivery pattern:
+1. Sends text in literal mode (-l flag)
+2. Waits 500ms for paste to complete
+3. Sends Enter as a separate command
+
+This is the ONLY way to send messages to Claude sessions.
+Do not use raw tmux send-keys elsewhere.
+
+Role shortcuts (expand to session names):
+  mayor     Maps to gt-mayor
+  deacon    Maps to gt-deacon
+  witness   Maps to gt-&lt;rig&gt;-witness (uses current rig)
+  refinery  Maps to gt-&lt;rig&gt;-refinery (uses current rig)
+
+Channel syntax:
+  channel:&lt;name&gt;  Nudges all members of a named channel defined in
+                  ~/gt/config/messaging.json under &quot;nudge_channels&quot;.
+                  Patterns like &quot;gastown/polecats/*&quot; are expanded.
+
+DND (Do Not Disturb):
+  If the target has DND enabled (gt dnd on), the nudge is skipped.
+  Use --force to override DND and send anyway.
+
+Examples:
+  gt nudge greenplace/furiosa &quot;Check your mail and start working&quot;
+  gt nudge greenplace/alpha -m &quot;What's your status?&quot;
+  gt nudge mayor &quot;Status update requested&quot;
+  gt nudge witness &quot;Check polecat health&quot;
+  gt nudge deacon session-started
+  gt nudge channel:workers &quot;New priority work available&quot;
+
+Usage:
+  gt nudge &lt;target&gt; [message] [flags]
+
+Flags:
+  -f, --force            Send even if target has DND enabled
+  -h, --help             help for nudge
+  -m, --message string   Message to send
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="peek"><code>gt peek</code></h2>
+    <pre class="help-output">Capture and display recent terminal output from an agent session.
+
+This is the ergonomic alias for 'gt session capture'. Use it to check
+what an agent is currently doing or has recently output.
+
+The nudge/peek pair provides the canonical interface for agent sessions:
+  gt nudge - send messages TO a session (reliable delivery)
+  gt peek  - read output FROM a session (capture-pane wrapper)
+
+Supports both polecats and crew workers:
+  - Polecats: rig/name format (e.g., greenplace/furiosa)
+  - Crew: rig/crew/name format (e.g., beads/crew/dave)
+
+Examples:
+  gt peek greenplace/furiosa         # Polecat: last 100 lines (default)
+  gt peek greenplace/furiosa 50      # Polecat: last 50 lines
+  gt peek beads/crew/dave            # Crew: last 100 lines
+  gt peek beads/crew/dave -n 200     # Crew: last 200 lines
+
+Usage:
+  gt peek &lt;rig/polecat&gt; [count] [flags]
+
+Flags:
+  -h, --help        help for peek
+  -n, --lines int   Number of lines to capture (default 100)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="daemon"><code>gt daemon</code></h2>
+    <pre class="help-output">Manage the Gas Town background daemon.
+
+The daemon is a simple Go process that:
+- Pokes agents periodically (heartbeat)
+- Processes lifecycle requests (cycle, restart, shutdown)
+- Restarts sessions when agents request cycling
+
+The daemon is a &quot;dumb scheduler&quot; - all intelligence is in agents.
+
+Usage:
+  gt daemon [flags]
+  gt daemon [command]
+
+Available Commands:
+  logs        View daemon logs
+  start       Start the daemon
+  status      Show daemon status
+  stop        Stop the daemon
+
+Flags:
+  -h, --help   help for daemon
+
+Use &quot;gt daemon [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="down"><code>gt down</code></h2>
+    <pre class="help-output">Stop Gas Town services (reversible pause).
+
+Shutdown levels (progressively more aggressive):
+  gt down                    Stop infrastructure (default)
+  gt down --polecats         Also stop all polecat sessions
+  gt down --all              Also stop bd daemons/activity
+  gt down --nuke             Also kill the tmux server (DESTRUCTIVE)
+
+Infrastructure agents stopped:
+  • Refineries - Per-rig work processors
+  • Witnesses  - Per-rig polecat managers
+  • Mayor      - Global work coordinator
+  • Boot       - Deacon's watchdog
+  • Deacon     - Health orchestrator
+  • Daemon     - Go background process
+
+This is a &quot;pause&quot; operation - use 'gt start' to bring everything back up.
+For permanent cleanup (removing worktrees), use 'gt shutdown' instead.
+
+Use cases:
+  • Taking a break (stop token consumption)
+  • Clean shutdown before system maintenance
+  • Resetting the town to a clean state
+
+Usage:
+  gt down [flags]
+
+Flags:
+  -a, --all        Stop bd daemons/activity and verify shutdown
+      --dry-run    Preview what would be stopped without taking action
+  -f, --force      Force kill without graceful shutdown
+  -h, --help       help for down
+      --nuke       Kill entire tmux server (DESTRUCTIVE - kills non-GT sessions!)
+  -p, --polecats   Also stop all polecat sessions
+  -q, --quiet      Only show errors
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="shutdown"><code>gt shutdown</code></h2>
+    <pre class="help-output">Shutdown Gas Town by stopping agents and cleaning up polecats.
+
+This is the &quot;done for the day&quot; command - it stops everything AND removes
+polecat worktrees/branches. For a reversible pause, use 'gt down' instead.
+
+Comparison:
+  gt down      - Pause (stop processes, keep worktrees) - reversible
+  gt shutdown  - Done (stop + cleanup worktrees) - permanent cleanup
+
+After killing sessions, polecats are cleaned up:
+  - Worktrees are removed
+  - Polecat branches are deleted
+  - Polecats with uncommitted work are SKIPPED (protected)
+
+Shutdown levels (progressively more aggressive):
+  (default)       - Stop infrastructure + polecats + cleanup
+  --all           - Also stop crew sessions
+  --polecats-only - Only stop polecats (leaves infrastructure running)
+
+Use --force or --yes to skip confirmation prompt.
+Use --graceful to allow agents time to save state before killing.
+Use --nuclear to force cleanup even if polecats have uncommitted work (DANGER).
+Use --cleanup-orphans to kill orphaned Claude processes (TTY-less, older than 60s).
+Use --cleanup-orphans-grace-secs to set the grace period (default 60s).
+
+Usage:
+  gt shutdown [flags]
+
+Flags:
+  -a, --all                              Also stop crew sessions (by default, crew is preserved)
+      --cleanup-orphans                  Clean up orphaned Claude processes (TTY-less processes older than 60s)
+      --cleanup-orphans-grace-secs int   Grace period in seconds between SIGTERM and SIGKILL when cleaning orphans (default 60) (default 60)
+  -f, --force                            Skip confirmation prompt (alias for --yes)
+  -g, --graceful                         Send ESC to agents and wait for them to handoff before killing
+  -h, --help                             help for shutdown
+      --nuclear                          Force cleanup even if polecats have uncommitted work (DANGER: may lose work)
+      --polecats-only                    Only stop polecats (minimal shutdown)
+  -w, --wait int                         Seconds to wait for graceful shutdown (default 30) (default 30)
+  -y, --yes                              Skip confirmation prompt
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="start"><code>gt start</code></h2>
+    <pre class="help-output">Start Gas Town by launching the Deacon and Mayor.
+
+The Deacon is the health-check orchestrator that monitors Mayor and Witnesses.
+The Mayor is the global coordinator that dispatches work.
+
+By default, other agents (Witnesses, Refineries) are started lazily as needed.
+Use --all to start Witnesses and Refineries for all registered rigs immediately.
+
+Crew shortcut:
+  If a path like &quot;rig/crew/name&quot; is provided, starts that crew workspace.
+  This is equivalent to 'gt start crew rig/name'.
+
+To stop Gas Town, use 'gt shutdown'.
+
+Usage:
+  gt start [path] [flags]
+  gt start [command]
+
+Available Commands:
+  crew        Start a crew workspace (creates if needed)
+
+Flags:
+      --agent string   Agent alias to run Mayor/Deacon with (overrides town default)
+  -a, --all            Also start Witnesses and Refineries for all rigs
+  -h, --help           help for start
+
+Use &quot;gt start [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="up"><code>gt up</code></h2>
+    <pre class="help-output">Start all Gas Town long-lived services.
+
+This is the idempotent &quot;boot&quot; command for Gas Town. It ensures all
+infrastructure agents are running:
+
+  • Daemon     - Go background process that pokes agents
+  • Deacon     - Health orchestrator (monitors Mayor/Witnesses)
+  • Mayor      - Global work coordinator
+  • Witnesses  - Per-rig polecat managers
+  • Refineries - Per-rig merge queue processors
+
+Polecats are NOT started by this command - they are transient workers
+spawned on demand by the Mayor or Witnesses.
+
+Use --restore to also start:
+  • Crew       - Per rig settings (settings/config.json crew.startup)
+  • Polecats   - Those with pinned beads (work attached)
+
+Running 'gt up' multiple times is safe - it only starts services that
+aren't already running.
+
+Usage:
+  gt up [flags]
+
+Flags:
+  -h, --help      help for up
+  -q, --quiet     Only show errors
+      --restore   Also restore crew (from settings) and polecats (from hooks)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="crew"><code>gt crew</code></h2>
+    <pre class="help-output">Manage crew workers - persistent workspaces for human developers.
+
+CREW VS POLECATS:
+  Polecats: Ephemeral. Witness-managed. Auto-nuked after work.
+  Crew:     Persistent. User-managed. Stays until you remove it.
+
+Crew workers are full git clones (not worktrees) for human developers
+who want persistent context and control over their workspace lifecycle.
+Use crew workers for exploratory work, long-running tasks, or when you
+want to keep uncommitted changes around.
+
+Features:
+  - Gas Town integrated: Mail, nudge, handoff all work
+  - Recognizable names: dave, emma, fred (not ephemeral pool names)
+  - Tmux optional: Can work in terminal directly without tmux session
+
+Commands:
+  gt crew start &lt;name&gt;     Start session (creates workspace if needed)
+  gt crew stop &lt;name&gt;      Stop session(s)
+  gt crew add &lt;name&gt;       Create workspace without starting
+  gt crew list             List workspaces with status
+  gt crew at &lt;name&gt;        Attach to session
+  gt crew remove &lt;name&gt;    Remove workspace
+  gt crew refresh &lt;name&gt;   Context cycle with handoff mail
+  gt crew restart &lt;name&gt;   Kill and restart session fresh
+
+Usage:
+  gt crew [flags]
+  gt crew [command]
+
+Available Commands:
+  add         Create a new crew workspace
+  at          Attach to crew workspace session
+  list        List crew workspaces with status
+  pristine    Sync crew workspaces with remote
+  refresh     Context cycling with mail-to-self handoff
+  remove      Remove crew workspace(s)
+  rename      Rename a crew workspace
+  restart     Kill and restart crew workspace session(s)
+  start       Start crew worker(s) in a rig
+  status      Show detailed workspace status
+  stop        Stop crew workspace session(s)
+
+Flags:
+  -h, --help   help for crew
+
+Use &quot;gt crew [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="git-init"><code>gt git-init</code></h2>
+    <pre class="help-output">Initialize or configure git for an existing Gas Town HQ.
+
+This command:
+  1. Creates a comprehensive .gitignore for Gas Town
+  2. Initializes a git repository if not already present
+  3. Optionally creates a GitHub repository (private by default)
+
+The .gitignore excludes:
+  - Polecat worktrees and rig clones (recreated with 'gt sling' or 'gt rig add')
+  - Runtime state files (state.json, *.lock)
+  - OS and editor files
+
+And tracks:
+  - CLAUDE.md and role contexts
+  - .beads/ configuration and issues
+  - Rig configs and hop/ directory
+
+Examples:
+  gt git-init                             # Init git with .gitignore
+  gt git-init --github=user/repo          # Create private GitHub repo (default)
+  gt git-init --github=user/repo --public # Create public GitHub repo
+
+Usage:
+  gt git-init [flags]
+
+Flags:
+      --github string   Create GitHub repo (format: owner/repo, private by default)
+  -h, --help            help for git-init
+      --public          Make GitHub repo public (repos are private by default)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="init"><code>gt init</code></h2>
+    <pre class="help-output">Initialize the current directory for use as a Gas Town rig.
+
+This creates the standard agent directories (polecats/, witness/, refinery/,
+mayor/) and updates .git/info/exclude to ignore them.
+
+The current directory must be a git repository. Use --force to reinitialize
+an existing rig structure.
+
+Usage:
+  gt init [flags]
+
+Flags:
+  -f, --force   Reinitialize existing structure
+  -h, --help    help for init
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="install"><code>gt install</code></h2>
+    <pre class="help-output">Create a new Gas Town HQ at the specified path.
+
+The HQ (headquarters) is the top-level directory where Gas Town is installed -
+the root of your workspace where all rigs and agents live. It contains:
+  - CLAUDE.md            Mayor role context (Mayor runs from HQ root)
+  - mayor/               Mayor config, state, and rig registry
+  - .beads/              Town-level beads DB (hq-* prefix for mayor mail)
+
+If path is omitted, uses the current directory.
+
+See docs/hq.md for advanced HQ configurations including beads
+redirects, multi-system setups, and HQ templates.
+
+Examples:
+  gt install ~/gt                              # Create HQ at ~/gt
+  gt install . --name my-workspace             # Initialize current dir
+  gt install ~/gt --no-beads                   # Skip .beads/ initialization
+  gt install ~/gt --git                        # Also init git with .gitignore
+  gt install ~/gt --github=user/repo           # Create private GitHub repo (default)
+  gt install ~/gt --github=user/repo --public  # Create public GitHub repo
+  gt install ~/gt --shell                      # Install shell integration (sets GT_TOWN_ROOT/GT_RIG)
+
+Usage:
+  gt install [path] [flags]
+
+Flags:
+  -f, --force                Overwrite existing HQ
+      --git                  Initialize git with .gitignore
+      --github string        Create GitHub repo (format: owner/repo, private by default)
+  -h, --help                 help for install
+  -n, --name string          Town name (defaults to directory name)
+      --no-beads             Skip town beads initialization
+      --owner string         Owner email for entity identity (defaults to git config user.email)
+      --public               Make GitHub repo public (use with --github)
+      --public-name string   Public display name (defaults to town name)
+      --shell                Install shell integration (sets GT_TOWN_ROOT/GT_RIG env vars)
+      --wrappers             Install gt-codex/gt-opencode wrapper scripts to ~/bin/
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="namepool"><code>gt namepool</code></h2>
+    <pre class="help-output">Manage themed name pools for polecats in Gas Town.
+
+By default, polecats get themed names from the Mad Max universe
+(furiosa, nux, slit, etc.). You can change the theme or add custom names.
+
+Examples:
+  gt namepool              # Show current pool status
+  gt namepool --list       # List available themes
+  gt namepool themes       # Show theme names
+  gt namepool set minerals # Set theme to 'minerals'
+  gt namepool add ember    # Add custom name to pool
+  gt namepool reset        # Reset pool state
+
+Usage:
+  gt namepool [flags]
+  gt namepool [command]
+
+Available Commands:
+  add         Add a custom name to the pool
+  reset       Reset the pool state (release all names)
+  set         Set the namepool theme for this rig
+  themes      List available themes and their names
+
+Flags:
+  -h, --help   help for namepool
+  -l, --list   List available themes
+
+Use &quot;gt namepool [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="rig"><code>gt rig</code></h2>
+    <pre class="help-output">Manage rigs (project containers) in the Gas Town workspace.
+
+A rig is a container for managing a project and its agents:
+  - refinery/rig/  Canonical main clone (Refinery's working copy)
+  - mayor/rig/     Mayor's working clone for this rig
+  - crew/&lt;name&gt;/   Human workspace(s)
+  - witness/       Witness agent (no clone)
+  - polecats/      Worker directories
+  - .beads/        Rig-level issue tracking
+
+Usage:
+  gt rig [flags]
+  gt rig [command]
+
+Available Commands:
+  add         Add a new rig to the workspace
+  boot        Start witness and refinery for a rig
+  config      View and manage rig configuration
+  dock        Dock a rig (global, persistent shutdown)
+  list        List all rigs in the workspace
+  park        Park one or more rigs (stops agents, daemon won't auto-restart)
+  reboot      Restart witness and refinery for a rig
+  remove      Remove a rig from the registry (does not delete files)
+  reset       Reset rig state (handoff content, mail, stale issues)
+  restart     Restart one or more rigs (stop then start)
+  shutdown    Gracefully stop all rig agents
+  start       Start witness and refinery on patrol for one or more rigs
+  status      Show detailed status for a specific rig
+  stop        Stop one or more rigs (shutdown semantics)
+  undock      Undock a rig (remove global docked status)
+  unpark      Unpark one or more rigs (allow daemon to auto-restart agents)
+
+Flags:
+  -h, --help   help for rig
+
+Use &quot;gt rig [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="worktree"><code>gt worktree</code></h2>
+    <pre class="help-output">Create a git worktree in another rig for cross-rig work.
+
+This command is for crew workers who need to work on another rig's codebase
+while maintaining their identity. It creates a worktree in the target rig's
+crew/ directory with a name that identifies your source rig and identity.
+
+The worktree is created at: ~/gt/&lt;target-rig&gt;/crew/&lt;source-rig&gt;-&lt;name&gt;/
+
+For example, if you're gastown/crew/joe and run 'gt worktree beads':
+- Creates worktree at ~/gt/beads/crew/gastown-joe/
+- The worktree checks out main branch
+- Your identity (BD_ACTOR, GT_ROLE) remains gastown/crew/joe
+
+Use --no-cd to just print the path without printing shell commands.
+
+Examples:
+  gt worktree beads         # Create worktree in beads rig
+  gt worktree gastown       # Create worktree in gastown rig (from another rig)
+  gt worktree beads --no-cd # Just print the path
+
+Usage:
+  gt worktree &lt;rig&gt; [flags]
+  gt worktree [command]
+
+Available Commands:
+  list        List all cross-rig worktrees owned by current crew member
+  remove      Remove a cross-rig worktree
+
+Flags:
+  -h, --help    help for worktree
+      --no-cd   Just print path (don't print cd command)
+
+Use &quot;gt worktree [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="account"><code>gt account</code></h2>
+    <pre class="help-output">Manage multiple Claude Code accounts for Gas Town.
+
+This enables switching between accounts (e.g., personal vs work) with
+easy account selection per spawn or globally.
+
+Commands:
+  gt account list              List registered accounts
+  gt account add &lt;handle&gt;      Add a new account
+  gt account default &lt;handle&gt;  Set the default account
+  gt account status            Show current account info
+
+Usage:
+  gt account [flags]
+  gt account [command]
+
+Available Commands:
+  add         Add a new account
+  default     Set the default account
+  list        List registered accounts
+  status      Show current account info
+  switch      Switch to a different account
+
+Flags:
+  -h, --help   help for account
+
+Use &quot;gt account [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="completion"><code>gt completion</code></h2>
+    <pre class="help-output">Generate the autocompletion script for gt for the specified shell.
+See each sub-command's help for details on how to use the generated script.
+
+
+Usage:
+  gt completion [command]
+
+Available Commands:
+  bash        Generate the autocompletion script for bash
+  fish        Generate the autocompletion script for fish
+  powershell  Generate the autocompletion script for powershell
+  zsh         Generate the autocompletion script for zsh
+
+Flags:
+  -h, --help   help for completion
+
+Use &quot;gt completion [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="config"><code>gt config</code></h2>
+    <pre class="help-output">Manage Gas Town configuration settings.
+
+This command allows you to view and modify configuration settings
+for your Gas Town workspace, including agent aliases and defaults.
+
+Commands:
+  gt config agent list              List all agents (built-in and custom)
+  gt config agent get &lt;name&gt;         Show agent configuration
+  gt config agent set &lt;name&gt; &lt;cmd&gt;   Set custom agent command
+  gt config agent remove &lt;name&gt;      Remove custom agent
+  gt config default-agent [name]     Get or set default agent
+
+Usage:
+  gt config [flags]
+  gt config [command]
+
+Available Commands:
+  agent              Manage agent configuration
+  agent-email-domain Get or set agent email domain
+  default-agent      Get or set default agent
+
+Flags:
+  -h, --help   help for config
+
+Use &quot;gt config [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="disable"><code>gt disable</code></h2>
+    <pre class="help-output">Disable Gas Town for all agentic coding tools.
+
+When disabled:
+  - Shell hooks become no-ops
+  - Claude Code SessionStart hooks skip 'gt prime'
+  - Tools work 100% vanilla (no Gas Town behavior)
+
+The workspace (~/gt) is preserved. Use 'gt enable' to re-enable.
+
+Flags:
+  --clean  Also remove shell integration from ~/.zshrc/~/.bashrc
+
+Environment overrides still work:
+  GASTOWN_ENABLED=1   - Enable for current session only
+
+Usage:
+  gt disable [flags]
+
+Flags:
+      --clean   Remove shell integration from RC files
+  -h, --help    help for disable
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="enable"><code>gt enable</code></h2>
+    <pre class="help-output">Enable Gas Town for all agentic coding tools.
+
+When enabled:
+  - Shell hooks set GT_TOWN_ROOT and GT_RIG environment variables
+  - Claude Code SessionStart hooks run 'gt prime' for context
+  - Git repos are auto-registered as rigs (configurable)
+
+Use 'gt disable' to turn off. Use 'gt status --global' to check state.
+
+Environment overrides:
+  GASTOWN_DISABLED=1  - Disable for current session only
+  GASTOWN_ENABLED=1   - Enable for current session only
+
+Usage:
+  gt enable [flags]
+
+Flags:
+  -h, --help   help for enable
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="hooks"><code>gt hooks</code></h2>
+    <pre class="help-output">List all Claude Code hooks configured in the workspace.
+
+Scans for .claude/settings.json files and displays hooks by type.
+
+Hook types:
+  SessionStart     - Runs when Claude session starts
+  PreCompact       - Runs before context compaction
+  UserPromptSubmit - Runs before user prompt is submitted
+  PreToolUse       - Runs before tool execution
+  PostToolUse      - Runs after tool execution
+  Stop             - Runs when Claude session stops
+
+Examples:
+  gt hooks              # List all hooks in workspace
+  gt hooks --verbose    # Show hook commands
+  gt hooks --json       # Output as JSON
+
+Usage:
+  gt hooks [flags]
+  gt hooks [command]
+
+Available Commands:
+  install     Install a hook from the registry
+  list        List available hooks from the registry
+
+Flags:
+  -h, --help      help for hooks
+      --json      Output as JSON
+  -v, --verbose   Show hook commands
+
+Use &quot;gt hooks [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="issue"><code>gt issue</code></h2>
+    <pre class="help-output">Manage current issue for status line display
+
+Usage:
+  gt issue [command]
+
+Available Commands:
+  clear       Clear the current issue from status line
+  set         Set the current issue (shown in tmux status line)
+  show        Show the current issue
+
+Flags:
+  -h, --help   help for issue
+
+Use &quot;gt issue [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="plugin"><code>gt plugin</code></h2>
+    <pre class="help-output">Manage plugins that run during Deacon patrol cycles.
+
+Plugins are periodic automation tasks defined by plugin.md files with TOML frontmatter.
+
+PLUGIN LOCATIONS:
+  ~/gt/plugins/           Town-level plugins (universal, apply everywhere)
+  &lt;rig&gt;/plugins/          Rig-level plugins (project-specific)
+
+GATE TYPES:
+  cooldown    Run if enough time has passed (e.g., 1h)
+  cron        Run on a schedule (e.g., &quot;0 9 * * *&quot;)
+  condition   Run if a check command returns exit 0
+  event       Run on events (e.g., startup)
+  manual      Never auto-run, trigger explicitly
+
+Examples:
+  gt plugin list                    # List all discovered plugins
+  gt plugin show &lt;name&gt;             # Show plugin details
+  gt plugin list --json             # JSON output
+
+Usage:
+  gt plugin [flags]
+  gt plugin [command]
+
+Available Commands:
+  history     Show plugin execution history
+  list        List all discovered plugins
+  run         Manually trigger plugin execution
+  show        Show plugin details
+
+Flags:
+  -h, --help   help for plugin
+
+Use &quot;gt plugin [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="shell"><code>gt shell</code></h2>
+    <pre class="help-output">Manage shell integration
+
+Usage:
+  gt shell [flags]
+  gt shell [command]
+
+Available Commands:
+  install     Install or update shell integration
+  remove      Remove shell integration
+  status      Show shell integration status
+
+Flags:
+  -h, --help   help for shell
+
+Use &quot;gt shell [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="theme"><code>gt theme</code></h2>
+    <pre class="help-output">Manage tmux status bar themes for Gas Town sessions.
+
+Without arguments, shows the current theme assignment.
+With a name argument, sets the theme for this rig.
+
+Examples:
+  gt theme              # Show current theme
+  gt theme --list       # List available themes
+  gt theme forest       # Set theme to 'forest'
+  gt theme apply        # Apply theme to all running sessions in this rig
+
+Usage:
+  gt theme [name] [flags]
+  gt theme [command]
+
+Available Commands:
+  apply       Apply theme to running sessions
+
+Flags:
+  -h, --help   help for theme
+  -l, --list   List available themes
+
+Use &quot;gt theme [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="uninstall"><code>gt uninstall</code></h2>
+    <pre class="help-output">Completely remove Gas Town from the system.
+
+By default, removes:
+  - Shell integration (~/.zshrc or ~/.bashrc)
+  - Wrapper scripts (~/bin/gt-codex, ~/bin/gt-opencode)
+  - State directory (~/.local/state/gastown/)
+  - Config directory (~/.config/gastown/)
+  - Cache directory (~/.cache/gastown/)
+
+The workspace (e.g., ~/gt) is NOT removed unless --workspace is specified.
+
+Use --force to skip confirmation prompts.
+
+Examples:
+  gt uninstall                    # Remove Gas Town, keep workspace
+  gt uninstall --workspace        # Also remove workspace directory
+  gt uninstall --force            # Skip confirmation
+
+Usage:
+  gt uninstall [flags]
+
+Flags:
+  -f, --force       Skip confirmation prompts
+  -h, --help        help for uninstall
+      --workspace   Also remove the workspace directory (DESTRUCTIVE)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="activity"><code>gt activity</code></h2>
+    <pre class="help-output">Emit and view activity events for the Gas Town activity feed.
+
+Events are written to ~/gt/.events.jsonl and can be viewed with 'gt feed'.
+
+Subcommands:
+  emit    Emit an activity event
+
+Usage:
+  gt activity [command]
+
+Available Commands:
+  emit        Emit an activity event
+
+Flags:
+  -h, --help   help for activity
+
+Use &quot;gt activity [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="audit"><code>gt audit</code></h2>
+    <pre class="help-output">Query provenance data across git commits, beads, and events.
+
+Shows a unified timeline of work performed by an actor including:
+  - Git commits authored by the actor
+  - Beads (issues) created by the actor
+  - Beads closed by the actor (via assignee)
+  - Town log events (spawn, done, handoff, etc.)
+  - Activity feed events
+
+Examples:
+  gt audit --actor=greenplace/crew/joe       # Show all work by joe
+  gt audit --actor=greenplace/polecats/toast # Show polecat toast's work
+  gt audit --actor=mayor                  # Show mayor's activity
+  gt audit --since=24h                    # Show all activity in last 24h
+  gt audit --actor=joe --since=1h         # Combined filters
+  gt audit --json                         # Output as JSON
+
+Usage:
+  gt audit [flags]
+
+Flags:
+      --actor string   Filter by actor (agent address or partial match)
+  -h, --help           help for audit
+      --json           Output as JSON
+  -n, --limit int      Maximum number of entries to show (default 50)
+      --since string   Show events since duration (e.g., 1h, 24h, 7d)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="checkpoint"><code>gt checkpoint</code></h2>
+    <pre class="help-output">Manage checkpoints for polecat session crash recovery.
+
+Checkpoints capture the current work state so that if a session crashes,
+the next session can resume from where it left off.
+
+Checkpoint data includes:
+- Current molecule and step
+- Hooked bead
+- Modified files list
+- Git branch and last commit
+- Timestamp
+
+Checkpoints are stored in .polecat-checkpoint.json in the polecat directory.
+
+Usage:
+  gt checkpoint [command]
+
+Available Commands:
+  clear       Clear the checkpoint file
+  read        Read and display the current checkpoint
+  write       Write a checkpoint of current session state
+
+Flags:
+  -h, --help   help for checkpoint
+
+Use &quot;gt checkpoint [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="costs"><code>gt costs</code></h2>
+    <pre class="help-output">Display costs for Claude Code sessions in Gas Town.
+
+⚠️  COST TRACKING IS CURRENTLY DISABLED
+
+Claude Code displays costs in the TUI status bar, which cannot be captured
+via tmux. All sessions will show $0.00 until Claude Code exposes cost data
+through an API or environment variable.
+
+What we need from Claude Code:
+  - Stop hook env var (e.g., $CLAUDE_SESSION_COST)
+  - Or queryable file/API endpoint
+
+See: GH#24, gt-7awfj
+
+The infrastructure remains in place and will work once cost data is available.
+
+Examples:
+  gt costs              # Live costs from running sessions
+  gt costs --today      # Today's costs from wisps (not yet digested)
+  gt costs --week       # This week's costs from digest beads + today's wisps
+  gt costs --by-role    # Breakdown by role (polecat, witness, etc.)
+  gt costs --by-rig     # Breakdown by rig
+  gt costs --json       # Output as JSON
+
+Subcommands:
+  gt costs record       # Record session cost as ephemeral wisp (Stop hook)
+  gt costs digest       # Aggregate wisps into daily digest bead (Deacon patrol)
+
+Usage:
+  gt costs [flags]
+  gt costs [command]
+
+Available Commands:
+  digest      Aggregate session cost wisps into a daily digest bead
+  migrate     Migrate legacy session.ended beads to the new wisp architecture
+  record      Record session cost as an ephemeral wisp (called by Stop hook)
+
+Flags:
+      --by-rig    Show breakdown by rig
+      --by-role   Show breakdown by role
+  -h, --help      help for costs
+      --json      Output as JSON
+      --today     Show today's total from session events
+  -v, --verbose   Show debug output for failures
+      --week      Show this week's total from session events
+
+Use &quot;gt costs [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="dashboard"><code>gt dashboard</code></h2>
+    <pre class="help-output">Start a web server that displays the convoy tracking dashboard.
+
+The dashboard shows real-time convoy status with:
+- Convoy list with status indicators
+- Progress tracking for each convoy
+- Last activity indicator (green/yellow/red)
+- Auto-refresh every 30 seconds via htmx
+
+Example:
+  gt dashboard              # Start on default port 8080
+  gt dashboard --port 3000  # Start on port 3000
+  gt dashboard --open       # Start and open browser
+
+Usage:
+  gt dashboard [flags]
+
+Flags:
+  -h, --help       help for dashboard
+      --open       Open browser automatically
+      --port int   HTTP port to listen on (default 8080)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="doctor"><code>gt doctor</code></h2>
+    <pre class="help-output">Run diagnostic checks on the Gas Town workspace.
+
+Doctor checks for common configuration issues, missing files,
+and other problems that could affect workspace operation.
+
+Workspace checks:
+  - town-config-exists       Check mayor/town.json exists
+  - town-config-valid        Check mayor/town.json is valid
+  - rigs-registry-exists     Check mayor/rigs.json exists (fixable)
+  - rigs-registry-valid      Check registered rigs exist (fixable)
+  - mayor-exists             Check mayor/ directory structure
+
+Town root protection:
+  - town-git                 Verify town root is under version control
+  - town-root-branch         Verify town root is on main branch (fixable)
+  - pre-checkout-hook        Verify pre-checkout hook prevents branch switches (fixable)
+
+Infrastructure checks:
+  - stale-binary             Check if gt binary is up to date with repo
+  - daemon                   Check if daemon is running (fixable)
+  - repo-fingerprint         Check database has valid repo fingerprint (fixable)
+  - boot-health              Check Boot watchdog health (vet mode)
+
+Cleanup checks (fixable):
+  - orphan-sessions          Detect orphaned tmux sessions
+  - orphan-processes         Detect orphaned Claude processes
+  - wisp-gc                  Detect and clean abandoned wisps (&gt;1h)
+
+Clone divergence checks:
+  - persistent-role-branches Detect crew/witness/refinery not on main
+  - clone-divergence         Detect clones significantly behind origin/main
+
+Crew workspace checks:
+  - crew-state               Validate crew worker state.json files (fixable)
+  - crew-worktrees           Detect stale cross-rig worktrees (fixable)
+
+Rig checks (with --rig flag):
+  - rig-is-git-repo          Verify rig is a valid git repository
+  - git-exclude-configured   Check .git/info/exclude has Gas Town dirs (fixable)
+  - witness-exists           Verify witness/ structure exists (fixable)
+  - refinery-exists          Verify refinery/ structure exists (fixable)
+  - mayor-clone-exists       Verify mayor/rig/ clone exists (fixable)
+  - polecat-clones-valid     Verify polecat directories are valid clones
+  - beads-config-valid       Verify beads configuration (fixable)
+
+Routing checks (fixable):
+  - routes-config            Check beads routing configuration
+  - prefix-mismatch          Detect rigs.json vs routes.jsonl prefix mismatches (fixable)
+
+Session hook checks:
+  - session-hooks            Check settings.json use session-start.sh
+  - claude-settings          Check Claude settings.json match templates (fixable)
+
+Patrol checks:
+  - patrol-molecules-exist   Verify patrol molecules exist
+  - patrol-hooks-wired       Verify daemon triggers patrols
+  - patrol-not-stuck         Detect stale wisps (&gt;1h)
+  - patrol-plugins-accessible Verify plugin directories
+  - patrol-roles-have-prompts Verify role prompts exist
+
+Use --fix to attempt automatic fixes for issues that support it.
+Use --rig to check a specific rig instead of the entire workspace.
+
+Usage:
+  gt doctor [flags]
+
+Flags:
+      --fix                Attempt to automatically fix issues
+  -h, --help               help for doctor
+      --restart-sessions   Restart patrol sessions when fixing stale settings (use with --fix)
+      --rig string         Check specific rig only
+  -v, --verbose            Show detailed output
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="feed"><code>gt feed</code></h2>
+    <pre class="help-output">Display a real-time feed of issue changes and agent activity.
+
+By default, launches an interactive TUI dashboard with:
+  - Agent tree (top): Shows all agents organized by role with latest activity
+  - Convoy panel (middle): Shows in-progress and recently landed convoys
+  - Event stream (bottom): Chronological feed you can scroll through
+  - Vim-style navigation: j/k to scroll, tab to switch panels, 1/2/3 for panels, q to quit
+
+The feed combines multiple event sources:
+  - Beads activity: Issue creates, updates, completions (from bd activity)
+  - GT events: Agent activity like patrol, sling, handoff (from .events.jsonl)
+  - Convoy status: In-progress and recently-landed convoys (refreshes every 10s)
+
+Use --plain for simple text output (wraps bd activity only).
+
+Tmux Integration:
+  Use --window to open the feed in a dedicated tmux window named 'feed'.
+  This creates a persistent window you can cycle to with C-b n/p.
+
+Event symbols:
+  +  created/bonded    - New issue or molecule created
+  →  in_progress       - Work started on an issue
+  ✓  completed         - Issue closed or step completed
+  ✗  failed            - Step or issue failed
+  ⊘  deleted           - Issue removed
+  🦉  patrol_started   - Witness began patrol cycle
+  ⚡  polecat_nudged   - Worker was nudged
+  🎯  sling            - Work was slung to worker
+  🤝  handoff          - Session handed off
+
+MQ (Merge Queue) event symbols:
+  ⚙  merge_started   - Refinery began processing an MR
+  ✓  merged          - MR successfully merged (green)
+  ✗  merge_failed    - Merge failed (conflict, tests, etc.) (red)
+  ⊘  merge_skipped   - MR skipped (already merged, etc.)
+
+Examples:
+  gt feed                       # Launch TUI dashboard
+  gt feed --plain               # Plain text output (bd activity)
+  gt feed --window              # Open in dedicated tmux window
+  gt feed --since 1h            # Events from last hour
+  gt feed --rig greenplace         # Use gastown rig's beads
+
+Usage:
+  gt feed [flags]
+
+Flags:
+  -f, --follow         Stream events in real-time (default when no other flags)
+  -h, --help           help for feed
+  -n, --limit int      Maximum number of events to show (default 100)
+      --mol string     Filter by molecule/issue ID prefix
+      --no-follow      Show events once and exit
+      --plain          Use plain text output (bd activity) instead of TUI
+      --rig string     Run from specific rig's beads directory
+      --since string   Show events since duration (e.g., 5m, 1h, 30s)
+      --type string    Filter by event type (create, update, delete, comment)
+  -w, --window         Open in dedicated tmux window (creates 'feed' window)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="help"><code>gt help</code></h2>
+    <pre class="help-output">Help provides help for any command in the application.
+Simply type gt help [path to command] for full details.
+
+Usage:
+  gt help [command] [flags]
+
+Flags:
+  -h, --help   help for help
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="info"><code>gt info</code></h2>
+    <pre class="help-output">Display information about the current Gas Town installation.
+
+This command shows:
+  - Version information
+  - What's new in recent versions (with --whats-new flag)
+
+Examples:
+  gt info
+  gt info --whats-new
+  gt info --whats-new --json
+
+Usage:
+  gt info [flags]
+
+Flags:
+  -h, --help        help for info
+      --json        Output in JSON format
+      --whats-new   Show agent-relevant changes from recent versions
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="log"><code>gt log</code></h2>
+    <pre class="help-output">View the centralized log of Gas Town agent lifecycle events.
+
+Events logged include:
+  spawn   - new agent created
+  wake    - agent resumed
+  nudge   - message injected into agent
+  handoff - agent handed off to fresh session
+  done    - agent finished work
+  crash   - agent exited unexpectedly
+  kill    - agent killed intentionally
+
+Examples:
+  gt log                     # Show last 20 events
+  gt log -n 50               # Show last 50 events
+  gt log --type spawn        # Show only spawn events
+  gt log --agent greenplace/    # Show events for gastown rig
+  gt log --since 1h          # Show events from last hour
+  gt log -f                  # Follow log (like tail -f)
+
+Usage:
+  gt log [flags]
+  gt log [command]
+
+Available Commands:
+  crash       Record a crash event (called by tmux pane-died hook)
+
+Flags:
+  -a, --agent string   Filter by agent prefix (e.g., gastown/, greenplace/crew/max)
+  -f, --follow         Follow log output (like tail -f)
+  -h, --help           help for log
+      --since string   Show events since duration (e.g., 1h, 30m, 24h)
+  -n, --tail int       Number of events to show (default 20)
+  -t, --type string    Filter by event type (spawn,wake,nudge,handoff,done,crash,kill)
+
+Use &quot;gt log [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="patrol"><code>gt patrol</code></h2>
+    <pre class="help-output">Manage patrol cycle digests.
+
+Patrol cycles (Deacon, Witness, Refinery) create ephemeral per-cycle digests
+to avoid JSONL pollution. This command aggregates them into daily summaries.
+
+Examples:
+  gt patrol digest --yesterday  # Aggregate yesterday's patrol digests
+  gt patrol digest --dry-run    # Preview what would be aggregated
+
+Usage:
+  gt patrol [command]
+
+Available Commands:
+  digest      Aggregate patrol cycle digests into a daily summary bead
+
+Flags:
+  -h, --help   help for patrol
+
+Use &quot;gt patrol [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="prime"><code>gt prime</code></h2>
+    <pre class="help-output">Detect the agent role from the current directory and output context.
+
+Role detection:
+  - Town root, mayor/, or &lt;rig&gt;/mayor/ → Mayor context
+  - &lt;rig&gt;/witness/rig/ → Witness context
+  - &lt;rig&gt;/refinery/rig/ → Refinery context
+  - &lt;rig&gt;/polecats/&lt;name&gt;/ → Polecat context
+
+This command is typically used in shell prompts or agent initialization.
+
+HOOK MODE (--hook):
+  When called as an LLM runtime hook, use --hook to enable session ID handling.
+  This reads session metadata from stdin and persists it for the session.
+
+  Claude Code integration (in .claude/settings.json):
+    &quot;SessionStart&quot;: [&#123;&quot;hooks&quot;: [&#123;&quot;type&quot;: &quot;command&quot;, &quot;command&quot;: &quot;gt prime --hook&quot;&#125;]&#125;]
+
+  Claude Code sends JSON on stdin:
+    &#123;&quot;session_id&quot;: &quot;uuid&quot;, &quot;transcript_path&quot;: &quot;/path&quot;, &quot;source&quot;: &quot;startup|resume&quot;&#125;
+
+  Other agents can set GT_SESSION_ID environment variable instead.
+
+Usage:
+  gt prime [flags]
+
+Flags:
+      --dry-run   Show what would be injected without side effects (no marker removal, no bd prime, no mail)
+      --explain   Show why each section was included
+  -h, --help      help for prime
+      --hook      Hook mode: read session ID from stdin JSON (for LLM runtime hooks)
+      --json      Output state as JSON (requires --state)
+      --state     Show detected session state only (normal/post-handoff/crash/autonomous)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="seance"><code>gt seance</code></h2>
+    <pre class="help-output">Seance lets you literally talk to predecessor sessions.
+
+&quot;Where did you put the stuff you left for me?&quot; - The #1 handoff question.
+
+Instead of parsing logs, seance spawns a Claude subprocess that resumes
+a predecessor session with full context. You can ask questions directly:
+  - &quot;Why did you make this decision?&quot;
+  - &quot;Where were you stuck?&quot;
+  - &quot;What did you try that didn't work?&quot;
+
+DISCOVERY:
+  gt seance                     # List recent sessions from events
+  gt seance --role crew         # Filter by role type
+  gt seance --rig gastown       # Filter by rig
+  gt seance --recent 10         # Last N sessions
+
+THE SEANCE (talk to predecessor):
+  gt seance --talk &lt;session-id&gt;              # Interactive conversation
+  gt seance --talk &lt;id&gt; -p &quot;Where is X?&quot;     # One-shot question
+
+The --talk flag spawns: claude --fork-session --resume &lt;id&gt;
+This loads the predecessor's full context without modifying their session.
+
+Sessions are discovered from:
+  1. Events emitted by SessionStart hooks (~/gt/.events.jsonl)
+  2. The [GAS TOWN] beacon makes sessions searchable in /resume
+
+Usage:
+  gt seance [flags]
+
+Flags:
+  -h, --help            help for seance
+      --json            Output as JSON
+  -p, --prompt string   One-shot prompt (with --talk)
+  -n, --recent int      Number of recent sessions to show (default 20)
+      --rig string      Filter by rig name
+      --role string     Filter by role (crew, polecat, witness, etc.)
+  -t, --talk string     Session ID to commune with
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="stale"><code>gt stale</code></h2>
+    <pre class="help-output">Check if the gt binary was built from an older commit than the current repo HEAD.
+
+This command compares the commit hash embedded in the binary at build time
+with the current HEAD of the gastown repository.
+
+Examples:
+  gt stale              # Human-readable output
+  gt stale --json       # Machine-readable JSON output
+  gt stale --quiet      # Exit code only (0=stale, 1=fresh)
+
+Exit codes:
+  0 - Binary is stale (needs rebuild)
+  1 - Binary is fresh (up to date)
+  2 - Error (could not determine staleness)
+
+Usage:
+  gt stale [flags]
+
+Flags:
+  -h, --help    help for stale
+      --json    Output as JSON
+  -q, --quiet   Exit code only (0=stale, 1=fresh)
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="status"><code>gt status</code></h2>
+    <pre class="help-output">Display the current status of the Gas Town workspace.
+
+Shows town name, registered rigs, active polecats, and witness status.
+
+Use --fast to skip mail lookups for faster execution.
+Use --watch to continuously refresh status at regular intervals.
+
+Usage:
+  gt status [flags]
+
+Aliases:
+  status, stat
+
+Flags:
+      --fast           Skip mail lookups for faster execution
+  -h, --help           help for status
+  -n, --interval int   Refresh interval in seconds (default 2)
+      --json           Output as JSON
+  -v, --verbose        Show detailed multi-line output per agent
+  -w, --watch          Watch mode: refresh status continuously
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="thanks"><code>gt thanks</code></h2>
+    <pre class="help-output">Display acknowledgments to all the humans who have contributed
+to the Gas Town project. This command celebrates the collaborative
+effort behind the multi-agent workspace manager.
+
+Usage:
+  gt thanks [flags]
+
+Flags:
+  -h, --help   help for thanks
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="version"><code>gt version</code></h2>
+    <pre class="help-output">Print version information
+
+Usage:
+  gt version [flags]
+
+Flags:
+  -h, --help   help for version
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="whoami"><code>gt whoami</code></h2>
+    <pre class="help-output">Show the identity that will be used for mail commands.
+
+Identity is determined by:
+1. GT_ROLE env var (if set) - indicates an agent session
+2. No GT_ROLE - you are the overseer (human)
+
+Use --identity flag with mail commands to override.
+
+Examples:
+  gt whoami                      # Show current identity
+  gt mail inbox                  # Check inbox for current identity
+  gt mail inbox --identity mayor/  # Check Mayor's inbox instead
+
+Usage:
+  gt whoami [flags]
+
+Flags:
+  -h, --help   help for whoami
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="cycle"><code>gt cycle</code></h2>
+    <pre class="help-output">Cycle between related tmux sessions based on the current session type.
+
+Session groups:
+- Town sessions: Mayor ↔ Deacon
+- Crew sessions: All crew members in the same rig (e.g., greenplace/crew/max ↔ greenplace/crew/joe)
+- Rig infra sessions: Witness ↔ Refinery (per rig)
+- Polecat sessions: All polecats in the same rig (e.g., greenplace/Toast ↔ greenplace/Nux)
+
+The appropriate cycling is detected automatically from the session name.
+
+Usage:
+  gt cycle [command]
+
+Available Commands:
+  next        Switch to next session in group
+  prev        Switch to previous session in group
+
+Flags:
+  -h, --help   help for cycle
+
+Use &quot;gt cycle [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="tap"><code>gt tap</code></h2>
+    <pre class="help-output">Hook handlers for Claude Code PreToolUse and PostToolUse events.
+
+These commands are called by Claude Code hooks to implement policies,
+auditing, and input transformation. They tap into the tool execution
+flow to guard, audit, inject, or check.
+
+Subcommands:
+  guard   - Block forbidden operations (PreToolUse, exit 2)
+  audit   - Log/record tool executions (PostToolUse) [planned]
+  inject  - Modify tool inputs (PreToolUse, updatedInput) [planned]
+  check   - Validate after execution (PostToolUse) [planned]
+
+Hook configuration in .claude/settings.json:
+  &#123;
+    &quot;PreToolUse&quot;: [&#123;
+      &quot;matcher&quot;: &quot;Bash(gh pr create*)&quot;,
+      &quot;hooks&quot;: [&#123;&quot;command&quot;: &quot;gt tap guard pr-workflow&quot;&#125;]
+    &#125;]
+  &#125;
+
+See ~/gt/docs/HOOKS.md for full documentation.
+
+Usage:
+  gt tap [command]
+
+Available Commands:
+  guard       Block forbidden operations (PreToolUse hook)
+
+Flags:
+  -h, --help   help for tap
+
+Use &quot;gt tap [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+  <section class="command-section">
+    <h2 id="town"><code>gt town</code></h2>
+    <pre class="help-output">Commands for town-level operations including session cycling.
+
+Usage:
+  gt town [command]
+
+Available Commands:
+  next        Switch to next town session (mayor/deacon)
+  prev        Switch to previous town session (mayor/deacon)
+
+Flags:
+  -h, --help   help for town
+
+Use &quot;gt town [command] --help&quot; for more information about a command.
+</pre>
+  </section>
+
+</DocsLayout>
+
+<style>
+  .intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+  }
+
+  .main-help,
+  .command-section {
+    margin-bottom: 3rem;
+  }
+
+  .command-toc {
+    background: var(--color-bg-alt);
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .command-toc h2 {
+    margin-top: 0;
+  }
+
+  .command-toc p {
+    margin-bottom: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .toc-list {
+    column-count: 3;
+    column-gap: 2rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-list li {
+    margin-bottom: 0.5rem;
+    break-inside: avoid;
+  }
+
+  .toc-list a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .toc-list a:hover {
+    text-decoration: underline;
+  }
+
+  .command-section h2 {
+    font-family: var(--font-display);
+    border-bottom: 2px solid var(--color-brass);
+    padding-bottom: 0.5rem;
+    scroll-margin-top: calc(var(--header-height, 80px) + 2rem);
+  }
+
+  .help-output {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 1.5rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  @media (max-width: 768px) {
+    .toc-list {
+      column-count: 2;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .toc-list {
+      column-count: 1;
+    }
+  }
+</style>
