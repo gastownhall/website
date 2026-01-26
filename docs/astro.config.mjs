@@ -16,6 +16,8 @@ export default defineConfig({
       components: {
         PageFrame: './src/components/PageFrame.astro',
         ThemeSelect: './src/components/ThemeSelect.astro',
+        SiteTitle: './src/components/SiteTitle.astro',
+        Header: './src/components/Header.astro',
       },
       sidebar: [
         { label: 'Overview', link: '/' },

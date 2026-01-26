@@ -1,0 +1,24 @@
+---
+/**
+ * Custom SiteTitle component that links to the main Gas Town site
+ * instead of the docs root.
+ */
+const isDev = import.meta.env.DEV;
+const mainSiteUrl = isDev ? 'http://localhost:4321' : 'https://gastownhall.ai';
+---
+
+<a href={mainSiteUrl} class="site-title sl-flex">
+  <span translate="no">Gas Town Hall</span>
+</a>
+
+<style>
+  .site-title {
+    align-items: center;
+    gap: var(--sl-nav-gap);
+    font-size: var(--sl-text-h4);
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+</style>
