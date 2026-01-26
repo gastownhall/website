@@ -51,7 +51,7 @@ Build pipelines:
 
 ## Deployment
 
-Both sites auto-deploy to Cloudflare Pages on push to `main`.
+Both sites auto-deploy to [Cloudflare Pages](https://dash.cloudflare.com/) on push to `main`.
 
 | Site | URL | Cloudflare Project | Output Dir |
 |------|-----|-------------------|------------|
