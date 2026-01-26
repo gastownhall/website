@@ -1,10 +1,5 @@
-# Cloudflare Pages headers for docs.gastownhall.ai
+# Cloudflare Pages headers for gastownhall.ai
 # Order matters: more specific rules should come AFTER general rules
-
-# TEMPORARY: Force clear browser cache for users with stale content
-# Remove this section after 2026-02-03 (one week from deploy)
-/*
-  Clear-Site-Data: "cache"
 
 # HTML pages - cache but revalidate on each request
 /*
@@ -18,10 +13,6 @@
 /images/*
   Cache-Control: public, max-age=86400
 
-# Search index - short cache with revalidation (overrides default)
-/pagefind/*
-  Cache-Control: public, max-age=3600, must-revalidate
-
 # Security headers
 /*
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
@@ -31,4 +22,4 @@
   Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Embedder-Policy: credentialless
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io

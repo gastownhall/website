@@ -8,6 +8,58 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Gas Town Docs',
+      favicon: '/favicon.svg',
+      head: [
+        // Open Graph
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://docs.gastownhall.ai/images/og-image.jpg',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:width', content: '1200' },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:height', content: '630' },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image:alt',
+            content: 'Gas Town - AI-powered development workflows',
+          },
+        },
+        // Twitter Card
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:card', content: 'summary_large_image' },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: 'twitter:image',
+            content: 'https://docs.gastownhall.ai/images/og-image.jpg',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: { name: 'twitter:site', content: '@gastownhall' },
+        },
+        { tag: 'meta', attrs: { name: 'twitter:creator', content: '@csells' } },
+        // Plausible Analytics
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            'data-domain': 'docs.gastownhall.ai',
+            src: 'https://plausible.io/js/script.js',
+          },
+        },
+      ],
       social: {
         github: 'https://github.com/steveyegge/gastown',
         discord: 'https://discord.gg/pKsyZJ3S',
