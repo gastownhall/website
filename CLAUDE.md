@@ -27,11 +27,11 @@ npm run format       # Prettier
 
 **Documentation flow:**
 ```
-docs-fodder/gastown-docs/*.md  (source markdown)
+gastown repo docs/          (source markdown)
          ↓
-docs/scripts/sync-content.mjs  (adds frontmatter, transforms links)
+npm run sync-docs           (syncs content + generates usage from gt CLI)
          ↓
-docs/src/content/docs/*.md     (Starlight content - generated, not committed)
+docs/src/content/docs/*.md  (Starlight content - committed)
 ```
 
 **Config:** `site.config.json` is the single source of truth for main site
@@ -78,10 +78,9 @@ Generated during build (not committed):
 
 ## Guidelines
 
-- **Generated files are read-only** - Don't edit `docs/src/content/docs/*.md` or `tmp/public/`. Edit source markdown in `docs-fodder/`, then run `npm run sync-docs`.
-- **Docs content is generated** - Files in `docs/src/content/docs/` are generated from `docs-fodder/gastown-docs/` via sync-content.mjs.
-- **Usage docs require gt CLI** - generate-usage.mjs requires `gt` to be installed. Run `npm run sync-docs` locally when gt changes.
-- **Static assets source:** `src/static/` (copied to `tmp/public/` during build)
+- **Docs content is committed** - Edit `docs/src/content/docs/*.md` directly for local changes, or run `npm run sync-docs` to update from gastown repo.
+- **Usage docs require gt CLI** - generate-usage.mjs requires `gt` to be installed. Run `npm run sync-docs` locally when gt changes, then commit the updated content.
+- **tmp/public/ is generated** - Don't edit. Static assets source is `src/static/` (copied during build).
 - **Scratch files:** Use `tmp/` folder
 
 ## Architecture Best Practices

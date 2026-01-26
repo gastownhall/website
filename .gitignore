@@ -20,10 +20,9 @@ npm-debug.log*
 .env.local
 .env.*.local
 
-# Starlight docs (generated from docs-fodder)
+# Starlight workspace
 docs/node_modules/
 docs/.astro/
-docs/src/content/docs/
 
 # Astro's public directory is tmp/public/ (configured in astro.config.mjs)
 # It's already ignored via tmp/ above

@@ -47,7 +47,7 @@ npm run build:docs && npm run preview:docs # Docs site
 
 Build pipelines:
 - **Main site:** copy-assets → llms → astro build → `deploy/`
-- **Docs subdomain:** sync-content → generate-usage → astro build → `deploy-docs/`
+- **Docs subdomain:** astro build → `deploy-docs/` (content is pre-committed)
 
 ## Deployment
 
@@ -78,7 +78,7 @@ This is an **npm workspaces monorepo** with two Astro projects:
 ├── docs/                    # Docs subdomain (Astro Starlight workspace)
 │   ├── package.json         # Workspace package (docs-specific deps)
 │   ├── astro.config.mjs     # Starlight config with sidebar
-│   ├── src/content/docs/    # Generated markdown content
+│   ├── src/content/docs/    # Markdown content (committed)
 │   └── scripts/             # Docs build scripts
 ├── scripts/
 │   ├── copy-assets.mjs      # Copy src/static/ → tmp/public/
@@ -98,11 +98,11 @@ This is an **npm workspaces monorepo** with two Astro projects:
 Docs use [Astro Starlight](https://starlight.astro.build/) for a modern documentation experience with built-in search, dark mode, and automatic navigation.
 
 ```
-docs-fodder/gastown-docs/*.md  →  sync-content  →  docs/src/content/docs/*.md
-gt --help                      →  generate-usage →  docs/src/content/docs/usage/*.md
+gastown repo docs/       →  sync-docs  →  docs/src/content/docs/*.md
+gt --help (with fallback)               →  docs/src/content/docs/usage/*.md
 ```
 
-**Note:** The `docs/src/content/docs/` directory is generated and not committed. Cloudflare builds regenerate it from `docs-fodder/`.
+**Note:** The `docs/src/content/docs/` directory is committed. Run `npm run sync-docs` locally to update from gastown, then commit the changes.
 
 ### Updating from a New Gastown Release
 
@@ -110,14 +110,14 @@ gt --help                      →  generate-usage →  docs/src/content/docs/us
 # 1. Pull latest gastown
 cd ~/Code/Cache/steveyegge/gastown && git pull && cd -
 
-# 2. Sync docs from gastown repo (requires gt CLI installed locally)
+# 2. Sync docs from gastown repo (requires gt CLI)
 npm run sync-docs
 
 # 3. Preview locally
-npm run dev:docs
+npm run build:docs && npm run preview:docs
 
-# 4. Test the build
-npm run build:docs
+# 4. Commit the updated docs
+git add docs/src/content/docs/ && git commit -m "Sync docs from gastown"
 
 # 5. Push to main - CF auto-builds both sites
 git push
@@ -126,9 +126,9 @@ git push
 ### Editing Docs Locally
 
 To edit documentation without syncing from gastown:
-1. Edit markdown files in `docs-fodder/gastown-docs/`
-2. Run `npm run sync-docs` to regenerate Starlight content
-3. Run `npm run dev:docs` to preview
+1. Edit markdown files directly in `docs/src/content/docs/`
+2. Run `npm run dev:docs` to preview
+3. Commit your changes
 
 ## Configuration
 
