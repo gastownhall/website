@@ -33,7 +33,9 @@ test.describe('Docs Site (Starlight)', () => {
 
       // The toggle should be within 5px of center
       const verticalOffset = Math.abs(navCenterY - toggleCenterY);
-      console.log(`Nav center: ${navCenterY}, Toggle center: ${toggleCenterY}, Offset: ${verticalOffset}`);
+      console.log(
+        `Nav center: ${navCenterY}, Toggle center: ${toggleCenterY}, Offset: ${verticalOffset}`
+      );
 
       expect(verticalOffset).toBeLessThan(5);
     }
@@ -54,7 +56,9 @@ test.describe('Docs Site (Starlight)', () => {
       const toggleCenterX = toggleBox.x + toggleBox.width / 2;
 
       const horizontalOffset = Math.abs(navCenterX - toggleCenterX);
-      console.log(`Nav center X: ${navCenterX}, Toggle center X: ${toggleCenterX}, Offset: ${horizontalOffset}`);
+      console.log(
+        `Nav center X: ${navCenterX}, Toggle center X: ${toggleCenterX}, Offset: ${horizontalOffset}`
+      );
 
       expect(horizontalOffset).toBeLessThan(5);
     }

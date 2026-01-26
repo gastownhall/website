@@ -48,7 +48,17 @@ docs/src/content/docs/*.md     (Starlight content - generated, not committed)
 Uses Astro Starlight for documentation with:
 - Automatic sidebar from `docs/astro.config.mjs`
 - Content Collections in `docs/src/content/docs/`
-- Built-in search, dark mode, TOC
+- Built-in search, TOC (dark mode disabled - uses fixed light theme)
+- Custom theme in `docs/src/styles/custom.css`
+- Component overrides: `PageFrame.astro` (mayor overlay), `ThemeSelect.astro` (disabled)
+
+### Design System
+
+Steampunk industrial theme documented in `specs/`:
+- **`specs/design-system.json`** - Design tokens, component specs, CSS values
+- **`specs/design-concept.json`** - Design philosophy, principles, guidelines
+
+Both sites share the same visual language: brass accents, parchment backgrounds, Cinzel/Crimson Text typography.
 
 ### Build Script Utilities
 

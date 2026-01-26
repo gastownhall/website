@@ -13,6 +13,7 @@ export default [
       'deploy/',
       'deploy-docs/',
       '.astro/',
+      'docs/.astro/',
       'node_modules/',
       'tmp/',
       'src/pages/docs/',

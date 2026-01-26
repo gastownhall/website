@@ -1,7 +1,41 @@
 {
   "name": "Gas Town Hall Design System",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "theme": "Steampunk Industrial",
+  "lastUpdated": "2025-01-25",
+
+  "architecture": {
+    "overview": "Monorepo with two Astro sites sharing a unified steampunk industrial theme",
+    "sites": {
+      "mainSite": {
+        "path": "src/",
+        "url": "gastownhall.ai",
+        "framework": "Astro",
+        "styling": "src/static/styles/global.css",
+        "description": "Marketing site with hero, blog, and static pages"
+      },
+      "docsSite": {
+        "path": "docs/",
+        "url": "docs.gastownhall.ai",
+        "framework": "Astro Starlight",
+        "styling": "docs/src/styles/custom.css",
+        "description": "Documentation site using Starlight with custom theme overrides"
+      }
+    },
+    "sharedAssets": {
+      "background": "/images/steampunk-bg.webp",
+      "mayor": "/images/mayor-of-gastown-360.webp",
+      "fonts": "Google Fonts (Cinzel, Crimson Text, JetBrains Mono)"
+    },
+    "starlightOverrides": {
+      "components": [
+        "PageFrame.astro (adds mayor overlay)",
+        "ThemeSelect.astro (disabled)"
+      ],
+      "cssVariables": "Starlight --sl-* variables mapped to theme tokens in custom.css",
+      "lightModeOnly": "Theme switcher disabled; docs use fixed light theme matching main site"
+    }
+  },
 
   "tokens": {
     "colors": {
