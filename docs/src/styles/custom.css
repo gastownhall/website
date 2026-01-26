@@ -330,6 +330,17 @@ article {
   margin-top: 1.5rem !important;
 }
 
+/* Force dark text in content area - the main-pane has a light background
+   even in dark mode, so text must always be dark */
+.main-pane,
+.main-pane .sl-markdown-content,
+.main-pane p,
+.main-pane li,
+.main-pane td,
+.main-pane th {
+  color: var(--color-text) !important;
+}
+
 /* ============================================
    Typography - Increased font sizes
    ============================================ */
@@ -372,10 +383,15 @@ h4 {
   font-size: 1.125rem !important;
 }
 
-:root[data-theme='dark'] h1,
-:root[data-theme='dark'] h2,
-:root[data-theme='dark'] h3 {
-  color: var(--color-text-light) !important;
+/* In dark mode, headings in the content area still need dark text
+   because the main-pane background stays light */
+:root[data-theme='dark'] .main-pane h1,
+:root[data-theme='dark'] .main-pane h2,
+:root[data-theme='dark'] .main-pane h3,
+:root[data-theme='dark'] .main-pane h4,
+:root[data-theme='dark'] .main-pane h5,
+:root[data-theme='dark'] .main-pane h6 {
+  color: var(--color-text) !important;
 }
 
 /* Paragraph text */
