@@ -1,0 +1,49 @@
+---
+/**
+ * Custom PageFrame that wraps Starlight's default PageFrame
+ * and adds the Mayor of Gas Town overlay image.
+ * Matches the original DocsLayout styling from the main site.
+ */
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/PageFrame.astro';
+---
+
+<Default {...Astro.props}>
+  <slot name="header" slot="header" />
+  <slot name="sidebar" slot="sidebar" />
+  <slot />
+</Default>
+
+<!-- Mayor overlay - positioned behind sidebar at 10% opacity -->
+<picture class="docs-mayor">
+  <source srcset="/images/mayor-of-gastown-360.webp" type="image/webp" />
+  <img
+    src="/images/mayor-of-gastown-360.webp"
+    alt=""
+    class="docs-mayor-image"
+    aria-hidden="true"
+  />
+</picture>
+
+<style>
+  /* Mayor image - desktop only, positioned at top left, behind sidebar */
+  .docs-mayor {
+    position: fixed;
+    top: calc(80px + 2rem);
+    left: max(2rem, calc((100% - 1200px) / 2 + 2rem));
+    z-index: 1;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  .docs-mayor-image {
+    width: 180px;
+    height: auto;
+  }
+
+  @media (max-width: 1024px) {
+    .docs-mayor {
+      display: none;
+    }
+  }
+</style>

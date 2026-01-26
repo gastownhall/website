@@ -1,0 +1,719 @@
+/**
+ * Custom Starlight theme to match the main Gas Town Hall site.
+ * Based on the steampunk industrial theme from global.css
+ */
+
+/* Font imports - Victorian/Industrial typography */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* CSS Custom Properties - Match main site exactly */
+:root {
+  /* Colors - Steampunk Industrial Palette */
+  --color-bg: #e8dcc8;
+  --color-bg-alt: #d9c9b0;
+  --color-bg-dark: #3e2723;
+  --color-surface: #f5e6d3;
+  --color-surface-dark: #4a3728;
+
+  /* Text colors */
+  --color-text: #2c1810;
+  --color-text-muted: #5d4037;
+  --color-text-light: #f5e6d3;
+
+  /* Accent colors */
+  --color-accent: #8b2500;
+  --color-accent-hover: #a0522d;
+  --color-accent-light: #d4a574;
+
+  /* Metal colors */
+  --color-brass: #cd7f32;
+  --color-bronze: #8b4513;
+  --color-copper: #b87333;
+  --color-steel: #70798c;
+  --color-rust: #8b4513;
+
+  /* Functional colors */
+  --color-link: #8b2500;
+  --color-link-hover: #5d4037;
+  --color-border: #8b7355;
+  --color-border-dark: #5d4037;
+  --color-code-bg: #f0e6d8;
+
+  /* Typography */
+  --font-display: 'Cinzel', 'Times New Roman', serif;
+  --font-body: 'Crimson Text', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Layout */
+  --max-width: 1200px;
+  --border-radius: 4px;
+  --header-height: 80px;
+
+  /* Animation */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+
+  /* Starlight color overrides - transparent to show body background */
+  --sl-color-bg: transparent;
+  --sl-color-bg-nav: rgba(62, 39, 35, 0.98);
+  --sl-color-bg-sidebar: rgba(245, 230, 211, 0.9);
+  --sl-color-bg-inline-code: var(--color-code-bg);
+
+  --sl-color-text: var(--color-text);
+  --sl-color-text-accent: var(--color-brass);
+
+  --sl-color-accent: var(--color-brass);
+  --sl-color-accent-low: rgba(205, 127, 50, 0.15);
+  --sl-color-accent-high: var(--color-bronze);
+
+  --sl-color-white: var(--color-text-light);
+  --sl-color-gray-1: #f5e6d3;
+  --sl-color-gray-2: #e8dcc8;
+  --sl-color-gray-3: #d9c9b0;
+  --sl-color-gray-4: #8b7355;
+  --sl-color-gray-5: #5d4037;
+  --sl-color-gray-6: #3e2723;
+  --sl-color-black: #2c1810;
+
+  --sl-font: var(--font-body);
+  --sl-font-system-mono: var(--font-mono);
+}
+
+/* Dark mode */
+:root[data-theme='dark'] {
+  --sl-color-bg: #2c1810;
+  --sl-color-bg-sidebar: #3e2723;
+  --sl-color-text: var(--color-text-light);
+}
+
+/* ============================================
+   Background Image - Steampunk texture (on body like main site)
+   ============================================ */
+body {
+  background-image:
+    linear-gradient(rgba(232, 220, 200, 0.75), rgba(232, 220, 200, 0.75)),
+    url('/images/steampunk-bg.webp') !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-position:
+    center center,
+    center center !important;
+  background-size: cover, cover !important;
+  background-attachment: fixed, fixed !important;
+}
+
+@media (max-width: 50rem) {
+  body {
+    background-attachment: scroll, scroll !important;
+    background-position:
+      30% center,
+      30% center !important;
+  }
+}
+
+/* Make all page containers transparent to show body background */
+.page,
+.main-wrapper,
+.main-frame,
+.content-panel,
+.sidebar-pane,
+.sidebar-content,
+[data-pagefind-body],
+.sl-container {
+  background: transparent !important;
+}
+
+/* ============================================
+   Mayor Image - Desktop only, 10% opacity
+   ============================================ */
+.mayor-overlay {
+  position: fixed;
+  top: calc(var(--header-height) + 2rem);
+  left: max(2rem, calc((100% - var(--max-width)) / 2 + 2rem));
+  width: 180px;
+  height: auto;
+  z-index: 1;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .mayor-overlay {
+    display: none;
+  }
+}
+
+/* ============================================
+   Header - Dark brown with brass accents
+   ============================================ */
+header.header {
+  background: linear-gradient(to bottom, #5d4037, #3e2723) !important;
+  border-bottom: 4px solid var(--color-brass) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Header decorative bar */
+header.header::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    var(--color-brass),
+    var(--color-copper),
+    var(--color-brass)
+  );
+}
+
+/* Site title styling */
+.site-title,
+[data-sl-title] {
+  font-family: var(--font-display) !important;
+  color: var(--color-text-light) !important;
+  letter-spacing: 0.05em;
+}
+
+/* Add decorative dashes around title like main site */
+.site-title::before {
+  content: '— ';
+  color: var(--color-brass);
+}
+
+.site-title::after {
+  content: ' —';
+  color: var(--color-brass);
+}
+
+/* Header nav links */
+header a {
+  color: var(--color-text-light) !important;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+}
+
+header a:hover {
+  color: var(--color-brass) !important;
+}
+
+/* ============================================
+   Sidebar - Semi-transparent to show background
+   ============================================ */
+nav.sidebar,
+.sidebar {
+  background: rgba(245, 230, 211, 0.9) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Sidebar top-level items - IDENTICAL styling for all */
+/* Summary elements (expandable sections) - use flexbox for chevron */
+.top-level > li > details > summary {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0.5rem 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+/* Chevron icon styling */
+.top-level > li > details > summary .caret {
+  flex-shrink: 0 !important;
+  margin-left: 0.5rem !important;
+}
+
+/* ALL top-level text labels - both standalone links and expandable headers */
+.top-level > li > a.large,
+.top-level > li > a.large span,
+.top-level > li > details > summary .large,
+.top-level > li > details > summary .group-label {
+  font-family: var(--font-display) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* Top-level standalone links (Overview, Glossary, etc.) */
+.top-level > li > a.large {
+  display: block !important;
+  padding: 0.5rem 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  background: none !important;
+}
+
+/* Sidebar links (nested items only - exclude top-level) */
+.top-level ul a,
+.sidebar-content ul ul a {
+  color: var(--color-text) !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.9rem !important;
+  padding: 0.375rem 0.75rem !important;
+  border-left: 3px solid transparent !important;
+  border-radius: 3px !important;
+  transition:
+    color var(--duration-fast) ease,
+    background var(--duration-fast) ease,
+    border-left-color var(--duration-normal) var(--ease-out-expo),
+    padding-left var(--duration-normal) var(--ease-out-expo) !important;
+}
+
+.top-level ul a:hover,
+.sidebar-content ul ul a:hover {
+  color: var(--color-accent) !important;
+  background: var(--color-bg-alt) !important;
+  border-left-color: var(--color-brass) !important;
+  padding-left: 1rem !important;
+}
+
+.sidebar a[aria-current='page'],
+nav.sidebar a[aria-current='page'] {
+  color: var(--color-accent) !important;
+  background: var(--color-bg-alt) !important;
+  border-left-color: var(--color-brass) !important;
+  font-weight: 600 !important;
+}
+
+/* ============================================
+   Main Content Area - Transparent wrapper, solid content box
+   ============================================ */
+.main-frame,
+.content-panel {
+  background: transparent !important;
+}
+
+main,
+article {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* Parent container needs position relative for absolute TOC positioning */
+.lg\:sl-flex {
+  position: relative !important;
+}
+
+/* The main content pane (contains both h1 and markdown content) */
+.main-pane {
+  position: relative !important;
+  z-index: 2 !important; /* Above mayor overlay (z-index: 1) */
+  background: var(--color-surface) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  padding: 2.5rem !important;
+  margin: 1rem !important;
+}
+
+/* Reset the content panels inside the box */
+.main-pane .content-panel,
+.main-pane .sl-container {
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Markdown content inherits from parent box */
+.sl-markdown-content {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-top: 1.5rem !important;
+}
+
+/* ============================================
+   Typography - Increased font sizes
+   ============================================ */
+
+/* Base font size increase */
+html {
+  font-size: 18px !important;
+}
+
+body,
+.sl-markdown-content {
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display) !important;
+  color: var(--color-text) !important;
+}
+
+h1 {
+  font-size: 2.25rem !important;
+}
+
+h2 {
+  font-size: 1.75rem !important;
+}
+
+h3 {
+  font-size: 1.375rem !important;
+}
+
+h4 {
+  font-size: 1.125rem !important;
+}
+
+:root[data-theme='dark'] h1,
+:root[data-theme='dark'] h2,
+:root[data-theme='dark'] h3 {
+  color: var(--color-text-light) !important;
+}
+
+/* Paragraph text */
+p,
+li,
+td,
+th {
+  font-size: 1rem !important;
+}
+
+/* Links */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* ============================================
+   Code Blocks
+   ============================================ */
+pre {
+  background: var(--color-code-bg) !important;
+  border: 1px solid var(--color-border) !important;
+  border-left: 4px solid var(--color-brass) !important;
+  border-radius: var(--border-radius) !important;
+}
+
+code {
+  font-family: var(--font-mono) !important;
+}
+
+/* Inline code */
+:not(pre) > code {
+  background: var(--color-code-bg) !important;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* ============================================
+   Table of Contents (Right Sidebar)
+   ============================================ */
+starlight-toc,
+.right-sidebar,
+.right-sidebar-container,
+.right-sidebar-panel,
+.lg\:sl-hidden,
+mobile-starlight-toc,
+mobile-starlight-toc nav {
+  border: none !important;
+  border-left: none !important;
+  background: transparent !important;
+}
+
+/* Container needs transparent background */
+.right-sidebar .sl-container {
+  border: none !important;
+  padding-left: 0 !important;
+  background: transparent !important;
+}
+
+/* "On this page" heading */
+.right-sidebar h2,
+starlight-toc h2,
+starlight-toc nav h2 {
+  font-family: var(--font-display) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: var(--color-text-muted) !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* Remove any decorative elements before heading */
+.right-sidebar h2::before,
+starlight-toc h2::before,
+starlight-toc nav::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* TOC list - remove any borders */
+starlight-toc ul,
+.right-sidebar ul {
+  border: none !important;
+  border-left: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+/* Nested TOC lists */
+starlight-toc ul ul,
+.right-sidebar ul ul {
+  padding-left: 1rem !important;
+}
+
+/* TOC links */
+starlight-toc a,
+.right-sidebar a,
+starlight-toc li a {
+  font-family: var(--font-body) !important;
+  font-size: 0.875rem !important;
+  color: var(--color-text) !important;
+  border: none !important;
+  border-left: none !important;
+  padding: 0.25rem 0 !important;
+  display: block !important;
+}
+
+starlight-toc a:hover,
+.right-sidebar a:hover {
+  color: var(--color-accent) !important;
+}
+
+/* Mobile TOC - Starlight's mobile TOC nav is position:fixed directly below header.
+   Override the top position to add spacing below the brass bar, and increase
+   --sl-mobile-toc-height so content is pushed down accordingly. */
+@media (max-width: 72rem) {
+  /* Add space below header by increasing mobile-toc-height variable */
+  :root {
+    --sl-mobile-toc-height: 4.5rem !important;
+  }
+
+  /* Override the fixed nav to span the full mobile TOC space and center the button */
+  mobile-starlight-toc nav {
+    top: var(--sl-nav-height) !important;
+    height: var(--sl-mobile-toc-height) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    background: transparent !important;
+    border: none !important;
+  }
+}
+
+
+/* Mobile "On this page" - summary container */
+mobile-starlight-toc summary,
+mobile-starlight-toc details summary {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+/* Remove focus ring from details */
+mobile-starlight-toc details,
+mobile-starlight-toc details:focus,
+mobile-starlight-toc summary:focus,
+mobile-starlight-toc summary:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* The toggle button - styled like home page secondary button */
+mobile-starlight-toc summary .toggle,
+mobile-starlight-toc details summary .toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-family: var(--font-display) !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--color-text) !important;
+  background: linear-gradient(
+    180deg,
+    #e8dcc8 0%,
+    #d4c4a8 50%,
+    #beb09a 100%
+  ) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  transition:
+    transform 150ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 250ms ease,
+    border-color 250ms ease !important;
+}
+
+mobile-starlight-toc summary:hover .toggle,
+mobile-starlight-toc details summary:hover .toggle {
+  border-color: var(--color-brass) !important;
+  background: linear-gradient(
+    180deg,
+    #f5e6d3 0%,
+    #e8dcc8 50%,
+    #d4c4a8 100%
+  ) !important;
+  transform: translateY(-2px) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+    0 6px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Hide current section display - not useful */
+mobile-starlight-toc summary .display-current,
+mobile-starlight-toc details summary .display-current {
+  display: none !important;
+}
+
+/* Mobile TOC dropdown */
+mobile-starlight-toc .dropdown {
+  background: var(--color-surface) !important;
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+footer {
+  background: linear-gradient(to bottom, #3e2723, #2c1810) !important;
+  border-top: 4px solid var(--color-brass) !important;
+  color: var(--color-text-light) !important;
+}
+
+footer a {
+  color: var(--color-brass) !important;
+}
+
+footer a:hover {
+  color: var(--color-copper) !important;
+}
+
+/* ============================================
+   Callouts/Notes
+   ============================================ */
+.starlight-aside,
+.sl-markdown-content .note,
+.sl-markdown-content .tip,
+.sl-markdown-content .caution,
+.sl-markdown-content .danger {
+  border: 2px solid var(--color-border) !important;
+  border-radius: var(--border-radius) !important;
+  background: rgba(245, 230, 211, 0.7) !important;
+}
+
+:root[data-theme='dark'] .starlight-aside {
+  background: rgba(62, 39, 35, 0.8) !important;
+}
+
+/* ============================================
+   Search
+   ============================================ */
+button[data-open-modal] {
+  border: 2px solid var(--color-border) !important;
+  background: var(--color-surface) !important;
+}
+
+/* ============================================
+   Mobile Menu / Dropdown Navigation
+   ============================================ */
+.mobile-menu-toggle,
+starlight-menu-button button {
+  background: var(--color-surface) !important;
+  border: 2px solid var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.mobile-menu-toggle:hover,
+starlight-menu-button button:hover {
+  background: var(--color-bg-alt) !important;
+  border-color: var(--color-brass) !important;
+}
+
+/* Mobile sidebar when open */
+[data-open-modal],
+dialog,
+.modal {
+  background: var(--color-surface) !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+/* Mobile nav dropdown */
+nav[aria-label='Main'],
+.nav-groups {
+  background: var(--color-surface) !important;
+}
+
+/* ============================================
+   Mobile adjustments
+   ============================================ */
+@media (max-width: 72rem) {
+  .main-pane {
+    margin: 0 0.5rem 0.5rem 0.5rem !important;
+    padding: 1.5rem !important;
+  }
+}
+
+@media (max-width: 50rem) {
+  nav.sidebar,
+  .sidebar {
+    background: var(--color-surface) !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Mobile menu button styling */
+  starlight-menu-button {
+    background: transparent !important;
+  }
+
+  starlight-menu-button button {
+    background: var(--color-surface) !important;
+    border: 2px solid var(--color-border) !important;
+    border-radius: var(--border-radius) !important;
+    color: var(--color-text) !important;
+    font-family: var(--font-display) !important;
+  }
+}

@@ -12,6 +12,11 @@ export default defineConfig({
         github: 'https://github.com/steveyegge/gastown',
         discord: 'https://discord.gg/pKsyZJ3S',
       },
+      customCss: ['./src/styles/custom.css'],
+      components: {
+        PageFrame: './src/components/PageFrame.astro',
+        ThemeSelect: './src/components/ThemeSelect.astro',
+      },
       sidebar: [
         { label: 'Overview', link: '/' },
         {

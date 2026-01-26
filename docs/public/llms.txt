@@ -1,0 +1,71 @@
+# Gas Town Documentation
+
+> Comprehensive documentation for Gas Town, an open source orchestration layer for AI coding agents. This site covers installation, CLI usage, core concepts, architecture design, and examples.
+
+## Quick Summary
+
+- **What:** Orchestration layer for AI coding agents
+- **Problem Solved:** Accountability, quality measurement, work routing, and agent coordination at scale
+- **Key Concepts:** Convoys (batch work tracking), Polecats (ephemeral workers), Crew (persistent workers), Beads (atomic work units)
+- **Core Principle:** GUPP - "If there is work on your Hook, YOU MUST RUN IT"
+
+## Links
+
+- Main Website: https://gastownhall.ai
+- Documentation: https://docs.gastownhall.ai
+- GitHub: https://github.com/steveyegge/gastown
+
+Last updated: 2026-01-26
+
+## Overview
+
+- [Understanding Gas Town](https://docs.gastownhall.ai): This document provides a conceptual overview of Gas Town's architecture, focusing on the role taxonomy and how different agents interact.
+- [Gas Town Glossary](https://docs.gastownhall.ai/glossary/): Gas Town is an agentic development environment for managing multiple Claude Code instances simultaneously using the `gt` and `bd` (Beads) binaries, coordinated with tmux in git-managed directories.
+- [Installing Gas Town](https://docs.gastownhall.ai/installing/): Complete setup guide for Gas Town multi-agent orchestrator.
+- [Gas Town Reference](https://docs.gastownhall.ai/reference/): Technical reference for Gas Town internals. Read the README first.
+
+## CLI Usage
+
+- [CLI Usage](https://docs.gastownhall.ai/usage/): Command-line usage reference for the gt (Gas Town) CLI tool
+- [Additional Commands](https://docs.gastownhall.ai/usage/additional-commands/): CLI reference for Gas Town additional commands
+- [Agent Management Commands](https://docs.gastownhall.ai/usage/agent-management/): CLI reference for Gas Town agent management commands
+- [Communication Commands](https://docs.gastownhall.ai/usage/communication/): CLI reference for Gas Town communication commands
+- [Configuration Commands](https://docs.gastownhall.ai/usage/configuration/): CLI reference for Gas Town configuration commands
+- [Diagnostics Commands](https://docs.gastownhall.ai/usage/diagnostics/): CLI reference for Gas Town diagnostics commands
+- [Services Commands](https://docs.gastownhall.ai/usage/services/): CLI reference for Gas Town services commands
+- [Work Management Commands](https://docs.gastownhall.ai/usage/work-management/): CLI reference for Gas Town work management commands
+- [Workspace Commands](https://docs.gastownhall.ai/usage/workspace/): CLI reference for Gas Town workspace commands
+
+## Core Concepts
+
+- [Convoys](https://docs.gastownhall.ai/concepts/convoy/): Convoys are the primary unit for tracking batched work across rigs.
+- [Agent Identity and Attribution](https://docs.gastownhall.ai/concepts/identity/): > Canonical format for agent identity in Gas Town
+- [Molecules](https://docs.gastownhall.ai/concepts/molecules/): Molecules are workflow templates that coordinate multi-step work in Gas Town.
+- [Polecat Lifecycle](https://docs.gastownhall.ai/concepts/polecat-lifecycle/): > Understanding the three-layer architecture of polecat workers
+- [The Propulsion Principle](https://docs.gastownhall.ai/concepts/propulsion-principle/): > **If you find something on your hook, YOU RUN IT.**
+
+## Architecture & Design
+
+- [Gas Town Architecture](https://docs.gastownhall.ai/design/architecture/): Technical architecture for Gas Town multi-agent workspace management.
+- [Convoy Lifecycle Design](https://docs.gastownhall.ai/design/convoy-lifecycle/): > Making convoys actively converge on completion.
+- [Dog Pool Architecture for Concurrent Shutdown Dances](https://docs.gastownhall.ai/design/dog-pool-architecture/): > Design document for gt-fsld8
+- [Escalation System Design](https://docs.gastownhall.ai/design/escalation-system/): > Detailed design for the Gas Town unified escalation system. > Written 2026-01-11, crew/george session. > Parent epic: gt-i9r20
+- [Gas Town Escalation Protocol](https://docs.gastownhall.ai/design/escalation/): > Reference for escalation paths in Gas Town
+- [Federation Architecture](https://docs.gastownhall.ai/design/federation/): > **Status: Design spec - not yet implemented**
+- [Gas Town Mail Protocol](https://docs.gastownhall.ai/design/mail-protocol/): > Reference for inter-agent mail communication in Gas Town
+- [Operational State in Gas Town](https://docs.gastownhall.ai/design/operational-state/): > Managing runtime state through events and labels.
+- [Plugin System Design](https://docs.gastownhall.ai/design/plugin-system/): > Design document for the Gas Town plugin system. > Written 2026-01-11, crew/george session.
+- [Property Layers: Multi-Level Configuration](https://docs.gastownhall.ai/design/property-layers/): > Implementation guide for Gas Town's configuration system. > Created: 2025-01-06
+- [Daemon/Boot/Deacon Watchdog Chain](https://docs.gastownhall.ai/design/watchdog-chain/): > Autonomous health monitoring and recovery in Gas Town.
+
+## Examples
+
+- [Towers of Hanoi Demo](https://docs.gastownhall.ai/examples/hanoi-demo/): A durability proof demonstrating Gas Town's ability to execute arbitrarily long sequential workflows with crash recovery and session cycling.
+
+## Other Topics
+
+- [Beads-Native Messaging](https://docs.gastownhall.ai/other/beads-native-messaging/): This document describes the beads-native messaging system for Gas Town, which replaces the file-based messaging configuration with persistent beads stored in the town's `.beads` directory.
+- [Formula Resolution Architecture](https://docs.gastownhall.ai/other/formula-resolution/): > Where formulas live, how they're found, and how they'll scale to Mol Mall
+- [Mol Mall Design](https://docs.gastownhall.ai/other/mol-mall-design/): > A marketplace for Gas Town formulas
+- [Why These Features?](https://docs.gastownhall.ai/other/why-these-features/): > Gas Town's architecture explained through enterprise AI challenges
+

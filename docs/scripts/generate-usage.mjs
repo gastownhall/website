@@ -279,7 +279,7 @@ is automatically generated from the installed version of ${versionText}.
 
 Select a command category from the sidebar to see detailed help.
 
-## Overview
+## Command Reference
 
 \`\`\`
 ${mainHelp}
