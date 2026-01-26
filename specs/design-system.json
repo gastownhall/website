@@ -2,7 +2,7 @@
   "name": "Gas Town Hall Design System",
   "version": "2.0.0",
   "theme": "Steampunk Industrial",
-  "lastUpdated": "2025-01-25",
+  "lastUpdated": "2026-01-26",
 
   "architecture": {
     "overview": "Monorepo with two Astro sites sharing a unified steampunk industrial theme",
@@ -531,17 +531,17 @@
       },
       "subline": {
         "fontFamily": "mono",
-        "fontSize": "clamp(1.625rem, 3.75vw, 2.5rem)",
-        "fontWeight": 700,
+        "fontSize": "clamp(1.25rem, 3vw, 1.75rem)",
+        "fontWeight": 600,
         "color": "#39FF14",
-        "letterSpacing": "-0.02em",
+        "letterSpacing": "-0.01em",
         "textShadow": "1px 1px 0 #2C1810, -1px -1px 0 #2C1810, 1px -1px 0 #2C1810, -1px 1px 0 #2C1810"
       },
       "description": {
-        "fontSize": "1.125rem",
+        "fontSize": "1rem",
         "color": "#5D4037",
         "maxWidth": "600px",
-        "lineHeight": 1.7
+        "lineHeight": 1.6
       }
     }
   },
