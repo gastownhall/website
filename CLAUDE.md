@@ -8,8 +8,8 @@ Guidance for Claude Code when working with this repository.
 npm run dev          # Start main site dev server (localhost:4321)
 npm run dev:docs     # Start docs dev server (localhost:4322)
 npm run build        # Build main site
-npm run build:docs   # Build docs subdomain (Starlight)
-npm run sync-docs    # Sync docs from gastown repo (requires gt CLI)
+npm run build:docs   # Build docs subdomain (from committed content)
+npm run sync-docs    # Sync docs from gastown repo (requires gt CLI) - LOCAL ONLY
 npm run deploy       # Build + deploy main site
 npm run deploy:docs  # Build + deploy docs subdomain
 npm test             # Run unit tests
@@ -27,11 +27,12 @@ npm run format       # Prettier
 
 **Documentation flow:**
 ```
-gastown repo docs/          (source markdown)
-         ↓
-npm run sync-docs           (syncs content + generates usage from gt CLI)
-         ↓
-docs/src/content/docs/*.md  (Starlight content - committed)
+LOCAL (when content changes, requires gt CLI):
+  npm run sync-docs              (syncs content + generates usage)
+  git commit + push              (commit updated content)
+
+CLOUDFLARE (on every deploy):
+  npm run build:docs             (builds from committed content)
 ```
 
 **Config:** `site.config.json` is the single source of truth for main site
@@ -78,8 +79,9 @@ Generated during build (not committed):
 
 ## Guidelines
 
-- **Docs content is committed** - Edit `docs/src/content/docs/*.md` directly for local changes, or run `npm run sync-docs` to update from gastown repo.
-- **Usage docs require gt CLI** - generate-usage.mjs requires `gt` to be installed. Run `npm run sync-docs` locally when gt changes, then commit the updated content.
+- **Docs content is committed** - Edit `docs/src/content/docs/*.md` directly, or run `npm run sync-docs` to update from gastown repo (requires gt CLI).
+- **Updating docs from gastown:** Run `npm run sync-docs` locally, then commit the updated content.
+- **build vs sync-docs:** `npm run build:docs` builds from committed content (no gt needed). `npm run sync-docs` regenerates content from gastown repo (requires gt CLI).
 - **tmp/public/ is generated** - Don't edit. Static assets source is `src/static/` (copied during build).
 - **Scratch files:** Use `tmp/` folder
 

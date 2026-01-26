@@ -28,7 +28,7 @@ npm run build:docs && npm run preview:docs # Docs site
 | `npm run dev` | Start main site dev server (port 4321) |
 | `npm run dev:docs` | Start docs dev server (port 4322) |
 | `npm run build` | Build main site |
-| `npm run build:docs` | Build docs subdomain (Starlight) |
+| `npm run build:docs` | Build docs subdomain (from committed content, no gt needed) |
 | `npm run build:all` | Build both main site and docs |
 | `npm run preview` | Preview main site production build (run build first) |
 | `npm run preview:docs` | Preview docs production build (run build:docs first) |
@@ -47,7 +47,7 @@ npm run build:docs && npm run preview:docs # Docs site
 
 Build pipelines:
 - **Main site:** copy-assets → llms → astro build → `deploy/`
-- **Docs subdomain:** astro build → `deploy-docs/` (content is pre-committed)
+- **Docs subdomain:** llms → astro build → `deploy-docs/` (content is COMMITTED, no gt needed)
 
 ## Deployment
 
@@ -97,12 +97,22 @@ This is an **npm workspaces monorepo** with two Astro projects:
 
 Docs use [Astro Starlight](https://starlight.astro.build/) for a modern documentation experience with built-in search, dark mode, and automatic navigation.
 
+### IMPORTANT: Build vs Sync Workflow
+
+**`npm run build:docs`** - Builds from COMMITTED content. No gt CLI needed. Used by Cloudflare.
+
+**`npm run sync-docs`** - Regenerates content from gastown repo. Requires gt CLI. LOCAL ONLY.
+
 ```
-gastown repo docs/       →  sync-docs  →  docs/src/content/docs/*.md
-gt --help (with fallback)               →  docs/src/content/docs/usage/*.md
+LOCAL (when gastown docs change):
+  npm run sync-docs     # Regenerate content (requires gt CLI)
+  git commit + push     # Commit the updated content
+
+CLOUDFLARE (automatic on push):
+  npm run build:docs    # Build from committed content (no gt needed)
 ```
 
-**Note:** The `docs/src/content/docs/` directory is committed. Run `npm run sync-docs` locally to update from gastown, then commit the changes.
+The `docs/src/content/docs/` directory is **committed**. Cloudflare builds from these committed files.
 
 ### Updating from a New Gastown Release
 

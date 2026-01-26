@@ -20,10 +20,25 @@ Single `npm install` at root installs all dependencies. Use `npm run <script> -w
 
 | Type | Location | Committed? | When Generated |
 |------|----------|------------|----------------|
-| Docs content | `docs/src/content/docs/` | No | `npm run sync-docs` or `npm run build:docs` |
-| CLI Usage docs | `docs/src/content/docs/usage/` | No | `npm run sync-docs` (requires gt CLI) |
+| Docs content | `docs/src/content/docs/` | **YES** | `npm run sync-docs` (LOCAL ONLY, requires gt CLI) |
+| CLI Usage docs | `docs/src/content/docs/usage/` | **YES** | `npm run sync-docs` (LOCAL ONLY, requires gt CLI) |
 | LLM files (main) | `tmp/public/*.txt` | No | Every `build` and `dev` |
 | Static assets | `tmp/public/` | No | Every `build` and `dev` |
+
+## IMPORTANT: Build vs Sync Workflow
+
+**`npm run build:docs`** - Builds from COMMITTED content. No gt CLI needed. Used by Cloudflare.
+
+**`npm run sync-docs`** - Regenerates content from gastown repo. Requires gt CLI. LOCAL ONLY.
+
+```
+LOCAL WORKFLOW (when gastown docs change):
+  npm run sync-docs     # Regenerate content (requires gt CLI)
+  git commit + push     # Commit the updated content
+
+CLOUDFLARE WORKFLOW (automatic on push):
+  npm run build:docs    # Build from committed content (no gt needed)
+```
 
 ## Main Site Scripts
 

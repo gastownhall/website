@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "npm run sync-content && npm run generate-usage && npm run llms && astro dev",
-    "build": "npm run sync-content && npm run generate-usage && npm run llms && astro check && astro build",
+    "build": "npm run llms && astro check && astro build",
     "sync-content": "node scripts/sync-content.mjs",
     "generate-usage": "node scripts/generate-usage.mjs",
     "llms": "node scripts/generate-llms.mjs",
