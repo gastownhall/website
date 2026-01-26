@@ -507,110 +507,56 @@ starlight-toc a:hover,
   color: var(--color-accent) !important;
 }
 
-/* Mobile TOC - Starlight's mobile TOC nav is position:fixed directly below header.
-   Override the top position to add spacing below the brass bar, and increase
-   --sl-mobile-toc-height so content is pushed down accordingly. */
+/* Mobile TOC - Starlight's summary already has height: var(--sl-mobile-toc-height).
+   Make summary a flex container to center the button within that space. */
 @media (max-width: 72rem) {
-  /* Add space below header by increasing mobile-toc-height variable */
   :root {
     --sl-mobile-toc-height: 4.5rem !important;
   }
 
-  /* Override the fixed nav to span the full mobile TOC space and center the button */
+  /* Transparent nav background */
   mobile-starlight-toc nav {
-    top: var(--sl-nav-height) !important;
-    height: var(--sl-mobile-toc-height) !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
     background: transparent !important;
     border: none !important;
   }
-}
 
+  /* Center button within the full-height summary */
+  mobile-starlight-toc summary {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border: none !important;
+  }
 
-/* Mobile "On this page" - summary container */
-mobile-starlight-toc summary,
-mobile-starlight-toc details summary {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.75rem !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  cursor: pointer !important;
-  outline: none !important;
-}
+  /* Hide current section display */
+  mobile-starlight-toc .display-current {
+    display: none !important;
+  }
 
-/* Remove focus ring from details */
-mobile-starlight-toc details,
-mobile-starlight-toc details:focus,
-mobile-starlight-toc summary:focus,
-mobile-starlight-toc summary:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
+  /* Style the toggle button */
+  mobile-starlight-toc .toggle {
+    font-family: var(--font-display) !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: var(--color-text) !important;
+    background: linear-gradient(180deg, #e8dcc8 0%, #d4c4a8 50%, #beb09a 100%) !important;
+    border: 2px solid var(--color-border) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 0.75rem 1.5rem !important;
+  }
 
-/* The toggle button - styled like home page secondary button */
-mobile-starlight-toc summary .toggle,
-mobile-starlight-toc details summary .toggle {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 0.5rem !important;
-  font-family: var(--font-display) !important;
-  font-size: 0.875rem !important;
-  font-weight: 600 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: var(--color-text) !important;
-  background: linear-gradient(
-    180deg,
-    #e8dcc8 0%,
-    #d4c4a8 50%,
-    #beb09a 100%
-  ) !important;
-  border: 2px solid var(--color-border) !important;
-  border-radius: var(--border-radius) !important;
-  padding: 0.75rem 1.5rem !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.2) !important;
-  transition:
-    transform 150ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1),
-    background 250ms ease,
-    border-color 250ms ease !important;
-}
+  mobile-starlight-toc .toggle:hover {
+    border-color: var(--color-brass) !important;
+  }
 
-mobile-starlight-toc summary:hover .toggle,
-mobile-starlight-toc details summary:hover .toggle {
-  border-color: var(--color-brass) !important;
-  background: linear-gradient(
-    180deg,
-    #f5e6d3 0%,
-    #e8dcc8 50%,
-    #d4c4a8 100%
-  ) !important;
-  transform: translateY(-2px) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.1),
-    0 6px 16px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Hide current section display - not useful */
-mobile-starlight-toc summary .display-current,
-mobile-starlight-toc details summary .display-current {
-  display: none !important;
-}
-
-/* Mobile TOC dropdown */
-mobile-starlight-toc .dropdown {
-  background: var(--color-surface) !important;
-  border: 2px solid var(--color-border) !important;
-  border-radius: var(--border-radius) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  /* Dropdown styling */
+  mobile-starlight-toc .dropdown {
+    background: var(--color-surface) !important;
+    border: 2px solid var(--color-border) !important;
+    border-radius: var(--border-radius) !important;
+  }
 }
 
 /* ============================================
