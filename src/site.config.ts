@@ -13,8 +13,8 @@ const isDev = import.meta.env.DEV;
 
 export const site = {
   ...config.site,
-  // Override docsUrl in dev mode to point to local /docs path
-  docsUrl: isDev ? 'http://localhost:4321/docs' : config.site.docsUrl,
+  // Override docsUrl in dev mode to point to local docs server (port 4322)
+  docsUrl: isDev ? 'http://localhost:4322' : config.site.docsUrl,
 };
 
 export const social = config.social;
