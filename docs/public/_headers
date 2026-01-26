@@ -1,6 +1,11 @@
 # Cloudflare Pages headers for docs.gastownhall.ai
 # Order matters: more specific rules should come AFTER general rules
 
+# TEMPORARY: Force clear browser cache for users with stale content
+# Remove this section after 2026-02-03 (one week from deploy)
+/*
+  Clear-Site-Data: "cache"
+
 # HTML pages - cache but revalidate on each request
 /*
   Cache-Control: no-cache
