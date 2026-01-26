@@ -1,5 +1,10 @@
 # Only run checks when committing to main
 branch=$(git rev-parse --abbrev-ref HEAD)
 if [ "$branch" = "main" ]; then
-  npm run check
+  # Auto-format files and re-stage any changes
+  npm run format
+  git add -u
+
+  # Run other checks (lint, test, audit) - skip format:check since we just formatted
+  npm run lint && npm run test && npm run audit:check
 fi

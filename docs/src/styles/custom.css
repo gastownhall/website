@@ -44,6 +44,14 @@
   --font-body: 'Crimson Text', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
   /* Layout */
   --max-width: 1200px;
   --border-radius: 4px;
@@ -51,8 +59,12 @@
 
   /* Animation */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --duration-fast: 150ms;
   --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
 
   /* Starlight color overrides - transparent to show body background */
   --sl-color-bg: transparent;
@@ -170,35 +182,52 @@ header.header::after {
   );
 }
 
-/* Site title styling */
+/* Site title styling - must match main site .site-header .logo */
 .site-title,
 [data-sl-title] {
   font-family: var(--font-display) !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
   color: var(--color-text-light) !important;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
+  text-transform: none !important;
+  text-decoration: none !important;
 }
 
 /* Add decorative dashes around title like main site */
 .site-title::before {
   content: '— ';
   color: var(--color-brass);
+  margin-right: 0.5rem;
 }
 
 .site-title::after {
   content: ' —';
   color: var(--color-brass);
+  margin-left: 0.5rem;
 }
 
-/* Header nav links */
-header a {
+.site-title:hover,
+[data-sl-title]:hover {
+  color: var(--color-brass) !important;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(205, 127, 50, 0.4) !important;
+}
+
+/* Header nav links - must match main site .site-header .nav-links a */
+header .nav-links a {
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
   color: var(--color-text-light) !important;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: 0.875rem;
+  text-decoration: none !important;
 }
 
-header a:hover {
+header .nav-links a:hover {
   color: var(--color-brass) !important;
 }
 
@@ -230,7 +259,7 @@ header a:hover {
 .top-level > li > details > summary .large,
 .top-level > li > details > summary .group-label {
   font-family: var(--font-display) !important;
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
@@ -251,7 +280,7 @@ header a:hover {
 .sidebar-content ul ul a {
   color: var(--color-text) !important;
   font-family: var(--font-body) !important;
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   padding: 0.375rem 0.75rem !important;
   border-left: 3px solid transparent !important;
   border-radius: 3px !important;
@@ -345,9 +374,9 @@ article {
    Typography - Increased font sizes
    ============================================ */
 
-/* Base font size increase */
+/* Base font size - matches design system */
 html {
-  font-size: 18px !important;
+  font-size: 1.0625rem !important;
 }
 
 body,
@@ -368,15 +397,15 @@ h6 {
 }
 
 h1 {
-  font-size: 2.25rem !important;
+  font-size: clamp(2rem, 4vw, 3rem) !important;
 }
 
 h2 {
-  font-size: 1.75rem !important;
+  font-size: clamp(1.5rem, 3vw, 2rem) !important;
 }
 
 h3 {
-  font-size: 1.375rem !important;
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem) !important;
 }
 
 h4 {
@@ -439,7 +468,7 @@ code {
 .right-sidebar h2,
 starlight-toc h2 {
   font-family: var(--font-display) !important;
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
@@ -449,7 +478,7 @@ starlight-toc h2 {
 /* Right sidebar TOC links - match left sidebar colors */
 .right-sidebar a,
 starlight-toc a {
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   color: var(--color-text) !important;
   font-family: var(--font-body) !important;
 }
@@ -649,12 +678,22 @@ nav[aria-label='Main'],
 }
 
 @media (max-width: 50rem) {
+  /* Mobile sidebar - must be opaque to cover content */
   nav.sidebar,
-  .sidebar {
+  .sidebar,
+  .sidebar-pane,
+  [data-open-sidebar] .sidebar-pane,
+  .sidebar-content {
     background: var(--color-surface) !important;
     border: none !important;
     border-radius: 0 !important;
     box-shadow: none !important;
+  }
+
+  /* Starlight's mobile sidebar container */
+  starlight-menu-button + .sidebar-pane,
+  [aria-expanded='true'] ~ .sidebar-pane {
+    background: var(--color-surface) !important;
   }
 
   /* Mobile menu button styling */
