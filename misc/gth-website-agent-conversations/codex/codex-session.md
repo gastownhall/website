@@ -497,7 +497,7 @@ Flags:
 LANDING PAGE:
 - Hero section with headline: \"Gas Town is powerful but chaotic. We help you wrangle the chimps.\"
 - Links to Steve's 5 blog posts (see docs-fodder/steve-blog-posts/)
-- Big Discord invite CTA button (https://discord.gg/pKsyZJ3S)
+- Big Discord invite CTA button (https://discord.gg/fuge9UVvzF)
 - X link (x.com/gastownhall)
 - Navigation to docs
 
@@ -656,7 +656,7 @@ Showing 5 issues (use --limit 0 for all)
 LANDING PAGE:
 - Hero section with headline: \"Gas Town is powerful but chaotic. We help you wrangle the chimps.\"
 - Links to Steve's 5 blog posts (see docs-fodder/steve-blog-posts/)
-- Big Discord invite CTA button (https://discord.gg/pKsyZJ3S)
+- Big Discord invite CTA button (https://discord.gg/fuge9UVvzF)
 - X link (x.com/gastownhall)
 - Navigation to docs
 
@@ -1135,7 +1135,7 @@ Output:
 **Tool (shell_command)**: Running: `gt sling websitecodex-bc2 websitecodex --args "Implement the full landing page in src/pages/index.astro (or Astro components) with:
 - Headline: \"Gas Town is powerful but chaotic. We help you wrangle the chimps.\"
 - Links to all 5 blog posts in docs-fodder/steve-blog-posts/
-- Prominent Discord CTA button https://discord.gg/pKsyZJ3S
+- Prominent Discord CTA button https://discord.gg/fuge9UVvzF
 - X link https://x.com/gastownhall
 - Nav link to /docs
 Follow frontend design guidelines: expressive typography (avoid system/Inter/Roboto), bold layout, defined CSS variables, no purple-on-white defaults, include gradient/pattern background, and responsive + accessible.

@@ -41,7 +41,7 @@ All code must be written by agents dispatched via `gt` commands. This is a learn
 - [ ] **Landing page** exists at `src/` with:
   - [ ] Headline: "Gas Town is powerful but chaotic. We help you wrangle the chimps."
   - [ ] Links to all 5 of Steve's blog posts (from `docs-fodder/steve-blog-posts/`)
-  - [ ] Big Discord invite button (https://discord.gg/pKsyZJ3S) - prominent CTA
+  - [ ] Big Discord invite button (https://discord.gg/fuge9UVvzF) - prominent CTA
   - [ ] X link (x.com/gastownhall)
   - [ ] Navigation link to docs sub-page
 
@@ -157,7 +157,7 @@ Create these files in the project root to guide AI agents:
 - Need a shredder script to sync these into the website
 
 ## Social Links
-- Discord: https://discord.gg/pKsyZJ3S
+- Discord: https://discord.gg/fuge9UVvzF
 - X: x.com/gastownhall
 
 ## Landing Page Headline
@@ -250,7 +250,7 @@ I need to build the gastownhall.ai website with the following components:
 LANDING PAGE:
 - Hero section with headline: "Gas Town is powerful but chaotic. We help you wrangle the chimps."
 - Links to Steve's 5 blog posts (see docs-fodder/steve-blog-posts/)
-- Big Discord invite CTA button (https://discord.gg/pKsyZJ3S)
+- Big Discord invite CTA button (https://discord.gg/fuge9UVvzF)
 - X link (x.com/gastownhall)
 - Navigation to docs
 
@@ -296,7 +296,7 @@ gt formula show mol-website-feature
 |-------------|-------------|
 | `landing-hero` | Hero section with headline "Gas Town is powerful but chaotic. We help you wrangle the chimps." |
 | `landing-blog-links` | Links to Steve's 5 blog posts |
-| `landing-cta` | Big Discord button (https://discord.gg/pKsyZJ3S) + X link (x.com/gastownhall) |
+| `landing-cta` | Big Discord button (https://discord.gg/fuge9UVvzF) + X link (x.com/gastownhall) |
 | `landing-nav` | Navigation to docs sub-page |
 
 ### Epic: Docs System (`$RIG_NAME-docs`)
@@ -454,7 +454,7 @@ Create `learnings.md` with:
 | Beads prefix | `$RIG_NAME` (same as rig name) |
 | Git remote | `$ORIGIN` (from `git remote get-url origin`) |
 | Static site technology | Astro |
-| Discord invite URL | https://discord.gg/pKsyZJ3S |
+| Discord invite URL | https://discord.gg/fuge9UVvzF |
 | X handle | x.com/gastownhall |
 | Analytics | Plausible |
 | Docs source | `docs-fodder/gastown-docs/` (25 markdown files) |

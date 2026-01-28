@@ -1,5 +1,5 @@
-import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://docs.gastownhall.ai',
@@ -62,7 +62,7 @@ export default defineConfig({
       ],
       social: {
         github: 'https://github.com/steveyegge/gastown',
-        discord: 'https://discord.gg/pKsyZJ3S',
+        discord: 'https://discord.gg/fuge9UVvzF',
       },
       customCss: ['./src/styles/custom.css'],
       components: {
