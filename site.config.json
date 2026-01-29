@@ -17,6 +17,13 @@
   },
   "blogPosts": [
     {
+      "title": "Software Survival 3.0",
+      "url": "https://steve-yegge.medium.com/software-survival-3-0-97a2a6255f7b",
+      "description": "I spent a lot of time writing software with AI last year, and I had some pretty good successes, notably Beads and Gas Town...",
+      "date": "Jan 29",
+      "image": "/images/blog/software-survival-3.jpg"
+    },
+    {
       "title": "Stevey's Birthday Blog",
       "url": "https://steve-yegge.medium.com/steveys-birthday-blog-34f437139cb5",
       "description": "My birthday's coming up, Jan 20th. Fifty-seven. As my Uncle Harold used to say in the 1980s, \"Hey it's my birthday. Keep it...",
