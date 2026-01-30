@@ -8,6 +8,12 @@ export default defineConfig({
   build: {
     assets: '_assets',
   },
+  // Force light theme for code blocks since we use a light parchment background
+  markdown: {
+    shikiConfig: {
+      theme: 'github-light',
+    },
+  },
   integrations: [
     sitemap({
       changefreq: 'weekly',

@@ -64,6 +64,10 @@ export default defineConfig({
         github: 'https://github.com/steveyegge/gastown',
         discord: 'https://discord.gg/xHpUGUzZp2',
       },
+      // Force light theme for code blocks since we use a light parchment background
+      expressiveCode: {
+        themes: ['github-light'],
+      },
       customCss: ['./src/styles/custom.css'],
       components: {
         PageFrame: './src/components/PageFrame.astro',

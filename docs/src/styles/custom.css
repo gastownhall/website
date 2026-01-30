@@ -446,22 +446,9 @@ a:hover {
    Code Blocks
    ============================================ */
 
-/* Override Expressive Code colors to use our theme consistently.
-   Without this, dark mode uses light text (#d6deeb) on our light
-   parchment background, making code invisible. */
-.expressive-code,
-:root[data-theme='dark'] .expressive-code {
-  --ec-codeBg: var(--color-code-bg) !important;
-  --ec-codeFg: var(--color-text) !important;
-  --ec-gtrFg: var(--color-text-muted) !important;
+/* Override Expressive Code border to match our theme */
+.expressive-code {
   --ec-brdCol: var(--color-border) !important;
-}
-
-/* Force light theme token colors in code blocks.
-   Expressive Code bakes in --0 (dark theme) and --1 (light theme) colors
-   as inline styles. Since we use a light background, force --1 colors. */
-:root[data-theme='dark'] .expressive-code .ec-line span[style*='--0'] {
-  color: var(--1, var(--color-text)) !important;
 }
 
 pre {
