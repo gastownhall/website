@@ -62,7 +62,7 @@ export default defineConfig({
       ],
       social: {
         github: 'https://github.com/steveyegge/gastown',
-        discord: 'https://discord.gg/fuge9UVvzF',
+        discord: 'https://discord.gg/xHpUGUzZp2',
       },
       customCss: ['./src/styles/custom.css'],
       components: {
