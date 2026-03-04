@@ -101,9 +101,11 @@
     const skills = (entry.top_skills || []).slice(0, 3).join(', ');
     const rankClass = rank <= 3 ? `rank-${rank}` : '';
 
+    const profileUrl = `https://wasteland.gastownhall.ai/profile/${entry.rig_handle}`;
+
     return el(
       'tr',
-      { class: rankClass },
+      { class: rankClass, 'data-href': profileUrl },
       el(
         'td',
         { class: 'col-rank' },
@@ -133,9 +135,11 @@
 
     const cardRankClass = rank <= 3 ? `card-rank rank-${rank}` : 'card-rank';
 
+    const profileUrl = `https://wasteland.gastownhall.ai/profile/${entry.rig_handle}`;
+
     const card = el(
       'div',
-      { class: 'leaderboard-card' },
+      { class: 'leaderboard-card', 'data-href': profileUrl },
       el('div', { class: cardRankClass }, String(rank)),
       el(
         'div',
@@ -221,6 +225,14 @@
     tableWrapper.hidden = false;
     cardsWrapper.hidden = false;
   }
+
+  // Click handler for profile links (event delegation)
+  document.getElementById('leaderboard')!.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest('[data-href]');
+    if (target) {
+      window.open((target as HTMLElement).dataset.href!, '_blank', 'noopener');
+    }
+  });
 
   loadLeaderboard().catch((err) => {
     document.getElementById('leaderboard-loading')!.hidden = true;
@@ -421,6 +433,12 @@
     border-bottom: 1px solid rgba(139, 115, 85, 0.3);
     font-size: 0.9375rem;
     color: var(--color-text);
+  }
+
+  /* Clickable rows and cards */
+  .leaderboard-table tbody tr[data-href],
+  .leaderboard-card[data-href] {
+    cursor: pointer;
   }
 
   /* Alternating row tones */
