@@ -88,7 +88,8 @@ This is an **npm workspaces monorepo** with two Astro projects:
 ├── src/static/              # Static assets (source of truth)
 ├── docs-fodder/
 │   ├── gastown-docs/        # Documentation markdown source
-│   └── steve-blog-posts/    # Blog post content
+│   ├── steve-blog-posts/    # Medium blog post markdown
+│   └── youtube/             # YouTube video metadata markdown
 ├── deploy/                  # Main site build output
 └── deploy-docs/             # Docs subdomain build output
 ```
@@ -139,6 +140,19 @@ To edit documentation without syncing from gastown:
 1. Edit markdown files directly in `docs/src/content/docs/`
 2. Run `npm run dev:docs` to preview
 3. Commit your changes
+
+## Adding Blog Posts & Videos
+
+The homepage "Town Crier" section displays blog posts and videos from the `blogPosts` array in `site.config.json`. Content source files live in `docs-fodder/steve-blog-posts/` (Medium posts) and `docs-fodder/youtube/` (YouTube videos).
+
+To add new content, use the Claude Code skill: `add-content` (in `.claude/skills/add-content/SKILL.md`), or follow these steps manually:
+
+1. Extract metadata (title, date, URL, description, lead image) from the `docs-fodder/` markdown files
+2. Add entries to the `blogPosts` array in `site.config.json` (newest first)
+3. Download images to `src/static/images/blog/` **and** `tmp/public/images/blog/` (both required — see skill for details)
+4. Verify with `npm run dev` at `localhost:4321`
+
+Images display as 112x112px squares with `object-fit: cover`. Use `mqdefault.jpg` for YouTube thumbnails (not `hqdefault.jpg`, which has letterboxing).
 
 ## Configuration
 

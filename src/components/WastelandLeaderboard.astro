@@ -1,0 +1,727 @@
+---
+// Client-side component — data fetched via script below
+---
+
+<section id="leaderboard" class="section leaderboard-section">
+  <div class="section-header">
+    <a href="#leaderboard" class="section-banner-link">
+      <h2 class="section-banner">Wasteland Leaderboard</h2>
+    </a>
+  </div>
+
+  <!-- Loading state -->
+  <div class="leaderboard-loading" id="leaderboard-loading">
+    <div class="loading-rivet"></div>
+    <p class="loading-text">Scanning the wasteland&hellip;</p>
+  </div>
+
+  <!-- Error state -->
+  <div class="leaderboard-error" id="leaderboard-error" hidden>
+    <p class="error-text">
+      Transmission lost. The wasteland scoreboard is temporarily unavailable.
+    </p>
+  </div>
+
+  <!-- Desktop table -->
+  <div class="leaderboard-table-wrapper" id="leaderboard-table-wrapper" hidden>
+    <div class="leaderboard-plate">
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">#</th>
+            <th class="col-name">Rig</th>
+            <th class="col-tier">Tier</th>
+            <th class="col-score">Score</th>
+            <th class="col-stamps">Stamps</th>
+            <th class="col-completions">Done</th>
+            <th class="col-skills">Skills</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+    </div>
+    <p class="leaderboard-updated" id="leaderboard-updated"></p>
+  </div>
+
+  <!-- Mobile cards -->
+  <div class="leaderboard-cards" id="leaderboard-cards" hidden></div>
+
+  <div class="wasteland-cta">
+    <a
+      href="https://wasteland.gastownhall.ai"
+      target="_blank"
+      rel="noopener"
+      class="btn btn-primary"
+    >
+      Visit the Wasteland
+    </a>
+  </div>
+</section>
+
+<script>
+  const API_URL = 'https://wasteland.gastownhall.ai/api/scoreboard';
+
+  const TIER_CONFIG: Record<string, { label: string; className: string }> = {
+    imperator: { label: 'Imperator', className: 'tier-imperator' },
+    warrior: { label: 'Warrior', className: 'tier-warrior' },
+    settler: { label: 'Settler', className: 'tier-settler' },
+    scavenger: { label: 'Scavenger', className: 'tier-scavenger' },
+    drifter: { label: 'Drifter', className: 'tier-drifter' },
+  };
+
+  interface ScoreboardEntry {
+    rig_handle: string;
+    display_name: string;
+    trust_tier: string;
+    stamp_count: number;
+    weighted_score: number;
+    completions: number;
+    top_skills: string[];
+  }
+
+  function el(
+    tag: string,
+    attrs: Record<string, string> = {},
+    ...children: (string | HTMLElement)[]
+  ): HTMLElement {
+    const elem = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) elem.setAttribute(k, v);
+    for (const child of children) {
+      if (typeof child === 'string') {
+        elem.appendChild(document.createTextNode(child));
+      } else {
+        elem.appendChild(child);
+      }
+    }
+    return elem;
+  }
+
+  function buildTableRow(entry: ScoreboardEntry, rank: number): HTMLElement {
+    const tier = TIER_CONFIG[entry.trust_tier] || TIER_CONFIG.drifter;
+    const skills = (entry.top_skills || []).slice(0, 3).join(', ');
+    const rankClass = rank <= 3 ? `rank-${rank}` : '';
+
+    return el(
+      'tr',
+      { class: rankClass },
+      el(
+        'td',
+        { class: 'col-rank' },
+        el('span', { class: 'rank-badge' }, String(rank))
+      ),
+      el(
+        'td',
+        { class: 'col-name' },
+        el('span', { class: 'entry-display-name' }, entry.display_name),
+        el('span', { class: 'entry-handle' }, `@${entry.rig_handle}`)
+      ),
+      el(
+        'td',
+        { class: 'col-tier' },
+        el('span', { class: `tier-badge ${tier.className}` }, tier.label)
+      ),
+      el('td', { class: 'col-score' }, String(entry.weighted_score)),
+      el('td', { class: 'col-stamps' }, String(entry.stamp_count)),
+      el('td', { class: 'col-completions' }, String(entry.completions)),
+      el('td', { class: 'col-skills' }, skills || '\u2014')
+    );
+  }
+
+  function buildCard(entry: ScoreboardEntry, rank: number): HTMLElement {
+    const tier = TIER_CONFIG[entry.trust_tier] || TIER_CONFIG.drifter;
+    const skills = (entry.top_skills || []).slice(0, 3).join(', ');
+
+    const cardRankClass = rank <= 3 ? `card-rank rank-${rank}` : 'card-rank';
+
+    const card = el(
+      'div',
+      { class: 'leaderboard-card' },
+      el('div', { class: cardRankClass }, String(rank)),
+      el(
+        'div',
+        { class: 'card-main' },
+        el('div', { class: 'card-name' }, entry.display_name),
+        el('div', { class: 'card-handle' }, `@${entry.rig_handle}`),
+        el('span', { class: `tier-badge ${tier.className}` }, tier.label)
+      ),
+      el(
+        'div',
+        { class: 'card-stats' },
+        el(
+          'div',
+          { class: 'stat' },
+          el('span', { class: 'stat-value' }, String(entry.weighted_score)),
+          el('span', { class: 'stat-label' }, 'Score')
+        ),
+        el(
+          'div',
+          { class: 'stat' },
+          el('span', { class: 'stat-value' }, String(entry.stamp_count)),
+          el('span', { class: 'stat-label' }, 'Stamps')
+        ),
+        el(
+          'div',
+          { class: 'stat' },
+          el('span', { class: 'stat-value' }, String(entry.completions)),
+          el('span', { class: 'stat-label' }, 'Done')
+        )
+      )
+    );
+
+    if (skills) {
+      card.appendChild(el('div', { class: 'card-skills' }, skills));
+    }
+
+    return card;
+  }
+
+  async function loadLeaderboard() {
+    const loadingEl = document.getElementById('leaderboard-loading')!;
+    const tableWrapper = document.getElementById('leaderboard-table-wrapper')!;
+    const cardsWrapper = document.getElementById('leaderboard-cards')!;
+    const tbody = document.getElementById('leaderboard-body')!;
+    const updatedEl = document.getElementById('leaderboard-updated')!;
+
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    const entries: ScoreboardEntry[] = data.entries;
+
+    if (entries.length === 0) {
+      const emptyRow = el(
+        'tr',
+        {},
+        el(
+          'td',
+          { colspan: '7', class: 'empty-state' },
+          'No rigs registered yet.'
+        )
+      );
+      tbody.appendChild(emptyRow);
+      loadingEl.hidden = true;
+      tableWrapper.hidden = false;
+      return;
+    }
+
+    entries.sort(
+      (a, b) =>
+        b.weighted_score - a.weighted_score || b.stamp_count - a.stamp_count
+    );
+
+    for (let i = 0; i < entries.length; i++) {
+      tbody.appendChild(buildTableRow(entries[i], i + 1));
+      cardsWrapper.appendChild(buildCard(entries[i], i + 1));
+    }
+
+    if (data.updated_at) {
+      const date = new Date(data.updated_at);
+      updatedEl.textContent = `Last updated: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    }
+
+    loadingEl.hidden = true;
+    tableWrapper.hidden = false;
+    cardsWrapper.hidden = false;
+  }
+
+  loadLeaderboard().catch((err) => {
+    document.getElementById('leaderboard-loading')!.hidden = true;
+    document.getElementById('leaderboard-error')!.hidden = false;
+    throw err;
+  });
+</script>
+
+<style is:global>
+  /* Section layout */
+  .leaderboard-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  /* Section header (duplicated from index.astro — Astro scoped styles don't cross components) */
+  .section-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-banner-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .section-banner-link:hover .section-banner {
+    border-color: var(--color-accent);
+  }
+
+  .wasteland-cta {
+    text-align: center;
+    margin-top: var(--space-lg);
+  }
+
+  .section-banner {
+    display: inline-block;
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+    color: var(--color-surface);
+    padding: 0.625rem 2.5rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    border: 3px solid var(--color-brass);
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    position: relative;
+  }
+
+  .section-banner::before,
+  .section-banner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 30%,
+      var(--color-bronze) 70%
+    );
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+  }
+
+  .section-banner::before {
+    left: 8px;
+  }
+
+  .section-banner::after {
+    right: 8px;
+  }
+
+  /* Loading state */
+  .leaderboard-loading {
+    text-align: center;
+    padding: var(--space-xl) 0;
+  }
+
+  .loading-rivet {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto var(--space-md);
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 0%,
+      var(--color-bronze) 40%,
+      #3e2723 60%
+    );
+    border-radius: 50%;
+    border: 3px solid var(--color-brass);
+    animation: rotateClockwise 2s linear infinite;
+  }
+
+  .loading-text {
+    font-family: var(--font-display);
+    color: var(--color-text-muted);
+    letter-spacing: 0.05em;
+    font-size: 0.9375rem;
+  }
+
+  /* Error state */
+  .leaderboard-error {
+    text-align: center;
+    padding: var(--space-lg);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+  }
+
+  .error-text {
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* Table plate wrapper — matches value-plate / community-plate */
+  .leaderboard-plate {
+    background: linear-gradient(180deg, #4a3728 0%, #3e2723 100%);
+    border: 4px solid var(--color-brass);
+    border-radius: 6px;
+    padding: 4px;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 24px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Corner rivets */
+  .leaderboard-plate::before,
+  .leaderboard-plate::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(
+      circle,
+      var(--color-brass) 40%,
+      var(--color-bronze) 70%
+    );
+    border-radius: 50%;
+    border: 2px solid var(--color-bronze);
+    z-index: 2;
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  .leaderboard-plate::before {
+    top: 8px;
+    left: 8px;
+  }
+
+  .leaderboard-plate::after {
+    top: 8px;
+    right: 8px;
+    animation-delay: 1s;
+  }
+
+  .leaderboard-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-surface);
+    border-radius: 3px;
+  }
+
+  /* Dark gradient header — matches section banner */
+  .leaderboard-table thead {
+    background: linear-gradient(180deg, #5d4037 0%, #3e2723 100%);
+  }
+
+  .leaderboard-table th {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-surface);
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 3px solid var(--color-brass);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+
+  .leaderboard-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+    font-size: 0.9375rem;
+    color: var(--color-text);
+  }
+
+  /* Alternating row tones */
+  .leaderboard-table tbody tr:nth-child(even) {
+    background: rgba(139, 115, 85, 0.08);
+  }
+
+  .leaderboard-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .leaderboard-table tbody tr:hover {
+    background: rgba(205, 127, 50, 0.12);
+  }
+
+  /* Rank column — anchored to template element for dynamic rows */
+  .leaderboard-table .col-rank {
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    width: 3.5rem;
+  }
+
+  .leaderboard-table th.col-rank,
+  .leaderboard-table th.col-score,
+  .leaderboard-table th.col-stamps,
+  .leaderboard-table th.col-completions {
+    text-align: center;
+  }
+
+  /* Rank badge — circular medal for all ranks */
+  .leaderboard-table .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    background: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    border: 2px solid var(--color-border);
+  }
+
+  /* Gold medal - rank 1 */
+  .leaderboard-table .rank-1 .rank-badge {
+    background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+    color: #2c1810;
+    border-color: #8b6914;
+    box-shadow:
+      0 0 8px rgba(255, 215, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  /* Silver medal - rank 2 */
+  .leaderboard-table .rank-2 .rank-badge {
+    background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+    color: #1a1a1a;
+    border-color: #6a6a6a;
+    box-shadow:
+      0 0 6px rgba(192, 192, 192, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  /* Bronze medal - rank 3 */
+  .leaderboard-table .rank-3 .rank-badge {
+    background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+    color: #f5e6d3;
+    border-color: #6b3410;
+    box-shadow:
+      0 0 6px rgba(205, 127, 50, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  /* Subtle left border accent for top 3 rows */
+  .leaderboard-table .rank-1 td:first-child {
+    box-shadow: inset 4px 0 0 #ffd700;
+  }
+
+  .leaderboard-table .rank-2 td:first-child {
+    box-shadow: inset 4px 0 0 #c0c0c0;
+  }
+
+  .leaderboard-table .rank-3 td:first-child {
+    box-shadow: inset 4px 0 0 #cd7f32;
+  }
+
+  /* Name column */
+  .leaderboard-table .entry-display-name {
+    font-weight: 600;
+    display: block;
+  }
+
+  .leaderboard-table .entry-handle {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Score/stamps columns — anchored to template element for dynamic rows */
+  .leaderboard-table .col-score,
+  .leaderboard-table .col-stamps,
+  .leaderboard-table .col-completions {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* Skills column */
+  .leaderboard-table .col-skills {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+    padding: var(--space-lg) !important;
+  }
+
+  /* Trust tier badges — anchored to section for dynamic elements */
+  .leaderboard-section .tier-badge {
+    display: inline-block;
+    padding: 0.1875rem 0.625rem;
+    border-radius: 3px;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .leaderboard-section .tier-imperator {
+    background: linear-gradient(180deg, #d4a574 0%, #b8860b 100%);
+    color: #2c1810;
+    border-color: #8b6914;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    box-shadow: 0 1px 3px rgba(184, 134, 11, 0.3);
+  }
+
+  .leaderboard-section .tier-warrior {
+    background: linear-gradient(180deg, #cd7f32 0%, #8b4513 100%);
+    color: #f5e6d3;
+    border-color: #8b4513;
+    box-shadow: 0 1px 3px rgba(205, 127, 50, 0.3);
+  }
+
+  .leaderboard-section .tier-settler {
+    background: linear-gradient(180deg, #70798c 0%, #5a6270 100%);
+    color: #f5e6d3;
+    border-color: #5a6270;
+    box-shadow: 0 1px 3px rgba(112, 121, 140, 0.3);
+  }
+
+  .leaderboard-section .tier-scavenger {
+    background: var(--color-bg-alt);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .leaderboard-section .tier-drifter {
+    background: transparent;
+    color: var(--color-text-muted);
+    border-color: var(--color-border);
+  }
+
+  /* Updated timestamp */
+  .leaderboard-updated {
+    text-align: right;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin-top: var(--space-sm);
+  }
+
+  /* Mobile cards */
+  .leaderboard-cards {
+    display: none;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .leaderboard-card {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 0.5rem 0.75rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border: 2px solid var(--color-brass);
+    border-radius: 4px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-rank {
+    grid-row: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.125rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--color-bg-alt);
+    color: var(--color-text-muted);
+    border: 2px solid var(--color-border);
+    align-self: center;
+  }
+
+  .leaderboard-cards .rank-1 {
+    background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+    color: #2c1810;
+    border-color: #8b6914;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  }
+
+  .leaderboard-cards .rank-2 {
+    background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+    color: #1a1a1a;
+    border-color: #6a6a6a;
+    box-shadow: 0 0 6px rgba(192, 192, 192, 0.3);
+  }
+
+  .leaderboard-cards .rank-3 {
+    background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+    color: #f5e6d3;
+    border-color: #6b3410;
+    box-shadow: 0 0 6px rgba(205, 127, 50, 0.3);
+  }
+
+  .leaderboard-cards .card-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .leaderboard-cards .card-handle {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .leaderboard-cards .card-stats {
+    grid-column: 2;
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .leaderboard-cards .stat {
+    text-align: center;
+  }
+
+  .leaderboard-cards .stat-value {
+    display: block;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .leaderboard-cards .stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .leaderboard-cards .card-skills {
+    grid-column: 2;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .leaderboard-table-wrapper {
+      display: none !important;
+    }
+
+    .leaderboard-cards[hidden] {
+      display: none;
+    }
+
+    .leaderboard-cards:not([hidden]) {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .leaderboard-cards {
+      display: none !important;
+    }
+  }
+</style>
