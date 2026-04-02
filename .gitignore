@@ -15,6 +15,9 @@ tmp/
 *.log
 npm-debug.log*
 
+# IDE files
+.vscode/
+
 # Environment files
 .env
 .env.local
@@ -26,6 +29,9 @@ docs/.astro/
 
 # Astro's public directory is tmp/public/ (configured in astro.config.mjs)
 # It's already ignored via tmp/ above
+
+# Agent migration backups
+.agents/migration/
 
 # Playwright
 test-results/
