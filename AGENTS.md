@@ -24,7 +24,7 @@ npm run deploy       # Build + deploy main site
 npm run deploy:docs  # Build + deploy docs subdomain
 npm test             # Run unit tests
 npm run test:e2e     # Run E2E tests (Playwright)
-npm run check        # Run all quality checks
+npm run check        # Run lint, format:check, tests, build:all, and audit
 npm run lint         # ESLint
 npm run format       # Prettier
 ```
@@ -122,4 +122,4 @@ Generated during build (not committed):
 
 Do NOT commit or push until explicitly asked by the user.
 
-**Pre-commit hook:** Husky runs `npm run check` on commits to main branch only. Feature branches skip checks. To bypass: `git commit --no-verify`
+**Pre-commit hook:** Husky auto-formats with `npm run format`, re-stages the result, then runs `npm run check` on every commit. The audit gate uses `npm audit --audit-level=info`. To bypass: `git commit --no-verify`
