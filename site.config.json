@@ -17,6 +17,20 @@
   },
   "blogPosts": [
     {
+      "title": "Gas Town: from Clown Show to v1.0",
+      "url": "https://steve-yegge.medium.com/gas-town-from-clown-show-to-v1-0-c239d9a407ec",
+      "description": "Gas Town and Beads have both released version 1.0.0, marking the end of Gas Town's chaotic early phase and the start of stable, production-ready use.",
+      "date": "Apr 3, 2026",
+      "image": "/images/blog/gas-town-from-clown-show-to-v1-0.jpg"
+    },
+    {
+      "title": "Vibe Maintainer",
+      "url": "https://steve-yegge.medium.com/vibe-maintainer-a2273a841040",
+      "description": "Steve argues that maintainers of successful OSS projects will increasingly need AI-heavy workflows to manage waves of AI-generated pull requests without losing quality or velocity.",
+      "date": "Mar 31, 2026",
+      "image": "/images/blog/vibe-maintainer.jpg"
+    },
+    {
       "title": "Welcome to the Wasteland: A Thousand Gas Towns",
       "url": "https://steve-yegge.medium.com/welcome-to-the-wasteland-a-thousand-gas-towns-a5eb9bc8dc1f",
       "description": "The Wasteland is a way to link thousands of Gas Towns together in a trust network, to build stuff really, really fast.",
