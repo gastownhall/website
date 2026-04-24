@@ -17,6 +17,13 @@
   },
   "blogPosts": [
     {
+      "title": "Welcome to Gas City",
+      "url": "https://steve-yegge.medium.com/welcome-to-gas-city-57f564bb3607",
+      "description": "Gas City recasts Gas Town as a composable SDK for building observable, multi-agent dark factories, with v1.0.0 ready for teams building their own orchestrators.",
+      "date": "Apr 24, 2026",
+      "image": "/images/blog/welcome-to-gas-city.jpg"
+    },
+    {
       "title": "Gas Town: from Clown Show to v1.0",
       "url": "https://steve-yegge.medium.com/gas-town-from-clown-show-to-v1-0-c239d9a407ec",
       "description": "Gas Town and Beads have both released version 1.0.0, marking the end of Gas Town's chaotic early phase and the start of stable, production-ready use.",

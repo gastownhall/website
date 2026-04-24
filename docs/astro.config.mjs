@@ -60,10 +60,18 @@ export default defineConfig({
           },
         },
       ],
-      social: {
-        github: 'https://github.com/steveyegge/gastown',
-        discord: 'https://discord.gg/xHpUGUzZp2',
-      },
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/steveyegge/gastown',
+        },
+        {
+          icon: 'discord',
+          label: 'Discord',
+          href: 'https://discord.gg/xHpUGUzZp2',
+        },
+      ],
       // Force light theme for code blocks since we use a light parchment background
       expressiveCode: {
         themes: ['github-light'],
