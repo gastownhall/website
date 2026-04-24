@@ -24,6 +24,13 @@
       "image": "/images/blog/welcome-to-gas-city.jpg"
     },
     {
+      "title": "Orchestration Is All You Need",
+      "url": "https://sellsbrothers.com/orchestration-is-all-you-need",
+      "description": "Chris Sells explains how harness engineering and agentic orchestrations turn CLI coding agents into factory workers for software factories and dark factories.",
+      "date": "Apr 21, 2026",
+      "image": "/images/blog/orchestration-is-all-you-need.jpg"
+    },
+    {
       "title": "Gas Town: from Clown Show to v1.0",
       "url": "https://steve-yegge.medium.com/gas-town-from-clown-show-to-v1-0-c239d9a407ec",
       "description": "Gas Town and Beads have both released version 1.0.0, marking the end of Gas Town's chaotic early phase and the start of stable, production-ready use.",

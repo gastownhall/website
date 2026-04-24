@@ -1,6 +1,6 @@
 ---
 name: add-content
-description: "Add new blog posts and YouTube videos to the Gas Town Hall website. Use when new markdown files appear in docs-fodder/steve-blog-posts/ or docs-fodder/youtube/, user says 'add content', 'add blog post', 'new blog', 'new video', or asks to update the Town Crier section."
+description: "Add new blog posts and YouTube videos to the Gas Town Hall website. Use when new markdown files appear in docs-fodder/steve-blog-posts/, docs-fodder/sellsbrothers-posts/, or docs-fodder/youtube/, user says 'add content', 'add blog post', 'new blog', 'new video', or asks to update the Town Crier section."
 ---
 
 # Add Content to Gas Town Hall
@@ -11,17 +11,53 @@ Add blog posts (from Medium) and YouTube videos to the site by updating `site.co
 
 ### 1. Identify New Content
 
-Compare files in `docs-fodder/steve-blog-posts/*.md` and `docs-fodder/youtube/*.md` against existing entries in `site.config.json` `blogPosts` array. New files not yet in the config need to be added.
+Compare files in `docs-fodder/steve-blog-posts/*.md`, `docs-fodder/sellsbrothers-posts/*.md`, and `docs-fodder/youtube/*.md` against existing entries in `site.config.json` `blogPosts` array. New files not yet in the config need to be added.
 
 ### 2. Extract Metadata from Each New File
 
 **Medium blog posts** (`docs-fodder/steve-blog-posts/*.md`):
 
-- **Title**: First `# heading` (line 1-2)
+Prefer clean files generated with the user-scope `medium-to-markdown` skill from the shared skill tree:
+
+```bash
+python ~/.claude/skills/medium-to-markdown/scripts/medium_to_markdown.py \
+  "https://steve-yegge.medium.com/post-slug-id" \
+  --frontmatter \
+  -o "docs-fodder/steve-blog-posts/Post Title.md"
+```
+
+For `medium-to-markdown --frontmatter` files:
+
+- **Title**: YAML `title`
+- **Date**: YAML `date` (`YYYY-MM-DD`), converted to `Mon D, YYYY`
+- **URL**: YAML `source`
+- **Description**: First substantive paragraph after the frontmatter, skipping headings, images, and blank lines
+- **Lead image URL**: First `![...](<url>)` image in the post body
+
+For legacy manual Medium exports:
+
+- **Title**: First `# heading` or underlined heading at the top of the file
 - **Date**: Look for absolute date like `Feb 11, 2026` or relative like `3 days ago`. If relative or "Just now", search the web: `steve yegge "<title>" medium date` to get the month
 - **URL**: Extract from the `redirect=` parameter in the first Medium signin link, e.g. `redirect=https%3A%2F%2Fsteve-yegge.medium.com%2Fthe-ai-vampire-eda6e4f07163` → `https://steve-yegge.medium.com/the-ai-vampire-eda6e4f07163`
 - **Description**: First substantive paragraph after the metadata/image lines (~1-2 sentences)
-- **Lead image URL**: First `![...](<url>)` image in the post body (skip the author avatar). Usually `https://miro.medium.com/v2/resize:fit:1400/format:webp/1*...`
+- **Lead image URL**: First article image in the post body. Skip the author avatar if present.
+
+**Sells Brothers blog posts** (`docs-fodder/sellsbrothers-posts/*.md`):
+
+Generate captures from the RSS feed with the user-scope `sellsbrothers-to-markdown` skill:
+
+```bash
+python ~/.claude/skills/sellsbrothers-to-markdown/scripts/sellsbrothers_to_markdown.py \
+  "https://sellsbrothers.com/post-slug" \
+  --frontmatter \
+  -o "docs-fodder/sellsbrothers-posts/Post Title.md"
+```
+
+- **Title**: YAML `title`
+- **Date**: YAML `date` (`YYYY-MM-DD`), converted to `Mon D, YYYY`
+- **URL**: YAML `source`
+- **Description**: First substantive paragraph after the frontmatter, skipping headings, images, and blank lines
+- **Lead image URL**: First `![...](<url>)` image in the post body
 
 **YouTube videos** (`docs-fodder/youtube/*.md`):
 
@@ -66,9 +102,9 @@ Images must exist in two places:
 
 If you only save to `src/static/`, images will 404 on the dev server until a full build runs. Always copy to both.
 
-#### Medium images
+#### Medium and Sells Brothers images
 
-Extract the lead image URL from the markdown (first `![...](<url>)` after the author avatar, usually from `miro.medium.com`):
+Extract the lead image URL from the markdown. Clean `medium-to-markdown` and `sellsbrothers-to-markdown` files use the first `![...](<url>)` in the body; legacy manual exports may require skipping the author avatar first. Medium image URLs may be from `miro.medium.com` or `cdn-images-1.medium.com`; Sells Brothers image URLs are usually from `cdn.blot.im`:
 ```bash
 curl -sL -o src/static/images/blog/kebab-name.jpg "<miro_url>"
 cp src/static/images/blog/kebab-name.jpg tmp/public/images/blog/
