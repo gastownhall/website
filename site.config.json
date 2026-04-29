@@ -17,6 +17,13 @@
   },
   "blogPosts": [
     {
+      "title": "Announcing Gas City 1.0!",
+      "url": "https://sellsbrothers.com/announcing-gas-city-1-0",
+      "description": "Chris Sells announces Gas City 1.0, an agentic orchestration engine that helps software engineers manage multiple AI coding agents through systematic software factory automation.",
+      "date": "Apr 27, 2026",
+      "image": "/images/blog/announcing-gas-city-1-0.jpg"
+    },
+    {
       "title": "Welcome to Gas City",
       "url": "https://steve-yegge.medium.com/welcome-to-gas-city-57f564bb3607",
       "description": "Gas City recasts Gas Town as a composable SDK for building observable, multi-agent dark factories, with v1.0.0 ready for teams building their own orchestrators.",
