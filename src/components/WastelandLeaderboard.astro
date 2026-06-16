@@ -211,9 +211,11 @@
         b.weighted_score - a.weighted_score || b.stamp_count - a.stamp_count
     );
 
-    for (let i = 0; i < entries.length; i++) {
-      tbody.appendChild(buildTableRow(entries[i], i + 1));
-      cardsWrapper.appendChild(buildCard(entries[i], i + 1));
+    const topEntries = entries.slice(0, 10);
+
+    for (let i = 0; i < topEntries.length; i++) {
+      tbody.appendChild(buildTableRow(topEntries[i], i + 1));
+      cardsWrapper.appendChild(buildCard(topEntries[i], i + 1));
     }
 
     if (data.updated_at) {
